@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>식전영상 · 한 줄로 이어진 이야기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --board:#0e0e0f; --chalk:#f2ede2; --gold:#e9c552; --rose:#ef8fa9;
+    --azure:#6fa9d9; --leaf:#7cb972; --ember:#e8677d;
+    --muted:rgba(242,237,226,.55);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{min-height:100%}
+  body{
+    background:var(--board);
+    color:var(--chalk);
+    font-family:'Gaegu',sans-serif;
+    display:flex;flex-direction:column;align-items:center;
+    padding:max(28px,6vh) 20px calc(28px + env(safe-area-inset-bottom));
+    /* 칠판 질감 */
+    background-image:
+      radial-gradient(ellipse at 28% 18%, rgba(255,255,255,.035), transparent 60%),
+      radial-gradient(ellipse at 78% 82%, rgba(255,255,255,.025), transparent 55%);
+  }
+  .wrap{width:100%;max-width:560px;display:flex;flex-direction:column;align-items:center}
+
+  /* 상단 한 줄 + 하트 모티프 */
+  .motif{width:220px;height:60px;margin-bottom:14px;opacity:.95}
+  .motif path,.motif circle{filter:drop-shadow(0 0 6px rgba(233,197,82,.25))}
+
+  h1{font-size:clamp(30px,8vw,42px);font-weight:700;letter-spacing:.02em;
+    text-shadow:0 0 16px rgba(242,237,226,.18);text-align:center;line-height:1.15}
+  .sub{font-family:'Nanum Pen Script',cursive;font-size:clamp(19px,5vw,24px);
+    color:var(--muted);margin-top:6px;text-align:center}
+
+  .divider{width:64px;height:1px;background:rgba(242,237,226,.25);margin:22px 0 26px}
+
+  .cards{width:100%;display:flex;flex-direction:column;gap:14px}
+  a.card{
+    display:flex;align-items:center;gap:16px;
+    text-decoration:none;color:inherit;
+    background:rgba(242,237,226,.05);
+    border:1px solid rgba(242,237,226,.18);
+    border-radius:14px;
+    padding:18px 20px;
+    transition:background .2s ease,border-color .2s ease,transform .12s ease;
+  }
+  a.card:hover,a.card:focus-visible{
+    background:rgba(242,237,226,.10);
+    border-color:rgba(233,197,82,.55);
+    transform:translateY(-2px);
+    outline:none;
+  }
+  .num{
+    flex:0 0 auto;width:44px;height:44px;border-radius:50%;
+    display:grid;place-items:center;font-size:20px;font-weight:700;
+    color:var(--board);
+  }
+  .c1 .num{background:var(--gold)}
+  .c2 .num{background:var(--rose)}
+  .c3 .num{background:var(--azure)}
+  .meta{flex:1 1 auto;min-width:0}
+  .meta .t{font-size:clamp(19px,5vw,22px);font-weight:700}
+  .meta .d{font-size:14px;color:var(--muted);margin-top:2px}
+  .go{flex:0 0 auto;color:var(--muted);font-size:22px;transition:color .2s ease,transform .2s ease}
+  a.card:hover .go{color:var(--gold);transform:translateX(3px)}
+
+  .foot{margin-top:26px;font-family:'Nanum Pen Script',cursive;
+    font-size:16px;color:rgba(242,237,226,.35);text-align:center}
+</style>
+</head>
+<body>
+  <main class="wrap">
+    <!-- 한 줄 + 하트 -->
+    <svg class="motif" viewBox="0 0 220 60" fill="none" aria-hidden="true">
+      <path d="M6 34 C 46 30, 86 40, 100 34" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/>
+      <path d="M120 34 C 134 40, 174 30, 214 34" stroke="var(--gold)" stroke-width="3" stroke-linecap="round"/>
+      <path d="M110 44 C 96 30, 101 22, 110 30 C 119 22, 124 30, 110 44 Z" fill="var(--ember)" stroke="var(--ember)" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M110 22 l1.5 -6 M118 26 l5 -4 M102 26 l-5 -4" stroke="var(--gold)" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+
+    <h1>한 줄로 이어진 이야기</h1>
+    <p class="sub">식전영상 · 세 가지 BGM</p>
+
+    <div class="divider"></div>
+
+    <nav class="cards">
+      <a class="card c1" href="./1.html">
+        <span class="num">1</span>
+        <span class="meta"><span class="t">버전 1</span></span>
+        <span class="go">›</span>
+      </a>
+
+      <a class="card c2" href="./2.html">
+        <span class="num">2</span>
+        <span class="meta"><span class="t">버전 2</span></span>
+        <span class="go">›</span>
+      </a>
+
+      <a class="card c3" href="./3.html">
+        <span class="num">3</span>
+        <span class="meta"><span class="t">버전 3</span></span>
+        <span class="go">›</span>
+      </a>
+    </nav>
+
+    <p class="foot">화면을 켜고 소리와 함께 봐주세요 · ♪</p>
+  </main>
+</body>
+</html>
