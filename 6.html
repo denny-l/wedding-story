@@ -1603,11 +1603,13 @@ reset();
   var g=document.getElementById('scratchPartial'); if(!g) return;
   var GOLD='#e9c552', NS='http://www.w3.org/2000/svg';
   function rc(){ return 'hsl('+((Math.random()*360)|0)+' '+((72+Math.random()*26)|0)+'% '+((54+Math.random()*12)|0)+'%)'; }
+  function red(){ return 'hsl('+(((348+Math.random()*24)|0)%360)+' '+((80+Math.random()*16)|0)+'% '+((54+Math.random()*10)|0)+'%)'; }
   function add(off,col){ var s=document.createElementNS(NS,'stop'); s.setAttribute('offset',off.toFixed(4)); s.setAttribute('stop-color',col); g.appendChild(s); }
   function fill(){
     while(g.firstChild) g.removeChild(g.firstChild);
     add(0, GOLD); add(0.113, GOLD);                        // 별->맥박: 금색(아직 안 만남)
-    for(var x=0.118; x<0.292; x+=0.05) add(x, rc());       // 맥박->갈라짐: 랜덤(함께)
+    add(0.118, red());                                     // 맥박 첫 색 = 붉은색 계열(첫 만남)
+    for(var x=0.168; x<0.292; x+=0.05) add(x, rc());       // 이후: 랜덤(함께)
     add(0.292, rc());                                      // p1 끝(랜덤)
     add(0.520, rc());                                      // 재결합 직전(갈라짐 구간은 이 그라데이션 미적용)
     for(var y=0.528; y<1.0; y+=0.05) add(y, rc());         // 재결합->끝: 랜덤(다시 함께)
