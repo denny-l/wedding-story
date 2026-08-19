@@ -1605,7 +1605,7 @@ reset();
   var g=document.getElementById('scratchRainbow'); if(!g) return;
   function fill(){
     while(g.firstChild) g.removeChild(g.firstChild);
-    var N=30;
+    var N=35;
     for(var i=0;i<N;i++){
       var s=document.createElementNS('http://www.w3.org/2000/svg','stop');
       s.setAttribute('offset',(i/(N-1)).toFixed(3));
