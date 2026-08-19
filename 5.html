@@ -1599,3 +1599,23 @@ prep();
 items.forEach(it=>{ if(it.vineSuck) it.dur=1.1; });   // 덩굴: 멀리서 오기 + 밑둥으로 빨려들어감 시간
 reset();
 </script>
+
+<script>
+(function(){
+  var g=document.getElementById('scratchRainbow'); if(!g) return;
+  function fill(){
+    while(g.firstChild) g.removeChild(g.firstChild);
+    var N=18;
+    for(var i=0;i<N;i++){
+      var s=document.createElementNS('http://www.w3.org/2000/svg','stop');
+      s.setAttribute('offset',(i/(N-1)).toFixed(3));
+      s.setAttribute('stop-color','hsl('+((Math.random()*360)|0)+' '+((72+Math.random()*26)|0)+'% '+((54+Math.random()*12)|0)+'%)');
+      g.appendChild(s);
+    }
+  }
+  fill();
+  // 재생 버튼 누를 때마다 새 랜덤 색
+  var pb=document.getElementById('play');
+  if(pb) pb.addEventListener('click', fill);
+})();
+</script>
