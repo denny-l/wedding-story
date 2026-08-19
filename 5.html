@@ -148,7 +148,7 @@
 
   <svg id="scene" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
     <defs>
-      <linearGradient id="scratchRainbow" gradientUnits="userSpaceOnUse" x1="0" y1="540" x2="12000" y2="540" spreadMethod="repeat">
+      <linearGradient id="scratchRainbow" gradientUnits="userSpaceOnUse" x1="200" y1="540" x2="12200" y2="540" spreadMethod="repeat">
         <stop offset="0" stop-color="#ff4d5e"/><stop offset="0.14" stop-color="#ff8a3d"/><stop offset="0.28" stop-color="#ffd23d"/><stop offset="0.42" stop-color="#7ed957"/><stop offset="0.56" stop-color="#38c1c9"/><stop offset="0.70" stop-color="#4a8cf0"/><stop offset="0.84" stop-color="#c06cf0"/><stop offset="1" stop-color="#ff4d5e"/>
       </linearGradient>
       <!-- 크레파스 거친 질감 -->
@@ -1609,7 +1609,7 @@ reset();
     for(var i=0;i<N;i++){
       var s=document.createElementNS('http://www.w3.org/2000/svg','stop');
       s.setAttribute('offset',(i/(N-1)).toFixed(3));
-      s.setAttribute('stop-color','hsl('+((Math.random()*360)|0)+' '+((72+Math.random()*26)|0)+'% '+((54+Math.random()*12)|0)+'%)');
+      s.setAttribute('stop-color', i===0 ? '#e9c552' : ('hsl('+((Math.random()*360)|0)+' '+((72+Math.random()*26)|0)+'% '+((54+Math.random()*12)|0)+'%)'));
       g.appendChild(s);
     }
   }
