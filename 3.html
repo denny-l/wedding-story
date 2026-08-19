@@ -896,6 +896,7 @@ add(star(3010,690,14,'var(--azure)',2.6), 3010, 'apart');
 
 // [씬] 돌고 돌아, 운명처럼 다시 만났습니다
 add(twinkle(3800,540,30,'var(--gold)'), 3790, 'reunite');
+items[items.length-1].bounce=true;   // 나온 뒤 계속 통통 바운스
 
 // [씬] 다시 만나, 더 단단해진 우리는
 add(heart(4200,405,52,'var(--ember)',5), 4200, 'stronger');
@@ -1411,8 +1412,8 @@ function frame(ts){
       if(it._state!==0){ it.node.setAttribute('opacity','0'); it._state=0; }
       return;
     }
-    // 이미 안착 완료했고 펄스도 아니면 더 이상 건드리지 않음(매 프레임 리렌더 방지)
-    if(r>=1 && !it.pulse){
+    // 이미 안착 완료했고 펄스/바운스도 아니면 더 이상 건드리지 않음(매 프레임 리렌더 방지)
+    if(r>=1 && !it.pulse && !it.bounce){
       if(it._state!==2){
         it.node.setAttribute('transform',
           `translate(${it.ax2},${it.ay2}) scale(1) translate(${-it.ax2},${-it.ay2})`);
@@ -1438,6 +1439,7 @@ function frame(ts){
       spring = 0;
     }
     if(it.pulse && r>=1) spring = Math.sin((t-it.t)*2.1)*0.05;  // 빛살은 잔잔한 반짝임 유지
+    if(it.bounce && r>=1) spring = Math.abs(Math.sin((t-it.t)*2.6))*0.16;  // 등장 후 계속 통통 튀는 바운스
     const sc = 1+spring;
     it.node.setAttribute('transform',
       `translate(${it.ax2},${it.ay2}) scale(${sc.toFixed(4)}) translate(${-it.ax2},${-it.ay2})`);
