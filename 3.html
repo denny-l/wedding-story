@@ -204,8 +204,12 @@
 
         <!-- 1구간: 시작 → 언덕 -->
         <path id="p1" stroke-opacity="0.93" stroke="var(--gold)" stroke-width="9"
-          d="M 200 540 C 350 535, 500 546, 700 539 C 900 532, 1100 546, 1300 538
-             C 1460 532, 1560 418, 1760 398 C 1960 378, 2060 502, 2200 540"/>
+          d="M 200 540 C 350 535, 500 546, 700 539 C 830 535, 950 540, 1020 540
+             L 1042 518 L 1058 540 L 1070 558 L 1084 398 L 1098 652 L 1112 540 L 1126 520 L 1140 540
+             L 1205 540
+             C 1225 556, 1247 578, 1250 595 C 1253 578, 1275 556, 1295 540
+             L 1360 540
+             C 1500 536, 1600 420, 1780 400 C 1980 380, 2070 502, 2200 540"/>
 
         <!-- 2구간: 갈라진 두 길 -->
         <path id="pPink" stroke-opacity="0.93" stroke="var(--rose)" stroke-width="8"
@@ -251,6 +255,7 @@ const OS=1.5;   // 오브젝트 크기 배율
 const deco=document.getElementById('deco');
 const endStars=document.getElementById('endStars');
 const cam=document.getElementById('cam');
+const lineGEl=document.getElementById('lineG');
 const cap=document.getElementById('caption');
 const capText=document.getElementById('capText');
 const chalk=document.getElementById('chalkStick');
@@ -388,6 +393,15 @@ function heart(x,y,s,color,sw,fill){
   for(let i=0;i<=NL;i++){const t=i/NL; poly.push([cub(t,x,x+s*.52,x+s*1.1,x), cub(t,y-s*.28,y-s*.92,y-s*.15,y+s*.72)]);}
   g.appendChild(el('path',{d,stroke:color,'stroke-width':sw||4,fill:'none','stroke-linejoin':'round'}));
   g.appendChild(chalkFill(poly,color,Math.max(2.6,(sw||4)*.7),(x*13+y*7+s*3),{step:Math.max(3.6,s*.10),len:s*.24,skip:.15}));
+  return g;
+}
+// 심박 스파이크 — 베이스라인 y(=메인선)에서 솟는 EKG 펄스(좌→우). 폭≈2.6s, 큰 스파이크 높이≈1.15s.
+function heartbeat(x,y,s,color){
+  const g=el('g',{}); g.setAttribute('filter','url(#chalkSoft)');
+  const w=s*2.6;
+  const P=[[0,0],[0.12,0],[0.20,-0.28],[0.27,0.20],[0.38,-1.15],[0.47,0.55],[0.55,0],[0.68,-0.26],[0.80,0.12],[1.0,0]];
+  const d='M '+P.map(p=>(x+p[0]*w).toFixed(1)+' '+(y+p[1]*s).toFixed(1)).join(' L ');
+  g.appendChild(el('path',{d,stroke:color,'stroke-width':6,fill:'none','stroke-linejoin':'round','stroke-linecap':'round'}));
   return g;
 }
 // 생동감 있는 곡선 줄기(루프) — 선 위 기준점(x,y)에서 돋아 끝(잎이 달릴 곳)으로 감기며 이어진다
@@ -846,13 +860,10 @@ addAt(rays(200,540,60,'var(--gold)'), 2.1, 0.5, true);
 
 // [씬] 스무 살, 우리는 처음 만났습니다 — 새싹과 첫 하트가 한꺼번에
 // [씬] 스무 살, 우리는 처음 만났습니다 — 새싹이 선 전체에 좌우로 퍼짐
+// 첫 만남 — 메인선(p1) 자체가 심박처럼 튀고 그대로 이어져 하트를 그린다(EKG+하트를 경로에 직접 삽입).
+// 하트는 심박선의 일부이므로 별도 오브젝트가 아니다. 새싹은 심박 구간(x 1000~1390) 밖에 배치(타이밍 안정).
 add(leaf(955, 538,36,-1,-1), 955,  'meet');
-add(leaf(1050,540,30, 1, 1), 1050, 'meet');
-add(leaf(1150,536,34, 1,-1), 1150, 'meet');
-add(leaf(1265,538,30,-1,-1), 1265, 'meet');
-add(leaf(1360,540,34, 1, 1), 1360, 'meet');
-add(leaf(1440,534,32,-1,-1), 1440, 'meet');
-add(heart(1175,400,53,'var(--ember)',5), 1175, 'meet');   // 만남의 첫 하트
+add(leaf(1430,533,32,-1,-1), 1430, 'meet');
 
 // [씬] 함께 웃고, 함께 꿈꾸던 날들 — 언덕의 나무와 하트
 // 덩굴이 멀리서 밑둥으로 쪽 빨려들어가며 나무가 그려짐(시작점 각각 다르게)
@@ -1005,12 +1016,44 @@ const smooth=k=>k*k*(3-2*k);   // 각 지점에 다다를 때 살짝 늦춰짐
 // 등속: 시작 4.0s, 끝 60.0s 동안 전체 길이를 일정 속도로 그린다
 const LINE_T0=4.0;
 const LINE_END_X=6720;   // 선 끝 x(=화살표 위치) — 선이 하트 너머 여기까지 계속 그려진다
-const LEN_P1=2053.6, LEN_FORK=1634.1, LEN_P2=3250.3;
-const LEN_TOTAL=LEN_P1+LEN_FORK+LEN_P2;
-const SPEED=LEN_TOTAL/(67.3-LINE_T0);                // 원래 등속 속도
-const L_END=LEN_P1+LEN_FORK+2920.4;                  // x≈6720 까지의 선 길이(전체보다 짧게 → 여기서 멈춤)
-const LINE_T1=LINE_T0+L_END/SPEED;                   // 선 완성 시각(≈64.3)
-function drawnLen(t){ return Math.max(0, Math.min(L_END, (t-LINE_T0)*SPEED)); }
+// 길이/속도 상수는 실제 경로 길이에서 자동 계산(p1에 심박 삽입 등 geometry 변경에 자동 대응) — paths.forEach 뒤에 대입
+let LEN_P1, LEN_FORK, LEN_P2, LEN_TOTAL, SPEED, L_END, LINE_T1;
+let SPK_A0, SPK_A1;              // 심박+하트 구간의 실 호길이 경계
+let SPK_TA, SPK_TREG;            // 구간 시작 시각 / 소요시간(=가로폭÷정상속도)
+let SPK_RED, SPK_RED_LEN;        // 구간 전용 빨강 짝선(그 부분만 두 색)
+let SPK_SCHED_ARC, SPK_SCHED_P, SPK_PTOTAL;   // 가로 이동량 페이싱 스케줄
+const X_SPK0=1010, X_SPK1=1360;  // 심박+하트 구간의 x 경계(스파이크~하트~직선 시작)
+// 구간을 "가로 이동량" 기준으로 배분해 그린다: 스파이크는 가로폭이 좁아 순식간에 튀고(빠름),
+// 하트는 자기 가로폭만큼. (세로 성분엔 0.12*호길이만 얹어 완전 순간이동은 막아 매끄럽게.)
+// 전체 구간 소요시간 SPK_TREG = SPK_FLAT/SPEED (=가로폭÷정상속도) 로 고정 → 가로 진행은 정상속도.
+function regArcAtP(P){
+  const A=SPK_SCHED_P; if(P<=0)return SPK_A0; if(P>=SPK_PTOTAL)return SPK_A1;
+  let lo=0,hi=A.length-1; while(hi-lo>1){const m=(lo+hi)>>1;(A[m]<P)?lo=m:hi=m;}
+  const f=(P-A[lo])/((A[hi]-A[lo])||1);
+  return SPK_SCHED_ARC[lo]+(SPK_SCHED_ARC[hi]-SPK_SCHED_ARC[lo])*f;
+}
+function regPAtArc(a){
+  const A=SPK_SCHED_ARC; if(a<=SPK_A0)return 0; if(a>=SPK_A1)return SPK_PTOTAL;
+  let lo=0,hi=A.length-1; while(hi-lo>1){const m=(lo+hi)>>1;(A[m]<a)?lo=m:hi=m;}
+  const f=(a-A[lo])/((A[hi]-A[lo])||1);
+  return SPK_SCHED_P[lo]+(SPK_SCHED_P[hi]-SPK_SCHED_P[lo])*f;
+}
+function drawnLen(t){
+  if(t<=LINE_T0) return 0;
+  if(t<=SPK_TA) return Math.min(L_END, (t-LINE_T0)*SPEED);
+  if(t<=SPK_TA+SPK_TREG){
+    const tau=(t-SPK_TA)/SPK_TREG;
+    const te=-0.5*tau*tau+1.5*tau;   // 가속도: 진입 즉시 확 튀고(punch, v=1.5) 끝은 멈추지 않게(v=0.5)
+    return regArcAtP(te*SPK_PTOTAL);
+  }
+  return Math.min(L_END, SPK_A1 + (t-(SPK_TA+SPK_TREG))*SPEED);
+}
+// 실 호길이 → 시각(tAtX 역변환용).
+function tAtArc(a){
+  if(a<=SPK_A0) return LINE_T0 + a/SPEED;
+  if(a<=SPK_A1) return SPK_TA + regPAtArc(a)/SPK_PTOTAL*SPK_TREG;
+  return (SPK_TA+SPK_TREG) + (a-SPK_A1)/SPEED;
+}
 function xOnPath(p,l){
   l=Math.max(0,Math.min(p.len,l));
   let lo=0,hi=240;
@@ -1030,13 +1073,28 @@ function xAtTime(t){
   if(dl<=LEN_P1+LEN_FORK) return xOnPath(paths[1], dl-LEN_P1);
   return xOnPath(paths[3], dl-LEN_P1-LEN_FORK);
 }
+// 카메라/그레인용 tip — p1(하트 루프) 구간은 누적 최대 x로 단조 증가 보장
+function tipXAt(t){
+  const dl=drawnLen(t);
+  if(dl<=0) return paths[0].x0;
+  // 심박+하트 구간: 카메라는 시간에 균일(선형) 팬 — 펜이 가속해도 카메라는 따라가지 않는다.
+  if(t>SPK_TA && t<SPK_TA+SPK_TREG) return X_SPK0 + (t-SPK_TA)/SPK_TREG*(X_SPK1-X_SPK0);
+  if(dl<=LEN_P1){
+    const p=paths[0]; let lo=0,hi=240;
+    while(hi-lo>1){ const m=(lo+hi)>>1; (p.tbl[m][1]<dl)?lo=m:hi=m; }
+    const seg=p.tbl[hi][1]-p.tbl[lo][1];
+    const f=seg>0?(dl-p.tbl[lo][1])/seg:0;
+    return p.maxx[lo]+(p.maxx[hi]-p.maxx[lo])*f;
+  }
+  return xAtTime(t);
+}
 // 어떤 x에 선이 닿는 시각 (등속)
 function tAtX(x){
   var arr=[[paths[0],0],[paths[1],LEN_P1],[paths[3],LEN_P1+LEN_FORK]];
   for(var i=0;i<arr.length;i++){
     var p=arr[i][0], base=arr[i][1];
     if(x<p.x0-2||x>p.x1+2) continue;
-    return LINE_T0 + (base+lenAtX(p,x))/SPEED;
+    return tAtArc(base+lenAtX(p,x));
   }
   return LINE_T1;
 }
@@ -1053,7 +1111,76 @@ paths.forEach(p=>{
     p.tbl.push([pt.x,l,pt.y]);
   }
   p.x0=p.tbl[0][0]; p.x1=p.tbl[240][0];
+  // 누적 최대 x — 하트 루프처럼 x가 뒤로 갔다 오는 구간에서 카메라/그레인이 되돌아가지 않도록
+  p.maxx=[]; let mx=-1e9;
+  for(let i=0;i<=240;i++){ mx=Math.max(mx,p.tbl[i][0]); p.maxx.push(mx); }
 });
+
+// [이중선-부분] 심박+하트 "저 구간만" 노랑+빨강. 나머지 선/ p2는 단색 금색 그대로.
+// p1의 스파이크+하트 서브패스를 빨강(ember)으로 하나 더 그려 살짝 아래로 offset → 그 구간만 두 색이 나란히.
+(function twoToneSpk(){
+  const NS='http://www.w3.org/2000/svg';
+  const r=document.createElementNS(NS,'path');
+  r.setAttribute('d','M 1010 540 L 1042 518 L 1058 540 L 1070 558 L 1084 398 L 1098 652 L 1112 540 L 1126 520 L 1140 540 L 1205 540 C 1225 556, 1247 578, 1250 595 C 1253 578, 1275 556, 1295 540');
+  r.setAttribute('stroke','var(--ember)'); r.setAttribute('stroke-width','10'); r.setAttribute('stroke-opacity','0.92');
+  r.setAttribute('fill','none'); r.setAttribute('stroke-linecap','round'); r.setAttribute('stroke-linejoin','round');
+  r.setAttribute('transform','translate(0,7)');    // 금색 아래로 살짝(나란히)
+  const p1el=document.getElementById('p1');
+  p1el.parentNode.insertBefore(r, p1el);           // 금색 뒤층
+  SPK_RED_LEN=r.getTotalLength();
+  r.style.strokeDasharray=SPK_RED_LEN; r.style.strokeDashoffset=SPK_RED_LEN;
+  SPK_RED=r;
+})();
+
+// 실제 경로 길이로 길이/속도 상수 확정 (p1 심박으로 길이가 바뀌어도 자동 반영)
+LEN_P1=paths[0].len; LEN_FORK=paths[1].len; LEN_P2=paths[3].len;
+LEN_TOTAL=LEN_P1+LEN_FORK+LEN_P2;
+// 심박+하트 구간(x 1000~1390): 정상 가로속도로 이 폭을 지날 시간(SPK_TREG)에 스파이크+하트를 그린다.
+// 구간 밖은 정상 등속(SPEED). SPK_FLAT(=가로폭)만큼만 시간으로 치므로 전체 완성 시각(LINE_T1)은 무스파이크와 동일 → 피날레/자막 보존.
+SPK_A0=lenAtX(paths[0], X_SPK0);   // 스파이크 진입(실 호길이)
+SPK_A1=lenAtX(paths[0], X_SPK1);   // 하트 직후(실 호길이) — 하트 최대 x<X_SPK1 이라 단일 교차
+const SPK_ARC=SPK_A1-SPK_A0, SPK_FLAT=X_SPK1-X_SPK0, SPK_EXTRA=SPK_ARC-SPK_FLAT;   // 실 호길이 vs 평탄 등가 폭, 여분
+L_END=LEN_P1+LEN_FORK+2920.4;    // p2에서 x≈6720 까지의 호길이(p2는 불변)
+SPEED=(LEN_TOTAL-SPK_EXTRA)/(67.3-LINE_T0);   // 정상(무스파이크 등가) 속도
+LINE_T1=LINE_T0+(L_END-SPK_EXTRA)/SPEED;      // 완성 시각(보존 목표)
+SPK_TA=LINE_T0+SPK_A0/SPEED;     // 심박 시작 시각(정상 진행으로 x=1000 도달)
+SPK_TREG=SPK_FLAT/SPEED;         // 가로폭을 정상속도로 지날 시간 = 심박+하트 애니 시간
+// 가로 이동량 페이싱 스케줄: 각 부분이 "자기 가로폭만큼의 시간"에 그려진다(스파이크는 좁아서 빠르게).
+(function buildSpkSchedule(){
+  const N=260, p0=paths[0].el;
+  SPK_SCHED_ARC=[SPK_A0]; SPK_SCHED_P=[0];
+  let prev=p0.getPointAtLength(SPK_A0), P=0;
+  for(let i=1;i<=N;i++){
+    const a=SPK_A0+SPK_ARC*i/N, pt=p0.getPointAtLength(a);
+    const dx=Math.abs(pt.x-prev.x), ds=Math.hypot(pt.x-prev.x, pt.y-prev.y);
+    let w=dx + 0.04*ds;          // 가로 이동량 위주(+세로엔 아주 소량만 → 스파이크 빠르게)
+    if(pt.x>1200 && pt.x<1300) w*=0.45;   // 하트 구간 더 빨리 그리기
+    P += w + 1e-4;
+    SPK_SCHED_ARC.push(a); SPK_SCHED_P.push(P); prev=pt;
+  }
+  SPK_PTOTAL=P;
+})();
+
+// ===== 하트 = 메인선이 갈라졌다 합쳐짐 =====  아래 가닥(꼭지점)은 p1 자체. 위 가닥(로브)만 별도 path로
+// p1의 하트 진행(SL→SR)에 동기화해 "동시에" 그린다 → 왼쪽에서 위/아래로 갈라지고 오른쪽에서 합쳐진다.
+let TOP_GOLD, TOP_RED, TOP_LEN, HEART_A_SL, HEART_A_SR;
+(function buildHeartTop(){
+  const NS='http://www.w3.org/2000/svg', parent=document.getElementById('lineG');
+  const d='M 1205 540 C 1193 505, 1223 485, 1250 516 C 1277 485, 1307 505, 1295 540';   // SL→좌로브→꼭지딤→우로브→SR
+  TOP_RED=document.createElementNS(NS,'path');
+  TOP_RED.setAttribute('d',d); TOP_RED.setAttribute('stroke','var(--ember)'); TOP_RED.setAttribute('stroke-width','10');
+  TOP_RED.setAttribute('stroke-opacity','0.9'); TOP_RED.setAttribute('fill','none');
+  TOP_RED.setAttribute('stroke-linecap','round'); TOP_RED.setAttribute('stroke-linejoin','round'); TOP_RED.setAttribute('transform','translate(0,7)');
+  TOP_GOLD=document.createElementNS(NS,'path');
+  TOP_GOLD.setAttribute('d',d); TOP_GOLD.setAttribute('stroke','var(--gold)'); TOP_GOLD.setAttribute('stroke-width','5');
+  TOP_GOLD.setAttribute('stroke-opacity','0.93'); TOP_GOLD.setAttribute('fill','none');
+  TOP_GOLD.setAttribute('stroke-linecap','round'); TOP_GOLD.setAttribute('stroke-linejoin','round');
+  parent.appendChild(TOP_RED); parent.appendChild(TOP_GOLD);
+  TOP_LEN=TOP_GOLD.getTotalLength();
+  TOP_GOLD.style.strokeDasharray=TOP_LEN; TOP_GOLD.style.strokeDashoffset=TOP_LEN;
+  TOP_RED.style.strokeDasharray=TOP_LEN; TOP_RED.style.strokeDashoffset=TOP_LEN;
+  HEART_A_SL=lenAtX(paths[0],1205); HEART_A_SR=lenAtX(paths[0],1295);   // p1이 SL~SR 그리는 호길이 구간
+})();
 
 /* ---------- 선 분필 알갱이(그레인) 레이어 — 필터 없이 분필 질감 ---------- */
 const grainPaths=[];
@@ -1216,7 +1343,7 @@ function frame(ts){
   // 카메라 — 선 끝(펜)을 화면 오른쪽 1/3(x=VIEW_CENTER)에 계속 고정.
   // 드리프트 없음: 선은 화살표(6720)까지 계속 그려지고, 완성 시 펜 위치에서 카메라 정지.
   // 하트는 선 끝보다 320px 왼쪽(6400)에 있어 그 순간 자동으로 화면 중앙(960)에 온다.
-  const tipX = xAtTime(t);
+  const tipX = tipXAt(t);
   let camX;
   if(t <= LINE_T1){
     camX = Math.min(CAM_FROM, VIEW_CENTER - tipX);         // 펜 = 오른쪽 1/3 고정
@@ -1226,6 +1353,16 @@ function frame(ts){
   // [성능] SVG transform 속성(리페인트) → CSS translate3d(GPU 합성). #cam 의 will-change:transform 과 맞물려
   // 카메라 이동 시 이미 자리잡은 장식들이 매 프레임 리페인트되지 않는다. 이동량은 user 단위(=viewBox 좌표) 그대로.
   cam.style.transform=`translate3d(${camX.toFixed(1)}px,0,0)`;
+  // [덜컹] 박동(큰 R 스파이크)을 지날 때 "세로만"(scaleY) 기준선(y=540)을 축으로 살짝 커졌다 돌아온다.
+  // 평평한 선은 축 위(y=540)라 안 움직이고, 축에서 먼 스파이크의 진폭만 세로로 펄스 → 박동 부분만 덜컹.
+  const penX=xAtTime(t); let beatS=1;
+  if(penX>1055 && penX<1125){ const u=(penX-1090)/35; beatS=1+0.24*Math.max(0,1-u*u); }
+  if(beatS!==1){
+    const PY=540;
+    lineGEl.style.transform=`translate(0px,${PY}px) scale(1,${beatS.toFixed(4)}) translate(0px,${-PY}px)`;
+  }else if(lineGEl.style.transform){
+    lineGEl.style.transform='';
+  }
 
   // 선 — 등속 진행 길이를 경로별로 채움 (완성 후에는 갱신 스킵)
   if(!window.__lineDone){
@@ -1236,13 +1373,23 @@ function frame(ts){
       Math.max(0,Math.min(paths[2].len, dl-LEN_P1)),
       Math.max(0,Math.min(paths[3].len, dl-LEN_P1-LEN_FORK)),
     ];
-    paths.forEach((p,i)=>{ p.el.style.strokeDashoffset=(p.len-fill[i]).toFixed(2); });
-    // 그레인은 "그려진 x 지점(tipX)까지만" 클립으로 노출 → 코어와 정확히 동기화
-    lineClipRect.setAttribute('width', Math.max(0, tipX+2).toFixed(1));
+    // 아직 안 그려진(길이 0) 선은 완전히 숨긴다 — dashoffset=len + round cap 이 시작점에 "점"을 남기는 것 방지
+    paths.forEach((p,i)=>{ const off=(p.len-fill[i]).toFixed(2); p.el.style.strokeDashoffset=off; p.el.style.visibility=fill[i]>0.1?'visible':'hidden'; });
+    // 구간 전용 빨강선 — p1 진행이 심박 시작(SPK_A0)을 지난 만큼만 노출
+    if(SPK_RED){ const rf=Math.max(0,Math.min(SPK_RED_LEN, fill[0]-SPK_A0)); SPK_RED.style.strokeDashoffset=(SPK_RED_LEN-rf).toFixed(2); SPK_RED.style.visibility=rf>0.1?'visible':'hidden'; }
+    // 하트 위 가닥 — p1이 SL→SR 그리는 동안 동시에 그린다(선이 갈라졌다 합쳐지는 효과)
+    if(TOP_GOLD){
+      const r=Math.max(0,Math.min(1,(fill[0]-HEART_A_SL)/((HEART_A_SR-HEART_A_SL)||1)));
+      const off=(TOP_LEN*(1-r)).toFixed(2); TOP_GOLD.style.strokeDashoffset=off; TOP_RED.style.strokeDashoffset=off;
+      const vis=r>0.001?'visible':'hidden'; TOP_GOLD.style.visibility=vis; TOP_RED.style.visibility=vis;
+    }
+    // 그레인은 "그려진 x 지점(펜의 실제 x)까지만" 클립으로 노출 → 카메라(선형)와 무관하게 코어와 동기화
+    lineClipRect.setAttribute('width', Math.max(0, xAtTime(t)+2).toFixed(1));
     if(dl>=LEN_TOTAL){
       // 선이 다 그려짐 → 이후 갱신만 중단. will-change는 유지해야 필터 재렌더로 굵기가 바뀌지 않음.
       window.__lineDone=true;
-      paths.forEach(p=>{ p.el.style.strokeDashoffset='0'; });   // willChange 유지(레이어 해제 금지)
+      paths.forEach(p=>{ p.el.style.strokeDashoffset='0'; if(p.elR) p.elR.style.strokeDashoffset='0'; });   // willChange 유지(레이어 해제 금지)
+      if(SPK_RED) SPK_RED.style.strokeDashoffset='0';
       lineClipRect.setAttribute('width','6600');   // 전부 노출
     }
   }
@@ -1255,6 +1402,7 @@ function frame(ts){
       const vine=it.node._vine, L=vine._len||(vine._len=vine.getTotalLength());
       if(r<=0){ if(it._state!==0){ it.node.setAttribute('opacity','0'); it._state=0; } return; }
       it.node.setAttribute('opacity','1'); it._state=1;
+      vine.style.visibility = (r>0.02 && r<0.985)?'visible':'hidden';   // 시작 점 방지 + 다 빨려든 뒤 0-dash 점 방지
       if(r<0.36){ const vis=(r/0.36)*L; vine.style.strokeDasharray=vis.toFixed(1)+' '+L.toFixed(1); vine.style.strokeDashoffset='0'; }
       else{ const a=smooth((r-0.36)/0.64)*L; vine.style.strokeDasharray='0 '+a.toFixed(1)+' '+L.toFixed(1); vine.style.strokeDashoffset='0'; }
       return;
@@ -1270,7 +1418,7 @@ function frame(ts){
           `translate(${it.ax2},${it.ay2}) scale(1) translate(${-it.ax2},${-it.ay2})`);
         it.node.setAttribute('opacity','1');
         it.shapes.forEach(sh=>{
-          if(sh.draws) sh.el.style.strokeDashoffset='0';
+          if(sh.draws){ sh.el.style.strokeDashoffset='0'; sh.el.style.visibility='visible'; }
           if(sh.filled) sh.el.setAttribute('fill-opacity','1');
         });
         it._state=2;
@@ -1301,7 +1449,7 @@ function frame(ts){
       let sr=(e-acc)/seg;
       sr=Math.max(0,Math.min(1,sr));
       acc+=seg;
-      if(sh.draws) sh.el.style.strokeDashoffset=(sh.len*(1-sr)).toFixed(2);
+      if(sh.draws){ sh.el.style.strokeDashoffset=(sh.len*(1-sr)).toFixed(2); sh.el.style.visibility=sr>0.02?'visible':'hidden'; }
       if(sh.filled) sh.el.setAttribute('fill-opacity',(sr*sr).toFixed(3));
     });
   });
@@ -1373,7 +1521,9 @@ function reset(){
   cancelAnimationFrame(raf); start=null;
   window.__lineDone=false;
   cam.style.transform=`translate3d(${CAM_FROM}px,0,0)`;
-  paths.forEach(p=>{ p.el.style.strokeDashoffset=p.len; p.el.style.willChange='stroke-dashoffset'; });
+  paths.forEach(p=>{ p.el.style.strokeDashoffset=p.len; p.el.style.willChange='stroke-dashoffset'; if(p.elR){ p.elR.style.strokeDashoffset=p.len; p.elR.style.willChange='stroke-dashoffset'; } });
+  if(SPK_RED){ SPK_RED.style.strokeDashoffset=SPK_RED_LEN; SPK_RED.style.willChange='stroke-dashoffset'; }
+  if(TOP_GOLD){ TOP_GOLD.style.strokeDashoffset=TOP_LEN; TOP_RED.style.strokeDashoffset=TOP_LEN; }
   grainPaths.forEach(g=>{ g.el.style.willChange='auto'; });
   lineClipRect.setAttribute('width','0');   // 그레인 전부 숨김
   const lg=document.getElementById('lineG'); if(lg) lg.style.opacity='0';   // 재생 전엔 선 자체를 감춤
