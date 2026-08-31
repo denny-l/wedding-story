@@ -152,6 +152,8 @@
   <svg id="scene" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
     <defs>
 <linearGradient id="scratchRainbow" gradientUnits="userSpaceOnUse" x1="200" y1="540" x2="12200" y2="540" spreadMethod="repeat"><stop offset="0.000" stop-color="#e9c552"/><stop offset="0.029" stop-color="#ff8a3d"/><stop offset="0.059" stop-color="#ffd23d"/><stop offset="0.088" stop-color="#7ed957"/><stop offset="0.118" stop-color="#38c1c9"/><stop offset="0.147" stop-color="#4a8cf0"/><stop offset="0.176" stop-color="#c06cf0"/><stop offset="0.206" stop-color="#ff4d5e"/><stop offset="0.235" stop-color="#ff8a3d"/><stop offset="0.265" stop-color="#ffd23d"/><stop offset="0.294" stop-color="#7ed957"/><stop offset="0.324" stop-color="#38c1c9"/><stop offset="0.353" stop-color="#4a8cf0"/><stop offset="0.382" stop-color="#c06cf0"/><stop offset="0.412" stop-color="#ff4d5e"/><stop offset="0.441" stop-color="#ff8a3d"/><stop offset="0.471" stop-color="#ffd23d"/><stop offset="0.500" stop-color="#7ed957"/><stop offset="0.529" stop-color="#38c1c9"/><stop offset="0.559" stop-color="#4a8cf0"/><stop offset="0.588" stop-color="#c06cf0"/><stop offset="0.618" stop-color="#ff4d5e"/><stop offset="0.647" stop-color="#ff8a3d"/><stop offset="0.676" stop-color="#ffd23d"/><stop offset="0.706" stop-color="#7ed957"/><stop offset="0.735" stop-color="#38c1c9"/><stop offset="0.765" stop-color="#4a8cf0"/><stop offset="0.794" stop-color="#c06cf0"/><stop offset="0.824" stop-color="#ff4d5e"/><stop offset="0.853" stop-color="#ff8a3d"/><stop offset="0.882" stop-color="#ffd23d"/><stop offset="0.912" stop-color="#7ed957"/><stop offset="0.941" stop-color="#38c1c9"/><stop offset="0.971" stop-color="#4a8cf0"/><stop offset="1.000" stop-color="#c06cf0"/></linearGradient>
+      <!-- 마지막 만남(p2, 재결합 후 피날레 단일선)용 스크래치 무지개 (반복) -->
+      <linearGradient id="scratchRainbow" gradientUnits="userSpaceOnUse" x1="200" y1="540" x2="12200" y2="540" spreadMethod="repeat"><stop offset="0.000" stop-color="#e9c552"/><stop offset="0.029" stop-color="#ff8a3d"/><stop offset="0.059" stop-color="#ffd23d"/><stop offset="0.088" stop-color="#7ed957"/><stop offset="0.118" stop-color="#38c1c9"/><stop offset="0.147" stop-color="#4a8cf0"/><stop offset="0.176" stop-color="#c06cf0"/><stop offset="0.206" stop-color="#ff4d5e"/><stop offset="0.235" stop-color="#ff8a3d"/><stop offset="0.265" stop-color="#ffd23d"/><stop offset="0.294" stop-color="#7ed957"/><stop offset="0.324" stop-color="#38c1c9"/><stop offset="0.353" stop-color="#4a8cf0"/><stop offset="0.382" stop-color="#c06cf0"/><stop offset="0.412" stop-color="#ff4d5e"/><stop offset="0.441" stop-color="#ff8a3d"/><stop offset="0.471" stop-color="#ffd23d"/><stop offset="0.500" stop-color="#7ed957"/><stop offset="0.529" stop-color="#38c1c9"/><stop offset="0.559" stop-color="#4a8cf0"/><stop offset="0.588" stop-color="#c06cf0"/><stop offset="0.618" stop-color="#ff4d5e"/><stop offset="0.647" stop-color="#ff8a3d"/><stop offset="0.676" stop-color="#ffd23d"/><stop offset="0.706" stop-color="#7ed957"/><stop offset="0.735" stop-color="#38c1c9"/><stop offset="0.765" stop-color="#4a8cf0"/><stop offset="0.794" stop-color="#c06cf0"/><stop offset="0.824" stop-color="#ff4d5e"/><stop offset="0.853" stop-color="#ff8a3d"/><stop offset="0.882" stop-color="#ffd23d"/><stop offset="0.912" stop-color="#7ed957"/><stop offset="0.941" stop-color="#38c1c9"/><stop offset="0.971" stop-color="#4a8cf0"/><stop offset="1.000" stop-color="#c06cf0"/></linearGradient>
       <!-- 크레파스 거친 질감 -->
       <filter id="chalk" x="-20%" y="-20%" width="140%" height="140%">
         <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="4" seed="7" result="t"/>
@@ -205,8 +207,10 @@
     <g id="cam">
       <!-- 오프닝 선(별→한 줄→두 갈래→합류): 심박 바운스(scaleY) 미적용 위해 #lineG 와 분리 -->
       <g id="openG" mask="url(#chalkMask)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <!-- [대그룹 1. 오프닝] 단일선 p0 : 별 → 선 시작 -->
         <path id="p0" stroke-opacity="0.96" stroke="url(#scratchRainbow)" stroke-width="9"
           d="M 200 540 L 680 540"/>
+        <!-- [대그룹 2. 유년] 분기선 pFAt(소녀쪽 rose)·pFAb(소년쪽 azure) — 이 구간에 boyScene 그룹(소년/소녀/유년 오브젝트) -->
         <path id="pFAt" stroke-opacity="0.96" stroke="url(#scratchRainbow)" stroke-width="8"
           d="M 680 540 C 845.0 535.2 953.8 420.0 1173.2 380.0 C 1392.5 343.2 1611.9 354.4 1831.3 380.0 C 2050.7 405.6 2171.8 514.4 2435.0 540.0"/>
         <path id="pFAb" stroke-opacity="0.96" stroke="url(#scratchRainbow)" stroke-width="8"
@@ -219,9 +223,9 @@
           d="M 2435.0 540.0 L 2527.0 518.0 L 2543.0 540.0 L 2555.0 558.0 L 2569.0 398.0 L 2583.0 652.0 L 2597.0 540.0 L 2611.0 480.0 L 2625.0 540.0 L 2690.0 540.0 C 2710.0 556.0 2732.0 578.0 2735.0 595.0 C 2738.0 578.0 2760.0 556.0 2780.0 540.0 L 2845.0 540.0 C 2985.0 537.0 3085.0 512.0 3265.0 492.0 C 3465.0 486.0 3555.0 518.0 3685.0 540.0"/>
 
         <!-- 2구간: 갈라진 두 길 -->
-        <path id="pPink" stroke-opacity="0.96" stroke="url(#scratchRainbow)" stroke-width="8"
+        <path id="pPink" stroke-opacity="0.96" stroke="url(#scratchRainbow)" stroke-width="15"
           d="M 3685.0 540.0 C 3835.0 536.0 3935.0 448.0 4135.0 418.0 C 4335.0 390.0 4535.0 398.0 4735.0 418.0 C 4935.0 438.0 5045.0 520.0 5285.0 540.0"/>
-        <path id="pBlue" stroke-opacity="0.96" stroke="url(#scratchRainbow)" stroke-width="8"
+        <path id="pBlue" stroke-opacity="0.96" stroke="url(#scratchRainbow)" stroke-width="15"
           d="M 3685.0 540.0 C 3835.0 544.0 3935.0 642.0 4135.0 672.0 C 4335.0 702.0 4535.0 694.0 4735.0 672.0 C 4935.0 650.0 5045.0 570.0 5285.0 540.0"/>
 
         <!-- 오프닝 선은 심박 바운스(scaleY)가 안 걸리도록 별도 그룹 #openG 로 분리(아래) -->
@@ -1007,10 +1011,22 @@ function libNode(id,x,y,size,opt){
   return outer;
 }
 
+// ════════════════════════════════════════════════════════════════════════
+//  [씬 대그룹 지도]  메인선 단일↔분기 기준 5개. 대화·수정 시 이 이름으로 부른다.
+//   1) 오프닝   별→선 시작            (단일선 p0)          아주 작은 별 · 선 시작
+//   2) 유년     각자 자람             (분기 pFAt·pFAb)     소년 · 소녀   ※ boyScene/girlScene = SVG 마크업(add 아님)
+//   3) 함께1    첫 만남 ~ 함께         (단일선 p1)          스무살 첫만남 · 아직은 서툴고 · 함께 웃고 · 별거 아닌 하루도   [grp: meet, dream]
+//   4) 헤어짐   각자의 시간           (분기 pPink·pBlue)   그리고 · 각자의 꿈                                          [grp: apart]
+//   5) 함께2    재회 ~ 피날레(다시 함께)(단일선 p2)         돌고돌아 · 더 단단해진 · 함께 걷습니다 · 특별한 하루 · 앞으로의 날 · 오늘부터   [grp: reunite/stronger/together/days/home/today]
+// ════════════════════════════════════════════════════════════════════════
+
+// ┌──────── [1. 오프닝] 별 → 선 시작 (단일선 p0) ────────┐
 // 시작 별 — 덧그린 낙서별이 먼저, 이어서 빛살이 터짐
 addAt(scribbleStar(200,540,60,'var(--gold)',5,3), 0.6, 1.3);
 addAt(rays(200,540,60,'var(--gold)',22), 2.1, 0.5, true);   // 스파클 시계방향 22°
 
+// ┌──────── [3. 함께1] 첫 만남 ~ 함께 (단일선 p1) ────────┐
+//   씬: 스무살 첫만남 · 아직은 서툴고(밤하늘 뒷모습 커플) · 함께 웃고(산책 커플) · 별거 아닌 하루도(자전거 커플)   [grp: meet, dream]
 // [씬] 스무 살, 우리는 처음 만났습니다 — 새싹과 첫 하트가 한꺼번에
 // [씬] 스무 살, 우리는 처음 만났습니다 — 새싹이 선 전체에 좌우로 퍼짐
 // 첫 만남 — 메인선(p1) 자체가 심박처럼 튀고 그대로 이어져 하트를 그린다(EKG+하트를 경로에 직접 삽입).
@@ -1044,25 +1060,67 @@ add(libNode('lb30', 4050, 582, 60, {sw:3.8, topDown:true}),                     
 add(bikeT(4524, 585, 340), 4524, 'dream', 0.3);   // 자전거 커플
 items[items.length-1].subkey='byeol';   // 자막 "별거 아닌 하루도" 앵커
 
-// [씬] 서로 다른 길 위에서 각자의 꿈을 향해
-// [씬] 서로 다른 길 위에서 각자의 꿈을 향해 — 두 길에 새싹이 흩뿌려짐
-add(flower(3985,360,54,'var(--rose)'), 3985, 'apart');   // 위쪽 길 위 꽃
-add(book(4300,335,70),  4300, 'apart'); items[items.length-1].subkey='apart';
-add(laptop(4310,752,76),4310, 'apart');
-// 위쪽(분홍) 길 새싹
-add(leaf(3845,500,32,-1,-1), 3845, 'apart');
-add(leaf(4105,420,34, 1,-1), 4105, 'apart');
-add(leaf(4435,398,30,-1,-1), 4435, 'apart');
-add(leaf(4665,415,34, 1,-1), 4665, 'apart');
-add(leaf(4885,470,30,-1,-1), 4885, 'apart');
-// 아래쪽(파랑) 길 새싹 + 작은 별
-add(leaf(3845,600,32, 1, 1), 3845, 'apart');
-add(leaf(4385,700,34,-1, 1), 4385, 'apart');
-add(leaf(4635,682,30, 1, 1), 4635, 'apart');
-add(leaf(4885,590,32,-1, 1), 4885, 'apart');
-add(star(4525,752,14,'var(--azure)',2.6), 4495, 'apart');   // 파란선 아래로(선과 안 겹치게)
-add(daisy(4865,576,48,'var(--chalk)'), 4865, 'apart');      // 파란선 위 데이지(줄기 끝이 선에 닿음)
+// ┌──────── [4. 헤어짐] 각자의 시간 (분기 pPink·pBlue) ────────┐
+//   씬: 그리고 각자의 시간 · 서로 다른 길 위에서 각자의 꿈   [grp: apart]
+// [씬] 헤어짐5 "그렇게 많은 계절이 지났습니다"(자막 런타임 x8044) — 네 계절을 한 장면에 모아 배치(흩뿌리지 않음).
+//  코드 x = 런타임 x − 1360(insertGap +1360). grp='season'. 하늘(봄꽃→여름해→가을잎/구름) · 사이(나비·지는잎·하트) · 아래선(눈사람·눈·하트).
+// (라싱 실은 정적 배치 대신 frame()의 animateForkPull 이벤트로 동적 처리 — FORK_PULL)
+// 하늘 (봄꽃 → 여름해 → 가을잎)
+add(libNode('lb33', 6360, 426, 54, {topDown:true, sw:3.4, color:'var(--rose)'}),   6360, 'season', 0.2); items[items.length-1].follow='top'; items[items.length-1].followX=7720;   // 벚꽃(위선에 밀착, base=선. 선-추종) rt7720
+add(libNode('lb30', 6480, 429, 50, {topDown:true, sw:3.6, color:'var(--lilac)'}),  6480, 'season', 0.25); items[items.length-1].follow='top'; items[items.length-1].followX=7840;  // 꽃(위선에 밀착, base=선. 선-추종) rt7840
+add(libNode('lb16', 6600, 234, 82, {anchor:'center', topDown:true, sw:3.6, color:'var(--gold)'}),   6600, 'season', 0.3);   // 해 (rt7960)
+add(libNode('lb60', 6730, 220, 44, {anchor:'center', topDown:true, sw:3, color:'var(--coral)'}),    6730, 'season', 0.35);  // 은행잎 (rt8090)
+add(libNode('lb42', 6850, 250, 42, {anchor:'center', topDown:true, sw:3, color:'var(--coral)'}),    6850, 'season', 0.4);   // 잎 (rt8210)
+add(libNode('lb71', 6950, 292, 56, {anchor:'center', topDown:true, sw:3.2, color:'var(--cloud)'}),  6950, 'season', 0.45);  // 구름 (rt8310)
+// 두 선 사이 (나비 · 지는 잎 · 하트)
+add(libNode('lb76', 6410, 430, 44, {anchor:'center', topDown:true, sw:3}),                          6410, 'season', 0.3);   // 나비 (rt7770)
+add(libNode('lb60', 6650, 405, 38, {anchor:'center', topDown:true, sw:3, color:'var(--gold)'}),     6650, 'season', 0.35);  // 지는 은행잎 (rt8010)
+add(libNode('lb38', 6340, 470, 32, {anchor:'center', fill:true, sw:3.6, color:'var(--rose)'}),      6340, 'season', 0.25);  // 하트 (rt7700)
+add(libNode('lb38', 6560, 448, 30, {anchor:'center', fill:true, sw:3.6, color:'var(--ember)'}),     6560, 'season', 0.3);   // 하트 (rt7920)
+add(libNode('lb38', 6780, 474, 32, {anchor:'center', fill:true, sw:3.6, color:'var(--rose)'}),      6780, 'season', 0.35);  // 하트 (rt8140)
+// 아래선 · 겨울 (눈사람 · 눈 · 하트)
+add(libNode('lb14', 6890, 656, 96, {topDown:true, sw:3.4, color:'var(--cloud)'}),                   6890, 'season', 0.5); items[items.length-1].follow='bottom'; items[items.length-1].followX=8250;   // 눈사람(아래선, 선-추종) rt8250
+add(libNode('lb38', 6700, 612, 30, {anchor:'center', fill:true, sw:3.6, color:'var(--ember)'}),     6700, 'season', 0.4);   // 하트(아래) (rt8060)
+add(star(6760, 525, 12, 'var(--chalk)', 2.4), 6760, 'season', 0.45);   // 눈송이 (rt8120)
+add(star(6960, 560, 10, 'var(--chalk)', 2.4), 6960, 'season', 0.5);    // 눈송이 (rt8320)
 
+// [헤어짐3] "서로의 위로가 되어주고" (자막 런타임 x6582) — 우산커플 + 비. 코드 x = 런타임 x − 1360.
+add(libNode('lb28', 5222, 684, 250, {topDown:true, sw:2.6}), 5222, 'comfort', 0.3); items[items.length-1].follow='bottom'; items[items.length-1].followX=6582;   // 우산커플(발=아래선 684, +25%) rt6582
+// 비(물방울) — 우산 위·양옆으로 흩뿌려 내림
+add(libNode('lb53', 5110, 415, 20, {anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5110, 'comfort', 0.35);  // rt6470
+add(libNode('lb53', 5180, 400, 18, {anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5180, 'comfort', 0.38);  // rt6540
+add(libNode('lb53', 5240, 420, 22, {anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5240, 'comfort', 0.41);  // rt6600
+add(libNode('lb53', 5300, 410, 18, {anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5300, 'comfort', 0.44);  // rt6660
+add(libNode('lb53', 5150, 465, 20, {anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5150, 'comfort', 0.47);  // rt6510
+add(libNode('lb53', 5220, 455, 18, {anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5220, 'comfort', 0.5);   // rt6580
+add(libNode('lb53', 5080, 520, 22, {anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5080, 'comfort', 0.4);   // rt6440(좌)
+add(libNode('lb53', 5100, 610, 18, {anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5100, 'comfort', 0.46);  // rt6460(좌아래)
+add(libNode('lb53', 5340, 530, 20, {anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5340, 'comfort', 0.42);  // rt6700(우)
+add(libNode('lb53', 5350, 620, 18, {anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5350, 'comfort', 0.48);  // rt6710(우아래)
+
+// [헤어짐4] "보이지 않은 인연의 끈을 놓지 않은 채" (자막 런타임 x7313) — 여자선=편지, 남자선=전화기(선-추종).
+add(libNode('lb47', 5940, 416, 52, {topDown:true, sw:2.8, color:'var(--rose)'}), 5940, 'thread', 0.3); items[items.length-1].follow='top'; items[items.length-1].followX=7300;    // 편지(여자선 위) rt7300
+add(libNode('lb46', 5970, 665, 56, {topDown:true, sw:2.8, color:'var(--azure)'}), 5970, 'thread', 0.35); items[items.length-1].follow='bottom'; items[items.length-1].followX=7330;  // 전화기(남자선) rt7330
+
+// [헤어짐2] "서로 다른 곳에서 각자의 꿈을 향해 / 서로의 하루를 살아갔습니다" — 각자의 일상 비네트.
+//   위선(로즈)=여자: 캐리어 소녀 + 커피 + 책 + 꽃 / 아래선(애저)=남자: 산책 소년(lb77) + 노트북 + 빌딩 + 별.  발이 선에 닿게(bottom-anchor), y=선 안착값.
+// 좌표는 코드 기준(insertGap 이 런타임에 +1360 시프트). 런타임 배치 x = 코드 x + 1360. y는 시프트 없음(선 안착값).
+// 여자(위선) — 런타임 5340~5860
+add(libNode('lb30', 3980, 500, 44, {topDown:true, sw:3.4, color:'var(--lilac)'}),                    3980, 'apartlife', 0.1);   // 꽃 (rt5340)
+add(libNode('lb62', 4180, 448, 188, {topDown:true, sw:2.4}),                                          4180, 'apartlife', 0.2);   // 캐리어 소녀(발=위선 448, +25%) (rt5540)
+add(libNode('lb69', 4360, 398, 42, {anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}),     4360, 'apartlife', 0.3);   // 커피 (rt5720)
+add(libNode('lb44', 4500, 392, 54, {anchor:'center', topDown:true, sw:3.0, color:'var(--coral)'}),    4500, 'apartlife', 0.4);   // 책 (rt5860)
+add(libNode('lb61', 4300, 312, 58, {anchor:'center', topDown:true, sw:2.8, color:'var(--gold)'}),     4300, 'apartlife', 0.28);  // 비행기 — 여자아이 오른쪽 위 (rt5660)
+// 남자(아래선) — 런타임 5470~6040
+add(libNode('lb37', 4110, 560, 26, {anchor:'center', topDown:true, sw:2.6, color:'var(--gold)'}),     4110, 'apartlife', 0.15);  // 별 (rt5470)
+add(libNode('lb77', 4300, 653, 188, {topDown:true, sw:2.4}),                                          4300, 'apartlife', 0.25);  // 산책 소년(발=아래선 653, +25%) (rt5660)
+add(libNode('lb45', 4520, 650, 50, {anchor:'center', topDown:true, sw:3.0, color:'var(--azure)'}),    4520, 'apartlife', 0.35);  // 노트북 (rt5880)
+add(libNode('lb37', 4460, 598, 18, {anchor:'center', topDown:true, sw:2.4, color:'var(--gold)'}),     4460, 'apartlife', 0.45);  // 작은 별 (rt5820)
+add(libNode('lb63', 4700, 652, 158, {topDown:true, sw:2.4, color:'var(--azure)'}),                    4700, 'apartlife', 0.5);   // 빌딩(발=아래선 652, 소년보다 크게) (rt6060) (rt6040)
+
+// ┌──────── [5. 함께2] 재회 ~ 피날레 · 다시 함께 (단일선 p2 = 스크래치 무지개) ────────┐
+//   씬: 돌고돌아 재회 · 더 단단해진 · 함께 걷습니다 · 특별한 하루(자전거) · 앞으로의 날(집·나무) · 오늘부터(하트 터짐)
+//   grp: reunite / stronger / together / days / home / today
 // [씬] 돌고 돌아, 운명처럼 다시 만났습니다
 add(twinkle(5285,540,30,'var(--gold)'), 5275, 'reunite'); items[items.length-1].subkey='reunite';
 items[items.length-1].bounce=true;   // 나온 뒤 계속 통통 바운스
@@ -1343,6 +1401,79 @@ function insertGap(X_INS, DX){
 }
 insertGap(3685, 1360);   // 함께웃고(dream)↔그리고(fork 갈라짐) 사이를 약 3배로
 
+// [분기 확장 도구] 헤어짐(pPink·pBlue) '나란히 벌어진 구간'을 DX 늘리고, 재결합·피날레(p2 경로+오브젝트+선끝)를 +DX 시프트.
+//  insertGap 뒤·paths.forEach(샘플링) 앞에서 호출해야 확장된 경로가 애니 테이블에 반영됨.
+function insertForkGap(DX){
+  function shiftX(d){ let k=0; return d.replace(/\s+/g,' ').trim().split(' ').map(function(t){ if(/^[A-Za-z]$/.test(t)){k=0;return t;} const v=+t,isX=(k%2===0);k++; return isX?(v+DX):v; }).join(' '); }
+  const p2=document.getElementById('p2');
+  const reunionX=+p2.getAttribute('d').match(/M\s*([\d.\-]+)/)[1];   // 재결합 x(시프트 전)
+  ['pPink','pBlue'].forEach(function(id){
+    const e=document.getElementById(id); if(!e) return;
+    const toks=e.getAttribute('d').replace(/\s+/g,' ').trim().split(' ');
+    let lastC=-1; for(let i=0;i<toks.length;i++){ if(toks[i]==='C') lastC=i; }   // 마지막 C = 수렴 구간
+    const xp=+toks[lastC-2], yp=+toks[lastC-1];                                   // 나란히 구간 끝(=수렴 시작, y=벌어진 높이)
+    const conv=toks.slice(lastC);
+    for(let j=1;j<conv.length;j++){ if((j-1)%2===0) conv[j]=(+conv[j]+DX); }      // 수렴 구간 x +DX
+    const ins=['C', Math.round(xp+DX*0.4), yp, Math.round(xp+DX*0.6), yp, Math.round(xp+DX), yp];   // 평행 연장
+    e.setAttribute('d', toks.slice(0,lastC).concat(ins).concat(conv).join(' '));
+  });
+  p2.setAttribute('d', shiftX(p2.getAttribute('d')));
+  // 피날레 그룹만 +DX (분기 안 오브젝트=apart/season 은 안 밀림). x기준이 아니라 grp기준이라 확장 구간에 오브젝트 배치 가능.
+  const FINALE=['reunite','stronger','together','days','home','today'];
+  items.forEach(function(it){ if(it.ax!=null && FINALE.indexOf(it.grp)>=0){ it.ax+=DX; it.dx=(it.dx||0)+DX; } });
+  LINE_END_X += DX;
+}
+insertForkGap(2400);   // 헤어짐 1600→4000u (2씬→5씬 예정)
+
+// [헤어짐 라싱] 두 선을 2단계로 당겨 가까이(pull 2번). 실 lacing 은 season 섹션에 배치.
+//  갭(중심 540 기준): 벌어짐 ±124 → pull1(x6150~6500) 후 ±84 → pull2(x7250~7600) 후 ±46 → 재회 합류.
+//  paths.forEach(샘플링) 앞에서 override 해야 애니 테이블에 반영됨.
+// 기본은 '벌어진' 상태(gap ±124). pull 이벤트가 frame()에서 실시간으로 좁힘 → animateForkPull.
+document.getElementById('pPink').setAttribute('d',
+  'M 5045 540 C 5195 500 5345 430 5545 416 C 5745 408 5950 410 6150 416 C 6400 414 6800 414 7200 416 C 7600 414 8000 414 8450 416 C 8650 440 8850 500 9045 540');
+document.getElementById('pBlue').setAttribute('d',
+  'M 5045 540 C 5195 580 5345 650 5545 664 C 5745 672 5950 670 6150 664 C 6400 666 6800 666 7200 664 C 7600 666 8000 666 8450 664 C 8650 640 8850 580 9045 540');
+// 라싱 실 2개(동적) — cam 그룹에 넣어 마스크 밖(선명). frame()에서 pull 진행에 맞춰 위치·불투명도 갱신.
+const FORK_PULL=(function(){
+  const NS='http://www.w3.org/2000/svg';
+  const SD='M0,-5 Q1.3,-1.3 5,0 Q1.3,1.3 0,5 Q-1.3,1.3 -5,0 Q-1.3,-1.3 0,-5 Z';
+  const S4='M0,-13 L2,-2 L13,0 L2,2 L0,13 L-2,2 L-13,0 L-2,-2 Z';   // 4각 반짝임(디즈니 스파클)
+  function mk(){ const g=el('g',{}); g.style.opacity='0';
+    g.style.filter='drop-shadow(0 0 4px rgba(233,197,82,0.9))';   // ✨ 마법 글로우(절제)
+    const glow=el('path',{fill:'none',stroke:'var(--gold)','stroke-width':'6','stroke-opacity':'0.15','stroke-linecap':'round'});  // 소프트 블룸 언더레이
+    const ln=el('path',{fill:'none',stroke:'var(--gold)','stroke-width':'2.6','stroke-opacity':'0.95','stroke-linecap':'round'});
+    const k1=el('circle',{r:'0',fill:'none',stroke:'none'});   // 접합점 동그라미 제거 — 더미
+    const k2=el('circle',{r:'0',fill:'none',stroke:'none'});
+    g.appendChild(glow); g.appendChild(ln); g.appendChild(k1); g.appendChild(k2);
+    // ✨ 픽시더스트: 코멧이 지나간 자리마다 피어나는 반짝이(일부 4각 별)
+    const sparks=[]; for(let i=0;i<22;i++){ const s=el('path',{d:(i%3===0?S4:SD), fill:'var(--gold)', stroke:'none'}); s.style.opacity='0'; g.appendChild(s); sparks.push(s); }
+    // ⭐ 큰 트윙클 별: 궤적 곳곳에서 팝
+    const tw4=[]; for(let i=0;i<5;i++){ const s=el('path',{d:S4, fill:'var(--chalk)', stroke:'none'}); s.style.opacity='0'; g.appendChild(s); tw4.push(s); }
+    // 매듭 연결 순간 별빛 버스트: 방사 광선 + 중앙 플래시
+    const brays=[]; for(let i=0;i<12;i++){ const r=el('line',{'stroke-width':'2.8','stroke-linecap':'round'}); r.style.opacity='0'; g.appendChild(r); brays.push(r); }
+    const flash=el('path',{d:SD, fill:'var(--chalk)', stroke:'none'}); flash.style.opacity='0'; g.appendChild(flash);
+    // 🧚 요정 꼬리: 헤드 뒤로 잔상처럼 따라오는 점들
+    const tail=[]; for(let i=0;i<6;i++){ const c=el('circle',{r:(4-i*0.5).toFixed(1), fill:'var(--gold)', stroke:'none'}); c.style.opacity='0'; g.appendChild(c); tail.push(c); }
+    // 🧚 요정 헤드: 후광 + 빛나는 코어 + 4각 별
+    const head=el('g',{}); head.style.opacity='0';
+    head.appendChild(el('circle',{r:'10', fill:'var(--gold)','fill-opacity':'0.18', stroke:'none'}));   // 부드러운 후광(작게)
+    head.appendChild(el('circle',{r:'4.5', fill:'var(--chalk)', stroke:'none'}));
+    head.appendChild(el('path',{d:S4, fill:'var(--gold)', stroke:'none', transform:'scale(0.62)'}));
+    g.appendChild(head);
+    // 🪢 매듭: 실을 묶는 나비 고리(양쪽 귀 loop) + 가운데 감김 + 두 꼬리. 조일 때 그려지며 홱 당겨짐.
+    const knot=el('g',{}); knot.style.opacity='0';
+    const kbow=el('path',{d:'M 0 0 C -20 -14 -20 14 0 0 C 20 -14 20 14 0 0', fill:'none', stroke:'var(--gold)','stroke-width':'2.8','stroke-linecap':'round','stroke-linejoin':'round'});   // 양쪽 귀 고리(나비)
+    const kwrap=el('ellipse',{rx:'4.6',ry:'7',fill:'none',stroke:'var(--gold)','stroke-width':'2.6'});   // 가운데 감김
+    const ktail1=el('path',{d:'M -3 4 q -5 8 -1 15', fill:'none', stroke:'var(--gold)','stroke-width':'2.4','stroke-linecap':'round'});   // 꼬리
+    const ktail2=el('path',{d:'M 3 4 q 5 8 1 15', fill:'none', stroke:'var(--gold)','stroke-width':'2.4','stroke-linecap':'round'});
+    knot.appendChild(kbow); knot.appendChild(ktail1); knot.appendChild(ktail2); knot.appendChild(kwrap);
+    g.appendChild(knot);
+    document.getElementById('cam').appendChild(g);
+    return {g,glow,ln,k1,k2,sparks,tw4,tail,brays,flash,head,knot,kbow};
+  }
+  return {P1X:6100, P2X:7900, PD:0.7, GAP0:124, GAP1:84, GAP2:46, th1:mk(), th2:mk(), T1:null, T2:null};
+})();
+
 paths.forEach(p=>{
   const L=p.el.getTotalLength();
   p.len=L;
@@ -1618,8 +1749,11 @@ const SUBS=[
   {sub:'shy',       off:-0.3, dur:3.4, text:'아직은 서툴고\n설레기만 했던 우리.'},          // 3씬-1 (뒷모습 커플+밤하늘)
   {sub:'dream',     off:0.1,  dur:3.6, text:'함께 웃고,\n함께 꿈꾸던 날들.'},               // 3씬-2 (커플 등장)
   {sub:'byeol',     off:-0.3, dur:3.6, text:'별거 아닌 하루도\n함께라서 참 좋았습니다.'},   // 3씬-3 (자전거 커플 앵커)
-  {grp:'apart',    off:-0.6, dur:4.3, text:'그리고,\n각자의 시간을 걸었습니다.'},   // 첫 apart(갈라지는 순간의 새싹)
-  {sub:'apart',    off:0,    dur:4.0, text:'서로 다른 길 위에서\n각자의 꿈을 향해.'}, // 책
+  {at:'x', x:5120, off:0, dur:4.2, text:'그리고 우리의 시간은\n잠시 갈라졌습니다.'},                       // 헤어짐1
+  {at:'x', x:5851, off:0, dur:4.4, text:'서로 다른 곳에서 각자의 꿈을 향해\n서로의 하루를 살아갔습니다.'},      // 헤어짐2
+  {at:'x', x:6582, off:0, dur:3.6, text:'서로의 위로가 되어주고,'},                                            // 헤어짐3
+  {at:'x', x:7313, off:0, dur:4.0, text:'보이지 않은 인연의 끈을\n놓지 않은 채.'},                             // 헤어짐4
+  {at:'x', x:8044, off:0, dur:3.8, text:'그렇게 많은 계절이\n지났습니다.'},                                    // 헤어짐5
   {sub:'reunite',  off:0,    dur:3.5, text:'돌고 돌아,\n운명처럼 다시 만났습니다.'},
   {sub:'stronger', off:0,    dur:2.8, text:'다시 만나,\n더 단단해진 우리는'},
   {sub:'walk',     off:0.2,  dur:2.6, text:'이제 함께 걷습니다.'},
@@ -1693,6 +1827,161 @@ function timeAtCenter(x){
   return LINE_T0 + (LINE_T1 - LINE_T0)*ck;
 }
 
+// [헤어짐 pull 애니] 펜이 pull 지점 지날 때 실이 나오고→당겨지며 두 라이브 분기선이 한 모션으로 좁혀짐.
+//  보이는 분기선(baked grain)은 wide 고정이라, 분기 구간만 '라이브 stroke'(마스크 밖·펜까지 클립)로 그려 매 프레임 변형.
+let _forkInit=false;
+function animateForkPull(t){
+  const F=FORK_PULL;
+  if(F.T1==null){ F.T1=storyTimeAtX(F.P1X)+1.6; F.T2=storyTimeAtX(F.P2X)+1.6; }   // 지연: 펜이 pull 지점을 확실히 지나 선이 그려진 뒤 실 등장
+  if(!_forkInit){ _forkInit=true;
+    const gG=document.getElementById('grainG');
+    [2,3,4,5].forEach(k=>{ if(gG&&gG.children[k]) gG.children[k].style.display='none'; });   // pPink/pBlue baked grain 숨김
+    document.getElementById('pPink').setAttribute('stroke-opacity','0');                       // 원본(마스크) 숨김
+    document.getElementById('pBlue').setAttribute('stroke-opacity','0');
+    const flG=el('g',{});   // 마스크 밖(선명). reveal 은 clip 대신 build()가 펜(xAtTime)까지만 그려서 처리(clip 좌표 어긋남 회피).
+    document.getElementById('cam').appendChild(flG);
+    // 재회로 갈수록 투명해지는 그라디언트 — 볼드 fork가 흐린 p2로 매끄럽게 인계(뚝 끊김 방지)
+    const defs=document.querySelector('#scene defs');
+    function fadeGrad(id,col){ const g=el('linearGradient',{id:id,gradientUnits:'userSpaceOnUse',x1:'5045',y1:'540',x2:'9045',y2:'540'});
+      [[0,1],[0.30,1],[0.86,1],[1,0]].forEach(function(s){ const st=el('stop',{offset:''+s[0],'stop-color':col}); st.setAttribute('stop-opacity',''+s[1]); g.appendChild(st); });
+      defs.appendChild(g); }
+    fadeGrad('roseFade','#ef8fa9'); fadeGrad('azureFade','#6fa9d9');
+    F.pkLive=el('path',{fill:'none',stroke:'url(#roseFade)','stroke-width':'6','stroke-opacity':'0.95','stroke-linecap':'round','stroke-linejoin':'round'});
+    F.blLive=el('path',{fill:'none',stroke:'url(#azureFade)','stroke-width':'6','stroke-opacity':'0.95','stroke-linecap':'round','stroke-linejoin':'round'});
+    flG.appendChild(F.pkLive); flG.appendChild(F.blLive);
+  }
+  const ss=u=>{u=Math.max(0,Math.min(1,u));return u*u*(3-2*u);};
+  const EM=0.4;   // 실이 여자선(위)→남자선(아래) 뻗어 붙는 시간. attach = T+EM.
+  // 끝에서 0이 되는 엔벨로프 — 분기 시작(5045)·재회(9045)에서 파동·핀치가 0 → 골드선(540)과 매끄럽게 연결.
+  const env=x=>(x<=5045||x>=9045)?0:Math.max(0,Math.min(ss((x-5045)/800), 1-ss((x-8100)/945)));   // 갈라짐을 800에 걸쳐 완만히(각도 부드럽게) · 수렴은 8100부터 → 재회에서 한 점
+  // 파동 — 각 선의 고유 흔들림(비배음 2성분).
+  const wave=(x,ph)=>11*Math.sin(0.0038*x+ph)+6*Math.sin(0.0068*x+ph*1.7+1.1);
+  // 공통 메안더 — 두 선이 '함께' 위아래로 흐름(손그림처럼 유기적, 대칭 렌즈 깨기).
+  const cwave=x=>14*Math.sin(0.0033*x+0.7)+7*Math.sin(0.0057*x+2.4);
+  // pull dip: 매듭처럼 '슬랙(매듭 형성)→홱 조임(yank)→탄성 정착'. 0~1.15(오버슈트로 잠깐 더 당겨졌다 1.0로 정착).
+  //  ① 슬랙 0.7s: 실 팽팽해지며 매듭만 형성, 선은 거의 안 움직임 ② 조임 0.55s: 급가속으로 홱 당겨 1.15로 오버슈트
+  //  ③ 정착 0.9s: 탄성으로 1.0까지 되풀림. 최종 핀치(1.0)는 영구 유지.
+  const dip=(T)=>{ const dt=t-T-EM; if(dt<=0) return 0;
+    const SLK=0.7, YNK=0.55, SET=0.9, OVER=1.15;
+    if(dt<SLK) return 0.06*ss(dt/SLK);                                  // 매듭 형성(살짝만)
+    const y=dt-SLK;
+    if(y<YNK) return 0.06 + (OVER-0.06)*ss(y/YNK);                      // 홱 조임 → 오버슈트
+    return OVER - (OVER-1)*ss(Math.min(1,(y-YNK)/SET)); };              // 탄성 정착 → 1.0
+  const sp=(x,X)=>Math.exp(-Math.pow((x-X)/470,2));   // 넓은 가우시안(전체 선 각으로 수렴) — 단, 두 pull 사이에선 0으로 떨어져 확실히 벌어짐
+  const GB=118, DIPAMT=58;                         // 벌어진 반폭 118 → 당기면 ~60(간격 120, 이전 48보다 25% 넓게 — 덜 좁게)
+  const REB=40, RBO=470;   // 핀치 직후(오른쪽 RBO)에서 바깥으로 벌어지는 반동 — 좁힌 뒤 다시 간격 유지
+  const hgc=x=>{ const e=env(x); if(e<=0) return 0;
+    let g=GB
+      - DIPAMT*dip(F.T1)*sp(x,F.P1X) + REB*dip(F.T1)*sp(x,F.P1X+RBO)
+      - DIPAMT*dip(F.T2)*sp(x,F.P2X) + REB*dip(F.T2)*sp(x,F.P2X+RBO);
+    return e*Math.max(24,g); };
+  // 당기는 순간 감쇠 물결(각자 위상) — attach 후 짧게
+  const rip=(x,ph)=>{ let r=0; const A=[[F.T1+EM,F.P1X],[F.T2+EM,F.P2X]];
+    for(let i=0;i<2;i++){ const dt=t-A[i][0]; if(dt<0||dt>1.6) continue;
+      const e=Math.exp(-dt*2.4)*(1-Math.exp(-dt*9)); const s=Math.exp(-Math.abs(x-A[i][1])/300);
+      r += 15*e*s*Math.sin(0.012*(x-A[i][1]) - 8*dt + ph); }
+    return r; };
+  // 두 선을 중심선(540) 기준 좌우대칭(거울상): yTop+yBot=1080. 공통 반오프셋 off = 핀치(hgc) + 파동. 끝(env=0)에선 둘 다 540로 수렴.
+  const meander=x=>cwave(x)+wave(x,0.3);   // 공통 파형(한 세트) — 두 선이 거울처럼 함께 변형
+  const yTop=x=>540-(hgc(x)+env(x)*(meander(x)+rip(x,0.0))), yBot=x=>540+(hgc(x)+env(x)*(meander(x)+rip(x,0.0)));
+  const penX=xAtTime(t);   // 실제 선 그려진 지점(=펜, 오른쪽 1/3). 라이브선을 여기까지만 그림 → 딱 펜에서 끝남.
+  const build=fy=>{ if(penX<=5060) return ''; const xe=Math.min(9045,penX); let d='M 5045 '+fy(5045).toFixed(1);
+    for(let x=5085;x<=xe;x+=40){ d+=' L '+x+' '+fy(x).toFixed(1); }
+    if(xe<9045-1) d+=' L '+xe.toFixed(1)+' '+fy(xe).toFixed(1);   // 정확히 펜까지
+    return d; };
+  if(F.pkLive){ F.pkLive.setAttribute('d', build(yTop)); F.blLive.setAttribute('d', build(yBot)); }
+  // 실: 여자선(위)에서 나와 → 남자선(아래) 붙음(매듭) → 당김/유지 → 다시 벌어질 때 사라짐
+  const thr=(th,X,T)=>{ const te=(t-T)/EM;
+    if(te<=0){ th.g.style.opacity='0'; th.head.style.opacity='0'; return; }
+    const yt=yTop(X), yb=yBot(X), dd=dip(T);
+    const dt2=t-(T+EM), pd=Math.max(0,Math.min(1,(dt2-2.35)/0.5));   // 매듭 조임·정착이 끝난 뒤(2.35s)부터 0.5s에 걸쳐 실 사라짐(핀치는 남음)
+    th.g.style.opacity=(0.95*(1-pd)).toFixed(2);
+    // 곡선 실(bow): 느슨하면 곡선, 당길수록 팽팽히 곧게. 코멧 헤드가 곡선 따라 그림.
+    // ✨ 마법 리본 궤적: 좌우로 크게 휘돌며 중앙에 이중 소용돌이(방향 교차 고리)를 그리는 캘리그래피 플러리시.
+    //    느슨할 땐 크게 소용돌이치고, 당길수록(dip) 진폭·고리가 풀리며 팽팽히 곧아짐.
+    const h=yb-yt, ddc=Math.min(1,dd), loose=Math.max(0,1-1.02*ddc);   // 당길수록 완전히 팽팽(loose→0=직선). ddc는 오버슈트 clamp
+    const amp=30*loose, wig=6*loose, dR=Math.max(0,1-1.02*ddc);         // 진폭·소용돌이 축소(과하지 않게). 팽팽해지면 완전 소멸
+    const LOOPS=[[0.32,0.13,11*dR,1],[0.63,0.15,15*dR,-1]];   // [중심u, 반폭, 반경, 회전방향]
+    const shape=(u,A,LP,W)=>{ let px=X + A*Math.sin(u*6.2832) + W*Math.sin(u*Math.PI)*Math.sin(u*9+t*3), py=yt+h*u;
+      for(let q=0;q<LP.length;q++){ const c=LP[q][0],w=LP[q][1],R=LP[q][2],dir=LP[q][3];
+        if(u>c-w && u<c+w){ const a=((u-(c-w))/(2*w))*6.2832; px+=dir*R*Math.sin(a); py+=R*(Math.cos(a)-1); } }
+      return [px,py]; };
+    let d='M '+X.toFixed(1)+' '+yt.toFixed(1);
+    const SEG=72;
+    for(let i=1;i<=SEG;i++){ const u=i/SEG, p=shape(u,amp,LOOPS,wig); d+=' L '+p[0].toFixed(1)+' '+p[1].toFixed(1); }
+    th.ln.setAttribute('d',d); th.glow.setAttribute('d',d);
+    const L=th.ln.getTotalLength(); th.ln.style.strokeDasharray=L.toFixed(1); th.glow.style.strokeDasharray=L.toFixed(1);
+    let bot;
+    if(te<1){ const off=(L*(1-te)).toFixed(1); th.ln.style.strokeDashoffset=off; th.glow.style.strokeDashoffset=off;   // 요정이 그려나가는 중
+      const hp=th.ln.getPointAtLength(L*te); th.head.style.opacity='1';
+      th.head.setAttribute('transform','translate('+hp.x.toFixed(1)+' '+hp.y.toFixed(1)+') scale('+(0.9+0.35*Math.sin(t*22)).toFixed(2)+') rotate('+((t*200)%360|0)+')');
+      for(let j=0;j<th.tail.length;j++){ const tt=te-(j+1)*0.05; if(tt<=0){th.tail[j].style.opacity='0';continue;}   // 요정 꼬리 잔상
+        const tp=th.ln.getPointAtLength(L*tt); th.tail[j].setAttribute('cx',tp.x.toFixed(1)); th.tail[j].setAttribute('cy',tp.y.toFixed(1));
+        th.tail[j].style.opacity=(0.5*(1-j/th.tail.length)).toFixed(2); th.tail[j].style.fill='hsl('+((j*22+t*70)%360|0)+' 90% 66%)'; }
+      bot=yt+ss(te)*(yb-yt);
+    } else { th.ln.style.strokeDashoffset='0'; th.glow.style.strokeDashoffset='0';
+      const hA=t-(T+EM); th.head.style.opacity = hA<0.25 ? (1-hA/0.25).toFixed(2) : '0';
+      for(let j=0;j<th.tail.length;j++) th.tail[j].style.opacity='0';
+      bot=yb;
+    }
+    // 🪢 매듭: ①묶기(나비 고리가 그려짐, dash reveal) → ②홱 조임(귀 고리가 급히 작아지며 팽팽히 당김) → 유지.
+    if(dt2>0.3 && pd<1){ const mp=th.ln.getPointAtLength(L*0.5);
+      const tie=Math.min(1,Math.max(0,(dt2-0.3)/0.55));                // 매듭이 묶이는(그려지는) 진행
+      const cinch=Math.min(1,Math.max(0,(dt2-0.7)/0.55));              // 조여드는 진행(dip yank와 동기)
+      const snap=Math.exp(-Math.pow((dt2-1.0)/0.15,2));               // 홱 조이는 텅김
+      const BL=th.kbow.getTotalLength();                               // 나비 고리를 그려나가며 '묶는' 연출
+      th.kbow.style.strokeDasharray=BL.toFixed(1); th.kbow.style.strokeDashoffset=(BL*(1-tie)).toFixed(1);
+      th.kbow.style.strokeWidth=(2.8+2.4*snap).toFixed(2);           // 조일 때 순간 굵고 밝게
+      const ksc=(1.35-0.5*cinch)*(1+0.4*snap);                        // 크게 묶였다 → 단단히 조임(점 아님, 최소 크게 유지)
+      const ang=(-16*cinch)+snap*28;                                  // 감기며 살짝 돌아 조임
+      th.knot.style.opacity=Math.min(1,0.5+tie).toFixed(2);
+      th.knot.setAttribute('transform','translate('+mp.x.toFixed(1)+' '+mp.y.toFixed(1)+') scale('+ksc.toFixed(2)+') rotate('+(ang|0)+')');
+    } else th.knot.style.opacity='0';
+    // ✨ 픽시더스트: 요정이 지나간 자리마다(경로 전체) 반짝이가 피어나 잠시 공중에 머물다 위로 떠오르며 사라짐.
+    //    태생 위치는 '느슨한 궤적'에 고정 → 실이 팽팽해져도 반짝이는 그린 자리에 남아 떠오름(마법 잔상).
+    const LOOSE=[[0.32,0.13,11,1],[0.63,0.15,15,-1]];
+    const N=th.sparks.length, LIFE=1.1;
+    for(let i=0;i<N;i++){ const s=th.sparks[i];
+      const si=(i+0.5)/N;                         // 경로상 위치(0..1)
+      const tb=T+si*EM, age=t-tb;                 // 요정이 그 지점에 닿는 순간 태어남
+      if(age<0||age>LIFE){ s.style.opacity='0'; continue; }
+      const bp=shape(si,30,LOOSE,6);
+      const k=1-age/LIFE, tw=0.55+0.45*Math.sin(t*16+i*2.1);
+      const px=bp[0]+9*Math.sin(i*1.6+age*5)*age, py=bp[1]-32*age;   // 옆으로 살짝 + 위로 떠오름(절제)
+      s.style.fill='hsl('+((si*300+age*160+t*40)%360|0)+' 92% 66%)';   // 무지개빛
+      s.style.opacity=(k*tw*0.9).toFixed(2);
+      const sc=(0.4+0.85*k)*(0.8+0.2*Math.sin(t*12+i));
+      s.setAttribute('transform','translate('+px.toFixed(1)+' '+py.toFixed(1)+') scale('+sc.toFixed(2)+') rotate('+((age*160+i*47)%360|0)+')');
+    }
+    // ⭐ 트윙클 별: 궤적 곳곳에서 팝(0→크게→0) 회전하며 반짝(절제된 크기)
+    for(let i=0;i<th.tw4.length;i++){ const s=th.tw4[i];
+      const si=0.15+0.7*(i/(th.tw4.length-1||1));
+      const tb=T+si*EM+0.06, dur=0.6, age=t-tb;
+      if(age<0||age>dur){ s.style.opacity='0'; continue; }
+      const bp=shape(si,30,LOOSE,6), env2=Math.sin((age/dur)*Math.PI);   // 0→1→0
+      s.style.opacity=(0.8*env2).toFixed(2); s.style.fill=(i%2?'var(--chalk)':'var(--gold)');
+      const sc=0.3+0.6*env2;
+      s.setAttribute('transform','translate('+bp[0].toFixed(1)+' '+(bp[1]-8*age).toFixed(1)+') scale('+sc.toFixed(2)+') rotate('+((age*120+i*30)%360|0)+')');
+    }
+    // 💥 별빛 버스트: 매듭 연결(attach=T+EM) 순간 무지개 광선 + 중앙 플래시가 확 퍼졌다 사라짐
+    { const bAge=t-(T+EM), BL=0.55;
+      if(bAge>=0 && bAge<BL){ const p=bAge/BL, k=1-p, cx=X, cy=bot;
+        const R=18+130*ss(p);
+        for(let i=0;i<th.brays.length;i++){ const r=th.brays[i], a=i/th.brays.length*6.2832, r0=10+R*0.35;
+          r.setAttribute('x1',(cx+Math.cos(a)*r0).toFixed(1)); r.setAttribute('y1',(cy+Math.sin(a)*r0).toFixed(1));
+          r.setAttribute('x2',(cx+Math.cos(a)*R).toFixed(1));  r.setAttribute('y2',(cy+Math.sin(a)*R).toFixed(1));
+          r.setAttribute('stroke','hsl('+((i/th.brays.length*360+t*90)%360|0)+' 92% 64%)');
+          r.style.opacity=(k*0.95).toFixed(2);
+        }
+        const fsc=(0.6+3.2*ss(Math.min(1,p*2.2)))*(1-0.4*p);
+        th.flash.setAttribute('transform','translate('+cx+' '+cy.toFixed(1)+') scale('+fsc.toFixed(2)+')');
+        th.flash.style.opacity=k.toFixed(2);
+      } else { for(let i=0;i<th.brays.length;i++) th.brays[i].style.opacity='0'; th.flash.style.opacity='0'; }
+    } };
+  thr(F.th1,F.P1X,F.T1); thr(F.th2,F.P2X,F.T2);
+  F.lineY=function(x,w){ return w==='bottom'? yBot(x) : yTop(x); };   // 현재 프레임의 선-y 노출 → 선 위 오브젝트가 좁혀짐/파동을 따라 이동
+}
+
 let start=null, raf=null, running=false;
 
 function frame(ts){
@@ -1756,11 +2045,19 @@ function frame(ts){
     }
   }
 
+  animateForkPull(t);   // [헤어짐] 실 당김 → 두 라이브 분기선이 파동치며 가까워지는 이벤트
+
   // 장식 — 선에서 튀어오르듯 뻗어나감
   items.forEach(it=>{
     let r=(t-it.t)/it.dur;
     r=Math.max(0,Math.min(1,r));
-    const dxt = it.dx ? ('translate('+it.dx+' 0) ') : '';   // [insertGap] 삽입 뒤 오브젝트 x 오프셋 — 모든 transform 앞에 붙임
+    let fdy=0;   // [follow] 선-추종: 선이 좁혀지거나 파동치면 오브젝트도 같은 만큼 세로 이동
+    if(it.follow && FORK_PULL.lineY && r>0){
+      const ly=FORK_PULL.lineY(it.followX, it.follow);
+      if(it.followBaseY==null) it.followBaseY=ly;   // 첫 등장(=rest) 선-y를 기준으로 캡처 → 상수 오프셋 없음
+      fdy = ly - it.followBaseY;
+    }
+    const dxt = (it.dx||fdy) ? ('translate('+(it.dx||0)+' '+fdy.toFixed(1)+') ') : '';   // [insertGap] x오프셋 + [follow] y오프셋 — 모든 transform 앞
     if(it.vineSuck){   // 커스텀: 멀리서 밑둥으로 왔다가 쪽 빨려들어감(들어간 먼 끝부터 사라짐)
       const vine=it.node._vine, L=vine._len||(vine._len=vine.getTotalLength());
       if(r<=0){ if(it._state!==0){ it.node.setAttribute('opacity','0'); it._state=0; } return; }
@@ -1778,7 +2075,7 @@ function frame(ts){
         }
         return;
       }
-      it.node.setAttribute('opacity','1'); it.dx ? it.node.setAttribute('transform','translate('+it.dx+' 0)') : it.node.removeAttribute('transform');
+      it.node.setAttribute('opacity','1'); (it.dx||fdy) ? it.node.setAttribute('transform','translate('+(it.dx||0)+' '+fdy.toFixed(1)+')') : it.node.removeAttribute('transform');
       // 획: 왼→오 순으로 순차 그리기(일정 펜속도)
       let acc=0;
       it.segs.forEach(s=>{ const seg=s.len/it.segTotal; let sr=(r-acc)/seg; sr=sr<0?0:(sr>1?1:sr); acc+=seg;
@@ -1793,8 +2090,8 @@ function frame(ts){
       if(it._state!==0){ it.node.setAttribute('opacity','0'); it._state=0; }
       return;
     }
-    // 이미 안착 완료했고 펄스/바운스도 아니면 더 이상 건드리지 않음(매 프레임 리렌더 방지)
-    if(r>=1 && !it.pulse && !it.bounce){
+    // 이미 안착 완료했고 펄스/바운스/추종도 아니면 더 이상 건드리지 않음(매 프레임 리렌더 방지)
+    if(r>=1 && !it.pulse && !it.bounce && !it.follow){
       if(it._state!==2){
         it.node.setAttribute('transform',
           `${dxt}translate(${it.ax2},${it.ay2}) scale(1) translate(${-it.ax2},${-it.ay2})`);
