@@ -237,7 +237,7 @@
       </g>
 
       <!-- 장식 -->
-      <g id="deco"></g>
+      <g id="deco" filter="url(#chalkSoft)"></g>
     </g>
   </svg>
 
@@ -675,9 +675,9 @@ function twinkle(x,y,s,color){
 }
 // 선 끝 화살촉
 function arrow(x,y,s,color){
-  const g=el('g',{}); g.setAttribute('filter','url(#chalkSoft)');
+  const g=el('g',{}); g.setAttribute('mask','url(#chalkMask)');   // 메인선과 동일한 그레인 분필효과
   g.appendChild(el('path',{d:`M ${x-s} ${y-s*.62} L ${x} ${y} L ${x-s} ${y+s*.62}`,
-    stroke:color,'stroke-width':6.0,fill:'none','stroke-linejoin':'round','stroke-linecap':'round'}));
+    stroke:color,'stroke-width':9.0,fill:'none','stroke-linejoin':'round','stroke-linecap':'round'}));
   return g;
 }
 // 팔·다리 등 통통한 윤곽(캡슐) 경로 — A→B, 폭 w, 양끝 둥근
@@ -1045,12 +1045,12 @@ add(libNode('lb40', 3260, 200, 24, {anchor:'center', topDown:true, sw:2.4}),   3
 add(libNode('lb40', 3350, 230, 18, {anchor:'center', topDown:true, sw:2.2}),   3350, 'dream', 0.2);    // 별 점(우-상)
 add(libNode('lb37', 3410, 305, 22, {anchor:'center', topDown:true, sw:2.4}),   3410, 'dream', 0.25);   // 작은 별(우, 달 왼쪽)
 add(libNode('lb36', 3490, 230, 95, {anchor:'center', topDown:true, sw:3.2}),   3490, 'dream', 0.3);    // 달(우상단 초승달, 아래로)
-add(libNode('lb57', 3260, 494, 192, {topDown:true, sw:2.4}),                    3260, 'dream', 0.4);    // 뒷모습 커플(발=선 y494 정확히, 160→192 +20%, bottom-앵커)
+add(libNode('lb57', 3260, 494, 192, {fill:true, topDown:true, sw:2.4}),                    3260, 'dream', 0.4);    // 뒷모습 커플(발=선 y494 정확히, 160→192 +20%, bottom-앵커)
 items[items.length-1].subkey='shy';   // 자막 "아직은 서툴고" 앵커
 
 // 커플 씬(3씬-2)을 함께구간 중앙(x3830, t≈34)에 배치. 3자막을 커플 기준 offset으로 균등 배분(선 위 y는 yAtX, 떠있는 하트·나비는 커플과 함께 이동).
 add(libNode('lb30', 3610, 524, 60, {sw:3.8, topDown:true}),                         3610, 'dream', 0.0);    // 왼쪽 꽃
-add(libNode('lb56', 3830, 561, 225, {sw:2.4, topDown:true}),                        3830, 'dream', 0.15);   // 산책 커플(중앙)
+add(libNode('lb56', 3830, 561, 225, {fill:true, sw:2.4, topDown:true}),                        3830, 'dream', 0.15);   // 산책 커플(중앙)
 items[items.length-1].subkey='dream';   // 자막 "함께 웃고" 앵커
 add(libNode('lb38', 3847, 293, 62, {anchor:'center', sw:4.0, fill:true, color:'var(--ember)'}), 3847, 'dream', 0.6);   // 하트
 add(sparkle(3847, 293, 46, 'var(--ember)'), 3847, 'dream', 0.85);   // 트윙클
@@ -1067,62 +1067,62 @@ items[items.length-1].subkey='byeol';   // 자막 "별거 아닌 하루도" 앵�
 //  코드 x = 런타임 x − 1360(insertGap +1360). grp='season'. 하늘(봄꽃→여름해→가을잎/구름) · 사이(나비·지는잎·하트) · 아래선(눈사람·눈·하트).
 // (라싱 실은 정적 배치 대신 frame()의 animateForkPull 이벤트로 동적 처리 — FORK_PULL)
 // 하늘 (봄꽃 → 여름해 → 가을잎)
-add(libNode('lb33', 6360, 426, 54, {topDown:true, sw:3.4, color:'var(--rose)'}),   6360, 'season', 0.2); items[items.length-1].follow='top'; items[items.length-1].followX=7720;   // 벚꽃(위선에 밀착, base=선. 선-추종) rt7720
-add(libNode('lb30', 6480, 429, 50, {topDown:true, sw:3.6, color:'var(--lilac)'}),  6480, 'season', 0.25); items[items.length-1].follow='top'; items[items.length-1].followX=7840;  // 꽃(위선에 밀착, base=선. 선-추종) rt7840
-add(libNode('lb16', 6600, 234, 82, {anchor:'center', topDown:true, sw:3.6, color:'var(--gold)'}),   6600, 'season', 0.3);   // 해 (rt7960)
-add(libNode('lb60', 6730, 220, 44, {anchor:'center', topDown:true, sw:3, color:'var(--coral)'}),    6730, 'season', 0.35);  // 은행잎 (rt8090)
-add(libNode('lb42', 6850, 250, 42, {anchor:'center', topDown:true, sw:3, color:'var(--coral)'}),    6850, 'season', 0.4);   // 잎 (rt8210)
+add(libNode('lb33', 6360, 426, 81, {topDown:true, sw:3.4, color:'var(--rose)'}),   6360, 'season', 0.2); items[items.length-1].follow='top'; items[items.length-1].followX=7720;   // 벚꽃(위선에 밀착, base=선. 선-추종) rt7720. 사이즈 +50%
+add(libNode('lb30', 6480, 429, 75, {topDown:true, sw:3.6, color:'var(--lilac)'}),  6480, 'season', 0.25); items[items.length-1].follow='top'; items[items.length-1].followX=7840;  // 꽃(위선에 밀착, base=선. 선-추종) rt7840. 사이즈 +50%
+add(libNode('lb16', 6600, 234, 82, {fill:true, anchor:'center', topDown:true, sw:3.6, color:'var(--gold)'}),   6600, 'season', 0.3);   // 해 (rt7960)
+add(libNode('lb60', 6730, 220, 44, {fill:true, anchor:'center', topDown:true, sw:3, color:'var(--coral)'}),    6730, 'season', 0.35);  // 은행잎 (rt8090)
+add(libNode('lb42', 6850, 630, 42, {anchor:'center', topDown:true, sw:3, color:'var(--coral)'}),    6850, 'season', 0.4); items[items.length-1].follow='bottom'; items[items.length-1].followX=8210;   // 잎(풀잎) — 땅으로 내림, 아래선 추종 (rt8210)
 add(libNode('lb71', 6950, 292, 56, {anchor:'center', topDown:true, sw:3.2, color:'var(--cloud)'}),  6950, 'season', 0.45);  // 구름 (rt8310)
 // 두 선 사이 (나비 · 지는 잎 · 하트)
-add(libNode('lb76', 6410, 430, 44, {anchor:'center', topDown:true, sw:3}),                          6410, 'season', 0.3);   // 나비 (rt7770)
-add(libNode('lb60', 6650, 405, 38, {anchor:'center', topDown:true, sw:3, color:'var(--gold)'}),     6650, 'season', 0.35);  // 지는 은행잎 (rt8010)
+add(libNode('lb76', 6410, 342, 44, {anchor:'center', topDown:true, sw:3}),                          6410, 'season', 0.3);   // 나비 (rt7770) — 200%(88) 위로 이동
+add(libNode('lb60', 6650, 405, 38, {fill:true, anchor:'center', topDown:true, sw:3, color:'var(--gold)'}),     6650, 'season', 0.35);  // 지는 은행잎 (rt8010)
 add(libNode('lb38', 6340, 470, 32, {anchor:'center', fill:true, sw:3.6, color:'var(--rose)'}),      6340, 'season', 0.25);  // 하트 (rt7700)
 add(libNode('lb38', 6560, 448, 30, {anchor:'center', fill:true, sw:3.6, color:'var(--ember)'}),     6560, 'season', 0.3);   // 하트 (rt7920)
 add(libNode('lb38', 6780, 474, 32, {anchor:'center', fill:true, sw:3.6, color:'var(--rose)'}),      6780, 'season', 0.35);  // 하트 (rt8140)
 // 아래선 · 겨울 (눈사람 · 눈 · 하트)
-add(libNode('lb14', 6890, 656, 144, {topDown:true, sw:3.2, color:'var(--cloud)'}),                  6890, 'season', 0.5); items[items.length-1].follow='bottom'; items[items.length-1].followX=8250;   // 눈사람(아래선, 선-추종) rt8250, +50%
+add(libNode('lb14', 6890, 656, 144, {fill:true, topDown:true, sw:0.4, color:'var(--cloud)'}),                  6890, 'season', 0.5); items[items.length-1].follow='bottom'; items[items.length-1].followX=8250;   // 눈사람(아래선, 선-추종) rt8250, +50%. 굵기 더 얇게
 add(libNode('lb38', 6700, 612, 30, {anchor:'center', fill:true, sw:3.6, color:'var(--ember)'}),     6700, 'season', 0.4);   // 하트(아래) (rt8060)
 add(star(6760, 525, 12, 'var(--chalk)', 2.4), 6760, 'season', 0.45);   // 눈송이 (rt8120)
 add(star(6960, 560, 10, 'var(--chalk)', 2.4), 6960, 'season', 0.5);    // 눈송이 (rt8320)
 
 // [헤어짐3] "서로의 위로가 되어주고" (자막 런타임 x6582) — 우산커플 + 비. 코드 x = 런타임 x − 1360.
-add(libNode('lb28', 5222, 684, 300, {topDown:true, sw:2.4}), 5222, 'comfort', 0.3); items[items.length-1].follow='bottom'; items[items.length-1].followX=6582;   // 우산커플(발=아래선 684, +20%) rt6582
+add(libNode('lb28', 5222, 684, 300, {fill:true, topDown:true, sw:2.4}), 5222, 'comfort', 0.3); items[items.length-1].follow='bottom'; items[items.length-1].followX=6582;   // 우산커플(발=아래선 684, +20%) rt6582
 // 비(물방울) — 우산 위·양옆으로 흩뿌려 내림
-add(libNode('lb53', 5110, 415, 20, {anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5110, 'comfort', 0.35);  // rt6470
-add(libNode('lb53', 5180, 400, 18, {anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5180, 'comfort', 0.38);  // rt6540
-add(libNode('lb53', 5240, 420, 22, {anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5240, 'comfort', 0.41);  // rt6600
-add(libNode('lb53', 5300, 410, 18, {anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5300, 'comfort', 0.44);  // rt6660
-add(libNode('lb53', 5150, 465, 20, {anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5150, 'comfort', 0.47);  // rt6510
-add(libNode('lb53', 5220, 455, 18, {anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5220, 'comfort', 0.5);   // rt6580
-add(libNode('lb53', 5080, 520, 22, {anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5080, 'comfort', 0.4);   // rt6440(좌)
-add(libNode('lb53', 5100, 610, 18, {anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5100, 'comfort', 0.46);  // rt6460(좌아래)
-add(libNode('lb53', 5340, 530, 20, {anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5340, 'comfort', 0.42);  // rt6700(우)
-add(libNode('lb53', 5350, 620, 18, {anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5350, 'comfort', 0.48);  // rt6710(우아래)
+add(libNode('lb53', 5110, 415, 20, {fill:true, anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5110, 'comfort', 0.35);  // rt6470
+add(libNode('lb53', 5180, 400, 18, {fill:true, anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5180, 'comfort', 0.38);  // rt6540
+add(libNode('lb53', 5240, 420, 22, {fill:true, anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5240, 'comfort', 0.41);  // rt6600
+add(libNode('lb53', 5300, 410, 18, {fill:true, anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5300, 'comfort', 0.44);  // rt6660
+add(libNode('lb53', 5150, 465, 20, {fill:true, anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5150, 'comfort', 0.47);  // rt6510
+add(libNode('lb53', 5220, 455, 18, {fill:true, anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5220, 'comfort', 0.5);   // rt6580
+add(libNode('lb53', 5080, 520, 22, {fill:true, anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5080, 'comfort', 0.4);   // rt6440(좌)
+add(libNode('lb53', 5100, 610, 18, {fill:true, anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5100, 'comfort', 0.46);  // rt6460(좌아래)
+add(libNode('lb53', 5340, 530, 20, {fill:true, anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5340, 'comfort', 0.42);  // rt6700(우)
+add(libNode('lb53', 5350, 620, 18, {fill:true, anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5350, 'comfort', 0.48);  // rt6710(우아래)
 
 // [헤어짐4] "보이지 않은 인연의 끈을 놓지 않은 채" (자막 런타임 x7313) — 여자선=편지, 남자선=전화기(선-추종).
-add(libNode('lb47', 5940, 416, 52, {topDown:true, sw:2.8, color:'var(--rose)'}), 5940, 'thread', 0.3); items[items.length-1].follow='top'; items[items.length-1].followX=7300;    // 편지(여자선 위) rt7300
-add(libNode('lb46', 5970, 665, 56, {topDown:true, sw:2.8, color:'var(--azure)'}), 5970, 'thread', 0.35); items[items.length-1].follow='bottom'; items[items.length-1].followX=7330;  // 전화기(남자선) rt7330
+add(libNode('lb47', 5940, 364, 78, {topDown:true, sw:2.8, color:'var(--rose)'}), 5940, 'thread', 0.3); items[items.length-1].follow='top'; items[items.length-1].followX=7300;    // 편지(여자선 위) rt7300 — 100%↑, +50%
+add(libNode('lb46', 5970, 609, 84, {topDown:true, sw:2.8, color:'var(--azure)'}), 5970, 'thread', 0.35); items[items.length-1].follow='bottom'; items[items.length-1].followX=7330;  // 전화기(남자선) rt7330 — 100%↑, +50%
 
 // 두번째 실 위치(P2X=7598, 두 선 사이)에 coconut tree on an island 그림. 펜은 이미 지나갔으므로(52.1s) lag로 실 소멸시점(~56.9s)에 등장.
-add(libNode('lb3', 6238, 540, 130, {anchor:'center', topDown:true, sw:3, color:'var(--leaf)'}), 6238, 'island', 4.85);   // coconut tree on an island — 두번째 실 자리(rt7598), 실 사라질 때 등장. 라이브러리 원색(leaf 초록)
+add(libNode('lb3', 6238, 540, 130, {fill:true, anchor:'center', topDown:true, sw:3, color:'var(--leaf)'}), 6238, 'island', 4.85);   // coconut tree on an island — 두번째 실 자리(rt7598), 실 사라질 때 등장. 라이브러리 원색(leaf 초록)
 // 첫번째 실 위치(P1X=6100, 두 선 사이)에 메시지폰. 펜은 42.1s에 지남 → lag 4.85로 첫실 소멸(≈47.0s)에 등장.
-add(libNode('lb82', 4740, 540, 100, {anchor:'center', topDown:true, sw:3}), 4740, 'island', 4.85);   // 메시지폰 — 첫번째 실 자리(rt6100), 실 사라질 때 등장. 빨강(원색)
+add(libNode('lb82', 4740, 540, 100, {anchor:'center', topDown:true, sw:4.6}), 4740, 'island', 4.85);   // 메시지폰 — 첫번째 실 자리(rt6100), 실 사라질 때 등장. 빨강(원색). 굵기↑↑
 
 // [헤어짐2] "서로 다른 곳에서 각자의 꿈을 향해 / 서로의 하루를 살아갔습니다" — 각자의 일상 비네트.
 //   위선(로즈)=여자: 캐리어 소녀 + 커피 + 책 + 꽃 / 아래선(애저)=남자: 산책 소년(lb77) + 노트북 + 빌딩 + 별.  발이 선에 닿게(bottom-anchor), y=선 안착값.
 // 좌표는 코드 기준(insertGap 이 런타임에 +1360 시프트). 런타임 배치 x = 코드 x + 1360. y는 시프트 없음(선 안착값).
 // 여자(위선) — 런타임 5340~5860
-add(libNode('lb30', 3980, 500, 44, {topDown:true, sw:3.4, color:'var(--lilac)'}),                    3980, 'apartlife', 0.1);   // 꽃 (rt5340)
-add(libNode('lb62', 4180, 448, 188, {topDown:true, sw:2.4}),                                          4180, 'apartlife', 0.2);   // 캐리어 소녀(발=위선 448, +25%) (rt5540)
-add(libNode('lb69', 4360, 398, 42, {anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}),     4360, 'apartlife', 0.3);   // 커피 (rt5720)
+add(libNode('lb30', 3980, 500, 66, {topDown:true, sw:3.4, color:'var(--lilac)'}),                    3980, 'apartlife', 0.1);   // 꽃 (rt5340). 사이즈 +50%
+add(libNode('lb62', 4180, 448, 188, {fill:true, topDown:true, sw:2.4}),                                          4180, 'apartlife', 0.2);   // 캐리어 소녀(발=위선 448, +25%) (rt5540)
+add(libNode('lb69', 4360, 356, 42, {anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}),     4360, 'apartlife', 0.3);   // 커피 (rt5720) — 선-타입 아이콘, 선-드로잉. 100%↑
 add(libNode('lb44', 4500, 392, 54, {anchor:'center', topDown:true, sw:3.0, color:'var(--coral)'}),    4500, 'apartlife', 0.4);   // 책 (rt5860)
-add(libNode('lb61', 4345, 252, 130, {anchor:'center', topDown:true, sw:2.4, color:'var(--azure)'}),   4345, 'apartlife', 0.28);  // 비행기 — 여자아이 우상단 (rt5705), 라이브러리 원래 파란색(azure)
+add(libNode('lb61', 4345, 252, 94, {anchor:'center', topDown:true, sw:3.4, color:'var(--azure)'}),   4345, 'apartlife', 0.28);  // 비행기 — 여자아이 우상단 (rt5705), 라이브러리 원래 파란색(azure). 사이즈 -20% 추가, 굵기↑
 // 남자(아래선) — 런타임 5470~6040
 add(libNode('lb37', 4110, 560, 26, {anchor:'center', topDown:true, sw:2.6, color:'var(--gold)'}),     4110, 'apartlife', 0.15);  // 별 (rt5470)
-add(libNode('lb77', 4300, 653, 188, {topDown:true, sw:2.4}),                                          4300, 'apartlife', 0.25);  // 산책 소년(발=아래선 653, +25%) (rt5660)
-add(libNode('lb45', 4605, 687, 85, {anchor:'center', topDown:true, sw:2.6, color:'var(--azure)'}),    4605, 'apartlife', 0.35);  // 노트북 (rt5965) — 우측·아래(자기 20%)로
+add(libNode('lb77', 4300, 653, 188, {fill:true, topDown:true, sw:2.4}),                                          4300, 'apartlife', 0.25);  // 산책 소년(발=아래선 653, +25%) (rt5660)
+add(libNode('lb45', 4605, 687, 85, {anchor:'center', topDown:true, sw:4.2, color:'var(--azure)'}),    4605, 'apartlife', 0.35);  // 노트북 (rt5965) — 우측·아래(자기 20%)로. 굵기↑↑
 add(libNode('lb37', 4460, 598, 18, {anchor:'center', topDown:true, sw:2.4, color:'var(--gold)'}),     4460, 'apartlife', 0.45);  // 작은 별 (rt5820)
-add(libNode('lb63', 4700, 652, 158, {topDown:true, sw:2.4, color:'var(--azure)'}),                    4700, 'apartlife', 0.5);   // 빌딩(발=아래선 652, 소년보다 크게) (rt6060) (rt6040)
+add(libNode('lb63', 4858, 652, 158, {topDown:true, sw:2.4, color:'var(--azure)'}),                    4858, 'apartlife', 0.5);   // 빌딩(발=아래선 652, 소년보다 크게) — 자기폭(158) 오른쪽 이동 (rt6218)
 
 // ┌──────── [5. 함께2] 재회 ~ 피날레 · 다시 함께 (단일선 p2 = 스크래치 무지개) ────────┐
 //   씬: 돌고돌아 재회 · 더 단단해진 · 함께 걷습니다 · 특별한 하루(자전거) · 앞으로의 날(집·나무) · 오늘부터(하트 터짐)
@@ -1138,7 +1138,7 @@ add(pansy(5465,458,54,'var(--lilac)'), 5465, 'stronger');   // 재회 선 위 �
 add(cherry(5565,460,54,'var(--rose)'), 5565, 'stronger');   // 재회 선 위 벚꽃
 
 // [씬] 우리는 다시 서로의 하루를 나누기 시작했습니다 — 테이블커플(자막 재회+9.2s≈71s, rt10428). 겹치던 산책커플(couple2T) 삭제.
-add(libNode('lb29', 6013, 540, 285, {topDown:true, sw:2.4, color:'var(--chalk)'}), 6013, 'together'); items[items.length-1].subkey='walk';   // 테이블커플(발이 선 위, +50%)
+add(libNode('lb29', 6013, 540, 285, {fill:true, topDown:true, sw:2.4, color:'var(--chalk)'}), 6013, 'together'); items[items.length-1].subkey='walk';   // 테이블커플(발이 선 위, +50%)
 add(heart(6034,251,42,'var(--ember)',4,'var(--ember)'), 6034, 'together');  // 테이블커플 위 — 왼쪽·아래로 21씩(하트 50%) 이동
 
 // [씬] 별것아닌 하루도, 너무 특별했습니다 — 자전거(전용 시간 할당)
@@ -1158,7 +1158,7 @@ add(star(7735,338,18,'var(--chalk)',3),    7735, 'home', 1.5);
 add(moonT(8275,300,105),                    8275, 'home', 1.9);
 
 // [씬] 우리는 서로에게 '곁'이라는 선물을 받았습니다 — 등돌린 커플(선 위, 렌더 x≈15648, 선 y540)
-add(libNode('lb81', 8760, 540, 190, {topDown:true, sw:2.4}), 8760, 'home', 2.1);   // 등장 105.7→107.8s('곁 선물' 자막에 맞춤)
+add(libNode('lb81', 8760, 540, 190, {fill:true, topDown:true, sw:2.4}), 8760, 'home', 2.1);   // 등장 105.7→107.8s('곁 선물' 자막에 맞춤)
 
 // [씬] 오늘부터, 같은 시간을 걸어갑니다 — 선 완성(60s) 직후 하트가 터짐
 // [씬] 오늘부터 — 선은 오른쪽 1/3에서 그려지다 완성 후 카메라가 선 끝을 중앙으로 옮김.
@@ -1173,7 +1173,6 @@ add(star(8776,383,22,'var(--gold)',3),       9250, 'today', 0.7);    // 좌상 �
 add(star(9086,384,20,'var(--gold)',3),       9250, 'today', 0.85);   // 우상 골드 (sparkle 밖)
 add(star(8828,735,16,'var(--chalk)',2.6),    9250, 'today', 1.0);    // 좌하 흐린 흰 (sparkle 밖)
 add(star(9066,720,18,'var(--ember)',2.8),    9250, 'today', 1.15);   // 우하 주황 (sparkle 밖)
-add(twinkle(9004,636,13,'var(--azure)'),     9250, 'today', 1.3);    // 파란 반짝임(+)
 
 // 각 요소를 획 단위로 쪼개 순서대로 그려지게 준비
 function prep(){
@@ -1608,7 +1607,7 @@ SPK_A0=lenAtX(paths[0], X_SPK0);   // 스파이크 진입(실 호길이)
 SPK_A1=lenAtX(paths[0], X_SPK1);   // 하트 직후(실 호길이) — 하트 최대 x<X_SPK1 이라 단일 교차
 const SPK_ARC=SPK_A1-SPK_A0, SPK_FLAT=X_SPK1-X_SPK0, SPK_EXTRA=SPK_ARC-SPK_FLAT;   // 실 호길이 vs 평탄 등가 폭, 여분
 L_END=LEN_P1+LEN_FORK+lenAtX(paths[3], LINE_END_X);   // p2 선끝(화살표 x)까지의 실제 호길이 — stretch해도 화살표에서 정확히 끝남(지나침 방지)
-SPEED=(LEN_TOTAL-P2_STRETCH_DELTA-SPK_EXTRA)/72.8;   // 등속(원래 속도 고정) — 늘인 델타를 빼 원래 길이 기준 속도. 늘어난 p2는 시간만↑
+SPEED=(LEN_TOTAL-P2_STRETCH_DELTA-SPK_EXTRA)/79;   // 등속(원래 속도 고정) — 늘인 델타를 빼 원래 길이 기준 속도. 늘어난 p2는 시간만↑. 72.8→79: 카메라 약 8% 느리게
 // 오프닝을 메인과 같은 SPEED로 그리려면 그만큼 시간이 필요 → 메인 시작(LINE_T0)을 뒤로 미룬다.
 LINE_T0 = OPEN_STARTT + OPEN_TOTAL/SPEED;   // 별 뜬 뒤 오프닝을 등속으로 다 그린 시각 = 메인 시작
 OPEN_T1 = LINE_T0;                          // 오프닝 종료 = 메인 시작
@@ -1876,8 +1875,8 @@ function animateForkPull(t){
       [[0,1],[0.30,1],[0.985,1],[1,0]].forEach(function(s){ const st=el('stop',{offset:''+s[0],'stop-color':col}); st.setAttribute('stop-opacity',''+s[1]); g.appendChild(st); });   // 재회 직전(x≈8985)까지 선명 유지 → 마지막 60u만 짧게 인계
       defs.appendChild(g); }
     fadeGrad('roseFade','#ef8fa9'); fadeGrad('azureFade','#6fa9d9');
-    F.pkLive=el('path',{fill:'none',stroke:'url(#roseFade)','stroke-width':'6','stroke-opacity':'0.95','stroke-linecap':'round','stroke-linejoin':'round'});
-    F.blLive=el('path',{fill:'none',stroke:'url(#azureFade)','stroke-width':'6','stroke-opacity':'0.95','stroke-linecap':'round','stroke-linejoin':'round'});
+    F.pkLive=el('path',{fill:'none',stroke:'url(#roseFade)','stroke-width':'9','stroke-opacity':'0.95','stroke-linecap':'round','stroke-linejoin':'round'});
+    F.blLive=el('path',{fill:'none',stroke:'url(#azureFade)','stroke-width':'9','stroke-opacity':'0.95','stroke-linecap':'round','stroke-linejoin':'round'});
     flG.appendChild(F.pkLive); flG.appendChild(F.blLive);
   }
   const ss=u=>{u=Math.max(0,Math.min(1,u));return u*u*(3-2*u);};
