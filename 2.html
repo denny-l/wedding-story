@@ -673,6 +673,22 @@ function twinkle(x,y,s,color){
   g.appendChild(el('path',{d,stroke:color,'stroke-width':3.0,fill:'none','stroke-linecap':'round'}));
   return g;
 }
+// 가로등 불빛 광선 — 원본 그림 그대로: 램프 좌·우로 수평 부채꼴(한쪽 3줄), 램프와 간격 두고 바깥으로.
+function lampGlow(x,y,color){
+  const g=el('g',{}); g.setAttribute('filter','url(#chalkSoft)');
+  const G=18, r1=5, r2=31, spread=27*Math.PI/180;   // G=원점 좌우 오프셋, r1~r2=광선 길이, ±27° 부채꼴
+  let d='';
+  [-1,1].forEach(side=>{                              // -1=왼쪽, 1=오른쪽
+    const ox=x+side*G, base=(side>0?0:Math.PI);       // 바깥 수평 기준
+    [-spread,0,spread].forEach(off=>{
+      const a=base+off, len=r2-(off===0?0:3);          // 가운데 줄이 살짝 길게
+      d+=`M ${(ox+Math.cos(a)*r1).toFixed(1)} ${(y+Math.sin(a)*r1).toFixed(1)} `
+        +`L ${(ox+Math.cos(a)*len).toFixed(1)} ${(y+Math.sin(a)*len).toFixed(1)} `;
+    });
+  });
+  g.appendChild(el('path',{d,stroke:color,'stroke-width':2.6,fill:'none','stroke-linecap':'round'}));
+  return g;
+}
 // 선 끝 화살촉
 function arrow(x,y,s,color){
   const g=el('g',{}); g.setAttribute('mask','url(#chalkMask)');   // 메인선과 동일한 그레인 분필효과
@@ -1131,21 +1147,62 @@ add(libNode('lb63', 4858, 652, 158, {topDown:true, sw:2.4, color:'var(--azure)'}
 add(twinkle(5285,540,30,'var(--gold)'), 5275, 'reunite'); items[items.length-1].subkey='reunite';
 items[items.length-1].bounce=true;   // 나온 뒤 계속 통통 바운스
 
+// [씬] 조금 달라진 모습으로, 여전히 익숙한 사람으로 — 벤치 커플(선 위, 렌더 x≈9682, 선 y540, 등장 71.4s)
+add(libNode('lb83', 5620, 540, 231, {fill:true, topDown:true, sw:2.4}), 5620, 'stronger', 0.0);   // 벤치 커플 +10%
+// 벤치 커플 위쪽에 음표 4개(떠다니는 멜로디)
+add(libNode('lb85', 5555, 300, 50, {fill:true, anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}), 5555, 'stronger', 1.3);   // 8분음표 — 커플 다 그려진 뒤
+add(libNode('lb86', 5605, 240, 58, {fill:true, anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}), 5605, 'stronger', 1.5);   // 연음표
+add(libNode('lb55', 5655, 288, 44, {fill:true, anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}), 5655, 'stronger', 1.7);   // music note
+add(libNode('lb85', 5708, 222, 48, {fill:true, anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}), 5708, 'stronger', 1.9);   // 8분음표
+
 // [씬] 다시 만나, 더 단단해진 우리는
-add(heart(5685,405,52,'var(--ember)',5), 5685, 'stronger'); items[items.length-1].subkey='stronger';
-add(twinkle(5685,398,40,'var(--gold)'),     5685, 'stronger');
-add(pansy(5465,458,54,'var(--lilac)'), 5465, 'stronger');   // 재회 선 위 팬지
-add(cherry(5565,460,54,'var(--rose)'), 5565, 'stronger');   // 재회 선 위 벚꽃
+add(heart(5285,322,52,'var(--ember)',5), 5285, 'stronger'); items[items.length-1].subkey='stronger';   // '다시 만났을 때' 하트 — 60% 더 위로
+add(twinkle(5285,322,40,'var(--gold)'),     5285, 'stronger', 0.7);   // 하트(5285,322) 감싸는 트윙클 — 하트 나온 뒤(lag 0.7) 광선 하나씩 그려짐
+add(pansy(5510,458,54,'var(--lilac)'), 5510, 'stronger');   // 재회 선 위 팬지 — 벤치 왼쪽(더 좁힘)
+add(cherry(5720,460,54,'var(--rose)'), 5720, 'stronger');   // 재회 선 위 벚꽃 — 벤치 오른쪽(살짝 더 왼쪽)
 
 // [씬] 우리는 다시 서로의 하루를 나누기 시작했습니다 — 테이블커플(자막 재회+9.2s≈71s, rt10428). 겹치던 산책커플(couple2T) 삭제.
-add(libNode('lb29', 6013, 540, 285, {fill:true, topDown:true, sw:2.4, color:'var(--chalk)'}), 6013, 'together'); items[items.length-1].subkey='walk';   // 테이블커플(발이 선 위, +50%)
-add(heart(6034,251,42,'var(--ember)',4,'var(--ember)'), 6034, 'together');  // 테이블커플 위 — 왼쪽·아래로 21씩(하트 50%) 이동
+add(libNode('lb29', 6013, 572, 285, {fill:true, topDown:true, sw:2.4, color:'var(--chalk)'}), 6013, 'together'); items[items.length-1].subkey='walk';   // 테이블커플(발이 선보다 살짝 더 아래)
+add(heart(6034,272,42,'var(--ember)',4,'var(--ember)'), 6034, 'together');  // 테이블커플 위 하트 — 추가로 50%(21) 아래로
 
 // [씬] 별것아닌 하루도, 너무 특별했습니다 — 자전거(전용 시간 할당)
-add(bikeT(6570,588,396), 6570, 'together', 0.3); items[items.length-1].subkey='daily';   // (+10%)
+// [씬] 좋은 날에는 함께 웃고 — TV 보는 커플(자전거 대체, 선 위)
+add(libNode('lb87', 6621, 574, 304, {fill:true, topDown:true, sw:2.4}), 6621, 'together', 0.3); items[items.length-1].subkey='daily';   // 10% 아래로, 사이즈 -10%
+
+// [씬] 특별하지 않는 날들이 조금씩 특별해졌습니다 — 누운 커플(선 위, rt≈11164) + 구름 3개(그림처럼 하늘에)
+add(libNode('lb84', 6291, 653, 207, {fill:true, topDown:true, sw:2.4}), 6291, 'days', 0.0);   // 20% 더 아래로
+add(libNode('lb71', 6275, 328, 92, {anchor:'center', topDown:true, sw:3.2, color:'var(--cloud)'}), 6275, 'days', 1.3);   // 구름(좌·큼) — 커플 다 그려진 뒤
+add(libNode('lb71', 6325, 293, 58, {anchor:'center', topDown:true, sw:3.0, color:'var(--cloud)'}), 6325, 'days', 1.5);   // 구름(중·작음)
+add(libNode('lb71', 6385, 353, 76, {anchor:'center', topDown:true, sw:3.0, color:'var(--cloud)'}), 6385, 'days', 1.7);   // 구름(우·중)
+
+// [씬] 마음이 무거운 날에는 서로의 곁을 지켰습니다 — 계단 커플(계단 바닥=선 y540, rt≈12573)
+add(libNode('lb88', 6962, 570, 240, {fill:true, topDown:true, sw:2.4}), 6962, 'days', 0.0);   // 윗단 라인=호 능선(실측 y≈505), 계단은 그 아래로
+add(libNode('lb89', 6850, 512, 320, {fill:true, topDown:true, sw:2.2}), 6850, 'days', 0.0);   // 가로등: 커플 왼쪽(렌더≈12516), 밑둥=호 램프선 y≈508
+add(libNode('lb30', 6800, 513, 66, {topDown:true, sw:3.6, color:'var(--rose)'}), 6800, 'days', 0.4);   // 가로등 왼쪽 꽃(핑크 5장, 이미지대로)
+// 도시 건물 배경(원본처럼 커플 오른쪽, 좌 낮고 우 높음). 렌더 x = fwd(codeX), 슬로프 1.9. 배경이라 커플보다 작고 밑둥은 지평선 위.
+add(libNode('lb90', 7075, 420, 118, {fill:true, topDown:true, sw:2.0}), 7075, 'days', 0.35);   // 건물(좌·반높이 wing) 커플에서 띄움 렌더≈13010
+add(libNode('lb91', 7133, 417, 150, {fill:true, topDown:true, sw:2.0}), 7133, 'days', 0.45);   // 건물(우·높은동, 창문5) 렌더≈13158
+// 밤하늘 달·별(원본 이미지대로 배치·크기 제각각). 매핑 codeX=6962+(imgX-740)*0.342, y=335+(imgY-430)*0.51, size=imgW*0.51
+add(libNode('lb36', 7100, 167, 72, {anchor:'center', topDown:true, sw:3.0}),                7100, 'days', 0.2);    // 초승달(우상단) img(1144,189)
+add(libNode('lb37', 6986, 174, 18, {anchor:'center', topDown:true, sw:2.6, fill:true}),     6986, 'days', 0.25);   // 큰 별 img(810,202)
+add(libNode('lb37', 6880, 180, 17, {anchor:'center', topDown:true, sw:2.6}),                6880, 'days', 0.30);   // 별(윤곽) img(499,215)
+add(libNode('lb37', 7053, 249, 15, {anchor:'center', topDown:true, sw:2.4, fill:true}),     7053, 'days', 0.35);   // 별 img(1005,349)
+add(libNode('lb37', 7169, 232, 16, {anchor:'center', topDown:true, sw:2.4, fill:true}),     7169, 'days', 0.40);   // 별 img(1346,401)
+add(libNode('lb40', 6822, 213, 11, {anchor:'center', topDown:true, sw:2.2, fill:true}),     6822, 'days', 0.28);   // 작은 별 img(330,279)
+add(libNode('lb40', 6930, 227,  8, {anchor:'center', topDown:true, sw:2.0, fill:true}),     6930, 'days', 0.32);   // 작은 별 img(646,307)
+add(libNode('lb40', 7152, 208,  8, {anchor:'center', topDown:true, sw:2.0, fill:true}),     7152, 'days', 0.44);   // 작은 별 img(1296,270)
+add(libNode('lb40', 7032, 166,  6, {anchor:'center', topDown:true, sw:1.8, fill:true}),     7032, 'days', 0.24);   // 점별 img(945,187)
+add(libNode('lb40', 7109, 197,  6, {anchor:'center', topDown:true, sw:1.8, fill:true}),     7109, 'days', 0.42);   // 점별 img(1170,247)
+add(libNode('lb40', 6858, 261,  5, {anchor:'center', topDown:true, sw:1.8, fill:true}),     6858, 'days', 0.34);   // 점별 img(436,374)
+add(libNode('lb40', 7010, 257,  5, {anchor:'center', topDown:true, sw:1.8, fill:true}),     7010, 'days', 0.36);   // 점별 img(880,366)
+add(libNode('lb40', 6816, 225,  5, {anchor:'center', topDown:true, sw:1.8, fill:true}),     6816, 'days', 0.33);   // 점별 img(312,302)
+// 수풀 — 건물 앞 전경(더 아래·크게, 건물 뒤 add라 위에 그려져 안 묻힘). 좌/건물앞/우로 분산.
+add(libNode('lb93', 6877, 492, 44, {topDown:true, sw:2.6}), 6877, 'days', 0.5);    // 수풀 하강형 — 커플 좌측, 오른쪽 위로 50% 이동
+add(libNode('lb94', 7065, 472, 36, {topDown:true, sw:2.4}), 7065, 'days', 0.55);   // 수풀 작은 — 우측1(좌 건물 밑동)
+add(libNode('lb92', 7156, 471, 50, {topDown:true, sw:2.6}), 7156, 'days', 0.6);    // 수풀 넓은 — 우측2(우 건물 밑동)
 
 // [씬] 사소한 하루들, 특별한 순간들
-[[7115,430,27],[7215,382,21],[7315,420,31],[7415,376,23],[7510,428,27]]
+[[7315,420,31],[7415,376,23],[7510,428,27]]   // 건물 겹치는 하트(7115,7215) 제거
   .forEach(h=>add(heart(h[0],h[1],h[2],'var(--rose)',3), h[0], 'days', 1.0));
 
 // [씬] 앞으로의 날들도 함께 만들어갈게요 — 별·집·나무·별·달(맨 오른쪽 위) 순서
@@ -1496,6 +1553,60 @@ let P2_STRETCH_DELTA=0;
   LINE_END_X = R+(LINE_END_X-R)*F;   // 선끝 x·마스크 폭 갱신
 })();
 
+// [시간 삽입] '특별하지' 지점(penX≈10955)에서 선을 DX만큼 늘여 이후 오브젝트·선끝을 함께 뒤로 — 자막 off도 같은 Δt(≈1.5s) 밀어 쌍 유지.
+//  stretchP2 뒤·paths.forEach 앞이라 카메라(tbl) 자동 반영. P2_STRETCH_DELTA에 DX 더해 SPEED 불변(삽입 DX는 시간만↑).
+(function insertFinaleGap(){
+  const atX=10955, DX=208;
+  const p2el=document.getElementById('p2');
+  let k=0;
+  const nd=p2el.getAttribute('d').replace(/\s+/g,' ').trim().split(' ').map(function(t){
+    if(/^[A-Za-z]$/.test(t)){k=0;return t;}
+    const v=+t, isX=(k%2===0); k++;
+    return (isX && v>atX) ? (v+DX).toFixed(1) : t;
+  }).join(' ');
+  p2el.setAttribute('d', nd);
+  items.forEach(function(it){ if(it.ax!=null && it.ax>atX){ it.ax+=DX; it.dx=(it.dx||0)+DX; } });
+  LINE_END_X += DX;
+  P2_STRETCH_DELTA += DX;
+})();
+
+// [간격 통일 5.5s] 식탁·누운·TV 씬 앞에 선을 조금씩 늘여 세 간격을 5.5초로 맞춤(우→좌 처리). 자막도 같은 Δt로 이동.
+(function insertGaps55(){
+  const INS=[[12100,155],[11783,94],[11156,31],[10420,10]];   // 계단(+155)·TV(+94)·누운(+31)·식탁(+10) 앞 — 씬 간격 5.5s (atX는 삽입-전 ax 기준)
+  const p2el=document.getElementById('p2');
+  INS.forEach(function(pr){
+    const atX=pr[0], DX=pr[1]; let k=0;
+    const nd=p2el.getAttribute('d').replace(/\s+/g,' ').trim().split(' ').map(function(t){
+      if(/^[A-Za-z]$/.test(t)){k=0;return t;}
+      const v=+t, isX=(k%2===0); k++;
+      return (isX && v>atX) ? (v+DX).toFixed(1) : t;
+    }).join(' ');
+    p2el.setAttribute('d', nd);
+    items.forEach(function(it){ if(it.ax!=null && it.ax>atX){ it.ax+=DX; it.dx=(it.dx||0)+DX; } });
+    LINE_END_X += DX;
+    P2_STRETCH_DELTA += DX;
+  });
+})();
+
+// [지평선 호] 계단(lb88) 윗단 라인에 메인선을 정확히 접합.
+//  계단 렌더 중심 x = fwd(codeX 6962) = 12729.3 (insertGap+forkGap+stretchP2×1.9+finaleGap+gaps55).
+//  윗단 라인 y = anchorY(570) - (vbBottom504 - topLine367)*sc(240/488) = 502.6 → 계단 각도=수평.
+//  ⇒ 윗단 폭(±PW)만큼 그 y로 '평평'하게 겹치고, 양옆은 코사인 램프로 원선 복귀(지평선 느낌).
+(function arcAtStep(){
+  const atX=12729.3, STEPY=502.6, PW=128, RW=520;   // PW=윗단 반폭(≈125), RW=지평선 램프폭
+  const p2el=document.getElementById('p2');
+  const L=p2el.getTotalLength(), N=Math.ceil(L/10);
+  const pts=[];
+  for(let i=0;i<=N;i++){
+    const pt=p2el.getPointAtLength(L*i/N);
+    const dxp=Math.abs(pt.x-atX); let y=pt.y;
+    if(dxp<=PW){ y=STEPY; }                                                       // 윗단 위=수평 고원
+    else if(dxp<=PW+RW){ const f=(dxp-PW)/RW; y=STEPY+(pt.y-STEPY)*0.5*(1-Math.cos(Math.PI*f)); }  // 완만 램프
+    pts.push(pt.x.toFixed(1)+' '+y.toFixed(1));
+  }
+  p2el.setAttribute('d','M '+pts.join(' L '));
+})();
+
 paths.forEach(p=>{
   const L=p.el.getTotalLength();
   p.len=L;
@@ -1780,16 +1891,16 @@ const SUBS=[
   //  선 속도는 등속(불변). 자막이 선 완성보다 길면 피날레를 유지하며 이어짐 → 전체 시간만 늘어남.
   {at:'x', x:9045, off:0.0,  dur:3.6, text:'그러던 어느 날,\n참 신기하게도 우리의 시간은\n운명처럼 다시 만났습니다.'},
   {at:'x', x:9045, off:4.6,  dur:3.6, text:'조금 달라진 모습으로,\n여전히 익숙한 사람으로.'},
-  {at:'x', x:9045, off:9.2,  dur:3.6, text:'우리는 다시\n서로의 하루를 나누기 시작했습니다.'},
-  {at:'x', x:9045, off:13.8, dur:3.6, text:'특별하지 않는 날들이\n조금씩 특별해졌습니다.'},
-  {at:'x', x:9045, off:18.4, dur:3.6, text:'좋은 날에는 함께 웃고,'},
-  {at:'x', x:9045, off:23.0, dur:3.6, text:'마음이 무거운 날에는\n서로의 곁을 지켰습니다.'},
-  {at:'x', x:9045, off:27.6, dur:3.6, text:'별일 없는 날에는\n그저 나란히 걸으며,'},
-  {at:'x', x:9045, off:32.2, dur:3.6, text:'그렇게 우리는\n‘곁’의 의미를 알게 되었습니다.'},
-  {at:'x', x:9045, off:36.8, dur:3.6, text:'곁이란, 서로의 하루를 나누고'},
-  {at:'x', x:9045, off:41.4, dur:3.6, text:'혼자 걷던 길을\n나란히 걷는 것.'},
-  {at:'x', x:9045, off:46.0, dur:3.6, text:'우리는 서로에게\n‘곁’이라는 선물을 받았습니다.'},
-  {at:'x', x:9045, off:50.6, dur:5.0, text:'그리고 오늘,\n우리는 새로운 시간을 시작합니다.'},
+  {at:'x', x:9045, off:10.07,  dur:3.6, text:'우리는 다시\n서로의 하루를 나누기 시작했습니다.'},
+  {at:'x', x:9045, off:15.6, dur:3.6, text:'특별하지 않는 날들이\n조금씩 특별해졌습니다.'},
+  {at:'x', x:9045, off:20.87, dur:3.6, text:'좋은 날에는 함께 웃고,'},
+  {at:'x', x:9045, off:26.59, dur:3.6, text:'마음이 무거운 날에는\n서로의 곁을 지켰습니다.'},
+  {at:'x', x:9045, off:31.19, dur:3.6, text:'별일 없는 날에는\n그저 나란히 걸으며,'},
+  {at:'x', x:9045, off:35.79, dur:3.6, text:'그렇게 우리는\n‘곁’의 의미를 알게 되었습니다.'},
+  {at:'x', x:9045, off:40.39, dur:3.6, text:'곁이란, 서로의 하루를 나누고'},
+  {at:'x', x:9045, off:44.99, dur:3.6, text:'혼자 걷던 길을\n나란히 걷는 것.'},
+  {at:'x', x:9045, off:49.59, dur:3.6, text:'우리는 서로에게\n‘곁’이라는 선물을 받았습니다.'},
+  {at:'x', x:9045, off:54.19, dur:5.0, text:'그리고 오늘,\n우리는 새로운 시간을 시작합니다.'},
 ];
 const lines = SUBS.map(function(s){
   var t0;
