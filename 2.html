@@ -258,7 +258,7 @@
   <audio id="bgmAudio" preload="auto" src="./bgm2.mp3?v=02411d67"></audio>
 </div>
 
-<script src="objects.js?v=bbbef890"></script>
+<script src="objects.js?v=99492ae5"></script>
 <script>
 const {COUPLE_V,HOUSE_V,OAK_V,BUSHY_V,LEAFY_V,COUPLE2_V,BIKE_V,ROUNDTREE_V,MOON_V}=window.WEDDING_SHAPES;  // 공용 objects.js 의 shape 데이터 참조
 
@@ -1104,16 +1104,38 @@ add(libNode('lb57', 3260, 494, 192, {fill:true, topDown:true, sw:2.4}),         
 items[items.length-1].subkey='shy';   // 자막 "아직은 서툴고" 앵커
 
 // 커플 씬(3씬-2)을 함께구간 중앙(x3830, t≈34)에 배치. 3자막을 커플 기준 offset으로 균등 배분(선 위 y는 yAtX, 떠있는 하트·나비는 커플과 함께 이동).
-add(libNode('lb30', 3610, 524, 60, {sw:3.8, topDown:true}),                         3610, 'dream', 0.0);    // 왼쪽 꽃
-add(libNode('lb56', 3830, 561, 225, {fill:true, sw:2.4, topDown:true}),                        3830, 'dream', 0.15);   // 산책 커플(중앙)
+add(libNode('lb30', 3723, 526, 60, {sw:3.8, topDown:true}),                         3723, 'dream', 0.0);    // 좌 꽃1
+add(libNode('lb110', 3933, 581, 273, {topDown:true, sw:3.2}),                        3933, 'dream', 0.15);   // 비눗방울 커플(중앙). 10% 확대 248->273. y581=하단여백 보정. sw 3.2
 items[items.length-1].subkey='dream';   // 자막 "함께 웃고" 앵커
-add(libNode('lb38', 3847, 293, 62, {anchor:'center', sw:4.0, fill:true, color:'var(--ember)'}), 3847, 'dream', 0.6);   // 하트
-add(sparkle(3847, 293, 46, 'var(--ember)'), 3847, 'dream', 0.85);   // 트윙클
-add(libNode('lb76', 3847, 449, 60, {anchor:'center', sw:3, topDown:true}), 3847, 'dream', 0.7);   // 빨간 나비(두 사람 사이)
-add(libNode('lb30', 4050, 582, 60, {sw:3.8, topDown:true}),                         4050, 'dream', 0.35);   // 오른쪽 꽃
+// 비눗방울 17개 — 각각 시차(lag)로 하나씩 등장
+add(libNode('lb111', 4173, 211, 29, {anchor:'center', topDown:true, sw:2.4}), 3933, 'dream', 0.3); items[items.length-1].node.setAttribute('data-selfpivot','1');   // 비눗방울1
+add(libNode('lb112', 4029, 216, 16, {anchor:'center', topDown:true, sw:2.4}), 3933, 'dream', 0.46); items[items.length-1].node.setAttribute('data-selfpivot','1');   // 비눗방울2
+add(libNode('lb113', 3845, 221, 78, {anchor:'center', topDown:true, sw:2.4}), 3933, 'dream', 0.62); items[items.length-1].node.setAttribute('data-selfpivot','1');   // 비눗방울3
+add(libNode('lb114', 3763, 223, 40, {anchor:'center', topDown:true, sw:2.4}), 3933, 'dream', 0.78); items[items.length-1].node.setAttribute('data-selfpivot','1');   // 비눗방울4
+add(libNode('lb115', 3807, 250, 23, {anchor:'center', topDown:true, sw:2.4}), 3933, 'dream', 0.94); items[items.length-1].node.setAttribute('data-selfpivot','1');   // 비눗방울5
+add(libNode('lb116', 4115, 253, 57, {anchor:'center', topDown:true, sw:2.4}), 3933, 'dream', 1.1); items[items.length-1].node.setAttribute('data-selfpivot','1');   // 비눗방울6
+add(libNode('lb117', 3976, 255, 62, {anchor:'center', topDown:true, sw:2.4}), 3933, 'dream', 1.26); items[items.length-1].node.setAttribute('data-selfpivot','1');   // 비눗방울7
+add(libNode('lb118', 3697, 281, 61, {anchor:'center', topDown:true, sw:2.4}), 3933, 'dream', 1.42); items[items.length-1].node.setAttribute('data-selfpivot','1');   // 비눗방울8
+add(libNode('lb119', 3923, 307, 69, {anchor:'center', topDown:true, sw:2.4}), 3933, 'dream', 1.58); items[items.length-1].node.setAttribute('data-selfpivot','1');   // 비눗방울9
+add(libNode('lb120', 4169, 322, 71, {anchor:'center', topDown:true, sw:2.4}), 3933, 'dream', 1.74); items[items.length-1].node.setAttribute('data-selfpivot','1');   // 비눗방울10
+add(libNode('lb121', 3735, 335, 26, {anchor:'center', topDown:true, sw:2.4}), 3933, 'dream', 1.9); items[items.length-1].node.setAttribute('data-selfpivot','1');   // 비눗방울11
+add(libNode('lb122', 3953, 356, 46, {anchor:'center', topDown:true, sw:2.4}), 3933, 'dream', 2.06); items[items.length-1].node.setAttribute('data-selfpivot','1');   // 비눗방울12
+add(libNode('lb123', 3688, 367, 60, {anchor:'center', topDown:true, sw:2.4}), 3933, 'dream', 2.22); items[items.length-1].node.setAttribute('data-selfpivot','1');   // 비눗방울13
+add(libNode('lb124', 4132, 383, 33, {anchor:'center', topDown:true, sw:2.4}), 3933, 'dream', 2.38); items[items.length-1].node.setAttribute('data-selfpivot','1');   // 비눗방울14
+add(libNode('lb125', 3915, 405, 58, {anchor:'center', topDown:true, sw:2.4}), 3933, 'dream', 2.54); items[items.length-1].node.setAttribute('data-selfpivot','1');   // 비눗방울15
+add(libNode('lb126', 3724, 410, 36, {anchor:'center', topDown:true, sw:2.4}), 3933, 'dream', 2.7); items[items.length-1].node.setAttribute('data-selfpivot','1');   // 비눗방울16
+add(libNode('lb127', 4170, 418, 18, {anchor:'center', topDown:true, sw:2.4}), 3933, 'dream', 2.86); items[items.length-1].node.setAttribute('data-selfpivot','1');   // 비눗방울17
+
+// (하트 lb38·트윙클·나비 lb76 제거 — 비눗방울 커플 씬)
+add(libNode('lb30', 4133, 580, 60, {sw:3.8, topDown:true}),                         4133, 'dream', 0.35);   // 우 꽃1
+// 꽃 총 6개(좌3·우3), 간격 좁게. 커플(3662~3998) 피해 양옆 지면
+add(libNode('lb30', 3653, 514, 54, {sw:3.8, topDown:true}),                         3653, 'dream', 0.05);   // 좌 꽃2
+add(libNode('lb30', 3688, 520, 62, {sw:3.8, topDown:true}),                         3688, 'dream', 0.1);    // 좌 꽃3
+add(libNode('lb30', 4168, 583, 58, {sw:3.8, topDown:true}),                         4168, 'dream', 0.4);    // 우 꽃2
+add(libNode('lb30', 4203, 587, 54, {sw:3.8, topDown:true}),                         4203, 'dream', 0.45);   // 우 꽃3
 
 // [씬] 별거 아닌 하루도 함께라서 참 좋았습니다 (3씬-3) — 자전거 커플(라이더 2명). 선 위(x4524,y585). grp='dream'로 두어 insertGap 시프트 제외.
-add(libNode('lb27', 4524, 585, 287, {topDown:true, sw:3.2}), 4524, 'dream', 0.3);   // 자전거 커플(lb27). viewBox 하단=바퀴 baseline(524)이라 바텀센터=바퀴가 선에 닿음. size 287=306*524/558(시각 동일). sw 3.0(굵기 약간↑)
+add(libNode('lb27', 4654, 585, 287, {topDown:true, sw:3.2}), 4654, 'dream', 0.3);   // 자전거 커플(lb27). 앞에 1초(메인선 ~130px) 삽입 4524->4654. 바퀴가 선에 닿음
 items[items.length-1].subkey='byeol';   // 자막 "별거 아닌 하루도" 앵커
 
 // ┌──────── [4. 헤어짐] 각자의 시간 (분기 pPink·pBlue) ────────┐
@@ -1210,7 +1232,7 @@ add(libNode('lb87', 6621, 574, 304, {fill:true, topDown:true, sw:2.4}), 6621, 't
 
 // [씬] 특별하지 않는 날들이 조금씩 특별해졌습니다 — 누운 커플(선 위, rt≈11164) + 구름 3개(그림처럼 하늘에)
 add(libNode('lb84', 6291, 653, 207, {fill:true, topDown:true, sw:2.4, occlude:true}), 6291, 'days', 0.0);   // 20% 더 아래로. occlude=B(그리기 따라 선 가림)
-add(libNode('lb71', 6275, 328, 92, {anchor:'center', topDown:true, sw:3.2, color:'var(--cloud)'}), 6275, 'days', 1.3);   // 구름(좌·큼) — 커플 다 그려진 뒤
+add(libNode('lb71', 6321, 328, 92, {anchor:'center', topDown:true, sw:3.2, color:'var(--cloud)'}), 6321, 'days', 1.3);   // 구름(좌·큼) — 50% 우측 이동 6275->6321
 add(libNode('lb71', 6325, 293, 58, {anchor:'center', topDown:true, sw:3.0, color:'var(--cloud)'}), 6325, 'days', 1.5);   // 구름(중·작음)
 add(libNode('lb71', 6385, 353, 76, {anchor:'center', topDown:true, sw:3.0, color:'var(--cloud)'}), 6385, 'days', 1.7);   // 구름(우·중)
 
@@ -1291,7 +1313,7 @@ add(oakT(8075,540,222),               8075, 'home', 1.32);
 
 // [씬] 혼자 걷던 길을 나란히 걷는 것 — 카페 건물(선 위, off 52.09 ≈ codeX 8300)
 add(libNode('lb107', 8300, 549, 450, {topDown:true, sw:2.4, occlude:true}), 8300, 'home', 0.6); items[items.length-1].subkey='cafe';   // 카페 건물(씬 간격 5초 위해 lag 1.6->0.6)
-add(libNode('lb106', 8242, 664, 238, {topDown:true, sw:3.6}), 8300, 'home', 0.9); items[items.length-1].node.setAttribute('data-selfpivot','1');   // 커플(건물 앞, 불투명). sw 3.2->3.6. 씬 간격 5초 lag 0.9. data-selfpivot=피벗 실제 중심
+add(libNode('lb106', 8242, 664, 262, {topDown:true, sw:4.0}), 8300, 'home', 0.9); items[items.length-1].node.setAttribute('data-selfpivot','1');   // 커플(건물 앞, 불투명). 10% 확대 238->262. sw 4.0. lag 0.9. data-selfpivot=피벗 실제 중심
 add(libNode('lb103', 8476, 669, 180, {topDown:true, sw:2.4, occlude:true}), 8476, 'home', 0.1);   // 화분(오른쪽) — 타이밍 기준 8476 복귀. lag 최소(0.1)로 펜 도달 직후 등장
 
 // [씬] 우리는 서로에게 '곁'이라는 선물을 받았습니다 — 등돌린 커플(선 위, 렌더 x≈15648, 선 y540)
@@ -2247,6 +2269,13 @@ function frame(ts){
   // [성능] SVG transform 속성(리페인트) → CSS translate3d(GPU 합성). #cam 의 will-change:transform 과 맞물려
   // 카메라 이동 시 이미 자리잡은 장식들이 매 프레임 리페인트되지 않는다. 이동량은 user 단위(=viewBox 좌표) 그대로.
   cam.style.transform=`translate3d(${camX.toFixed(1)}px,0,0)`;
+  // [모바일 메모리 컬링] 카메라 왼쪽으로 완전히 벗어난(화면 밖) 오브젝트는 display:none → GPU 필터 버퍼 반환.
+  //  누적 메모리로 iOS 사파리가 새 오브젝트 합성을 포기(오브젝트 미등장)하는 문제 방지. 화면 밖이라 화질 영향 0.
+  //  카메라는 완성 전까지 오른쪽으로만 이동하므로 한 번 벗어나면 되돌아오지 않음(영구 컬링 안전).
+  for(let ci=0; ci<items.length; ci++){ const it=items[ci];
+    if(it._culled || it.ax==null || !it.node) continue;
+    if(it.ax + camX < -560){ it.node.style.display='none'; it._culled=true; }
+  }
   // [덜컹] 박동(큰 R 스파이크)을 지날 때 "세로만"(scaleY) 기준선(y=540)을 축으로 살짝 커졌다 돌아온다.
   // 평평한 선은 축 위(y=540)라 안 움직이고, 축에서 먼 스파이크의 진폭만 세로로 펄스 → 박동 부분만 덜컹.
   const penX=xAtTime(t); let beatS=1;

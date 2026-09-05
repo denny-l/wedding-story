@@ -1,3 +1,10 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+<title>오브젝트 라이브러리 · 한 줄로 이어진 이야기</title>
+<script>
 // 공용 오브젝트 라이브러리 (single source of truth) — library.html·웨딩 페이지 공용 참조.
 // {label, cls, viewBox, style(색), svg, used}. 수정은 여기 한 곳.
 window.WEDDING_OBJECTS = {
@@ -667,3 +674,144 @@ window.WEDDING_SHAPES = {
   "ROUNDTREE_V": {"w": 574.5, "h": 1000, "canopy": [[322.1, 0.0], [218.8, 43.3], [175.5, 125.0], [76.9, 161.1], [60.1, 324.5], [0.0, 423.1], [16.8, 557.6800000000001], [156.2, 557.6800000000001], [221.2, 557.6800000000001], [113.0, 557.6800000000001], [127.4, 552.9], [187.5, 524.0], [105.8, 492.8], [108.2, 391.8], [168.3, 391.8], [180.3, 456.7], [226.0, 456.7], [264.4, 504.8], [302.9, 442.3], [358.2, 444.7], [375.0, 557.6800000000001], [348.6, 557.6800000000001], [480.8, 557.6800000000001], [574.5, 538.5], [567.3, 420.7], [514.4, 363.0], [512.0, 194.7], [432.7, 165.9], [420.7, 74.5]], "trunks": [[238.0, 718.8, 238.0, 1000.0], [310.1, 802.9, 310.1, 1000.0]]},
   "MOON_V": {"w": 853.2, "h": 1000, "poly": [[440.4, 0.0], [403.7, 32.1], [541.3, 238.5], [564.2, 449.5], [403.7, 683.5], [289.0, 756.9], [192.7, 779.8], [0.0, 761.5], [105.5, 903.7], [298.2, 1000.0], [454.1, 995.4], [678.9, 889.9], [816.5, 706.4], [853.2, 578.0], [839.4, 362.4], [752.3, 178.9], [605.5, 50.5]]}
 };
+
+</script>
+<style>
+  :root{ --board:#0e0e0f; --chalk:#f2ede2; --gold:#e9c552; --rose:#ef8fa9; --ember:#e8677d;
+    --azure:#6fa9d9; --leaf:#7cb972; --lilac:#b79ce0; --coral:#f2a65a; --cloud:#cfe0ea; --moon:#f4e6a8; }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--board);color:var(--chalk);font-family:'Gaegu',system-ui,sans-serif;
+    padding:26px 16px calc(60px + env(safe-area-inset-bottom));min-height:100vh;
+    background-image:radial-gradient(ellipse at 26% 12%,rgba(255,255,255,.04),transparent 60%),
+      radial-gradient(ellipse at 80% 86%,rgba(255,255,255,.028),transparent 55%);}
+  h1{font-size:26px;font-weight:700;text-align:center}
+  .sub{text-align:center;color:rgba(242,237,226,.55);font-size:14px;margin:6px 0 14px;font-family:'Nanum Pen Script',cursive}
+  h2{max-width:1120px;margin:26px auto 4px;font-size:19px;font-weight:700;color:var(--gold);
+    border-bottom:1px solid rgba(233,197,82,.25);padding-bottom:6px}
+  h2 small{color:rgba(242,237,226,.5);font-weight:400;font-size:14px}
+  .stage{max-width:1120px;margin:0 auto}
+  .stage svg.scene{width:100%;height:auto;display:block}
+  .line{stroke:var(--gold);stroke-width:5;fill:none;stroke-linecap:round;opacity:.9;filter:url(#chalk)}
+  /* 가져온 벡터: 아이콘별 color 로 면 채움 */
+  .ico *{fill:currentColor;stroke:none}
+  .ico.ol *{fill:none;stroke:currentColor;stroke-linejoin:round;stroke-linecap:round}
+  /* 선굵기: 런타임 스크립트(normalizeStrokes)가 요소별 화면 배율로 user-unit 굵기를 계산해 적용.
+     → 화면 크기에 완전 비례(상한 없음), 페이지 기준(그리드 4.4px·모달 5.5px @기준폭)과 일치. */
+  .lab{fill:rgba(242,237,226,.72);font-size:15px;text-anchor:middle;font-family:'Gaegu',sans-serif}
+  .back{display:block;text-align:center;margin-top:26px}
+  .back a{color:rgba(242,237,226,.6);text-decoration:none;font-size:15px;border:1px solid rgba(242,237,226,.2);
+    padding:9px 18px;border-radius:10px}
+  .back a:hover{color:var(--gold);border-color:var(--gold)}
+</style></head>
+<body>
+  <svg width="0" height="0" style="position:absolute"><defs>
+<linearGradient id="scratchRainbow" gradientUnits="userSpaceOnUse" x1="200" y1="540" x2="12200" y2="540" spreadMethod="repeat"><stop offset="0.000" stop-color="#e9c552"/><stop offset="0.029" stop-color="#ff8a3d"/><stop offset="0.059" stop-color="#ffd23d"/><stop offset="0.088" stop-color="#7ed957"/><stop offset="0.118" stop-color="#38c1c9"/><stop offset="0.147" stop-color="#4a8cf0"/><stop offset="0.176" stop-color="#c06cf0"/><stop offset="0.206" stop-color="#ff4d5e"/><stop offset="0.235" stop-color="#ff8a3d"/><stop offset="0.265" stop-color="#ffd23d"/><stop offset="0.294" stop-color="#7ed957"/><stop offset="0.324" stop-color="#38c1c9"/><stop offset="0.353" stop-color="#4a8cf0"/><stop offset="0.382" stop-color="#c06cf0"/><stop offset="0.412" stop-color="#ff4d5e"/><stop offset="0.441" stop-color="#ff8a3d"/><stop offset="0.471" stop-color="#ffd23d"/><stop offset="0.500" stop-color="#7ed957"/><stop offset="0.529" stop-color="#38c1c9"/><stop offset="0.559" stop-color="#4a8cf0"/><stop offset="0.588" stop-color="#c06cf0"/><stop offset="0.618" stop-color="#ff4d5e"/><stop offset="0.647" stop-color="#ff8a3d"/><stop offset="0.676" stop-color="#ffd23d"/><stop offset="0.706" stop-color="#7ed957"/><stop offset="0.735" stop-color="#38c1c9"/><stop offset="0.765" stop-color="#4a8cf0"/><stop offset="0.794" stop-color="#c06cf0"/><stop offset="0.824" stop-color="#ff4d5e"/><stop offset="0.853" stop-color="#ff8a3d"/><stop offset="0.882" stop-color="#ffd23d"/><stop offset="0.912" stop-color="#7ed957"/><stop offset="0.941" stop-color="#38c1c9"/><stop offset="0.971" stop-color="#4a8cf0"/><stop offset="1.000" stop-color="#c06cf0"/></linearGradient>
+<linearGradient id="scratchRainbowFw" gradientUnits="objectBoundingBox" x1="0" y1="0" x2="1" y2="1"><stop offset="0.000" stop-color="#e9c552"/><stop offset="0.029" stop-color="#ff8a3d"/><stop offset="0.059" stop-color="#ffd23d"/><stop offset="0.088" stop-color="#7ed957"/><stop offset="0.118" stop-color="#38c1c9"/><stop offset="0.147" stop-color="#4a8cf0"/><stop offset="0.176" stop-color="#c06cf0"/><stop offset="0.206" stop-color="#ff4d5e"/><stop offset="0.235" stop-color="#ff8a3d"/><stop offset="0.265" stop-color="#ffd23d"/><stop offset="0.294" stop-color="#7ed957"/><stop offset="0.324" stop-color="#38c1c9"/><stop offset="0.353" stop-color="#4a8cf0"/><stop offset="0.382" stop-color="#c06cf0"/><stop offset="0.412" stop-color="#ff4d5e"/><stop offset="0.441" stop-color="#ff8a3d"/><stop offset="0.471" stop-color="#ffd23d"/><stop offset="0.500" stop-color="#7ed957"/><stop offset="0.529" stop-color="#38c1c9"/><stop offset="0.559" stop-color="#4a8cf0"/><stop offset="0.588" stop-color="#c06cf0"/><stop offset="0.618" stop-color="#ff4d5e"/><stop offset="0.647" stop-color="#ff8a3d"/><stop offset="0.676" stop-color="#ffd23d"/><stop offset="0.706" stop-color="#7ed957"/><stop offset="0.735" stop-color="#38c1c9"/><stop offset="0.765" stop-color="#4a8cf0"/><stop offset="0.794" stop-color="#c06cf0"/><stop offset="0.824" stop-color="#ff4d5e"/><stop offset="0.853" stop-color="#ff8a3d"/><stop offset="0.882" stop-color="#ffd23d"/><stop offset="0.912" stop-color="#7ed957"/><stop offset="0.941" stop-color="#38c1c9"/><stop offset="0.971" stop-color="#4a8cf0"/><stop offset="1.000" stop-color="#c06cf0"/></linearGradient>
+
+    <filter id="chalk" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="4" seed="7" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="chalkSoft" x="-40%" y="-40%" width="180%" height="180%">
+      <feMorphology in="SourceGraphic" operator="dilate" radius="0.8" result="fat"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.05 0.09" numOctaves="3" seed="3" result="t"/>
+      <feDisplacementMap in="fat" in2="t" scale="3.6" xChannelSelector="R" yChannelSelector="G" result="disp"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.30" numOctaves="2" seed="11" result="g"/>
+      <feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 8 -2.4" result="mask"/>
+      <feComposite in="disp" in2="mask" operator="in" result="grain"/>
+      <feGaussianBlur in="disp" stdDeviation="1.4" result="dust"/>
+      <feColorMatrix in="dust" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.45 0" result="dustA"/>
+      <feMerge><feMergeNode in="dustA"/><feMergeNode in="grain"/></feMerge>
+    </filter>
+  </defs></svg>
+
+  <h1>오브젝트 라이브러리</h1>
+  <p class="sub">우리 오브젝트 + 가져온 벡터 · 골드 선 위 배치</p>
+
+  <div id="gallery"></div>
+  <div class="back"><a href="./index.html">← 목록으로</a></div>
+  <div id="modals"></div>
+<script>
+// 공용 objects.js 邸로 갤러리 동적 생성 — used 플래그로 사용중/미사용 섹션 자동 분류.
+(function(){
+  var O=window.WEDDING_OBJECTS||{}, ORD=window.WEDDING_OBJECTS_ORDER||[];
+  var COLS=[184,392,600,808,1016], ROWH=210, LINEY0=150, H=120;
+  function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+  function line(y){return '<path class="line" d="M 80 '+y+' C 360 '+(y-16)+', 660 '+(y+16)+', 864 '+y+' S 1120 '+(y-6)+', 1120 '+y+'"/>';}
+  function cell(id,i){
+    var o=O[id]; if(!o) return '';
+    var vb=o.viewBox.split(/\s+/).map(Number), asp=(vb[2]&&vb[3])?vb[2]/vb[3]:1;
+    var W=Math.max(70,Math.min(180,H*asp));
+    var col=i%5, row=(i/5)|0, cx=COLS[col], ly=LINEY0+row*ROWH;
+    var st=o.style?(' style="'+o.style+'"'):'', kf=o.keepfill?' data-keepfill':'';
+    return '<a href="#'+id+'"><svg class="'+o.cls+'"'+st+kf+' x="'+(cx-W/2)+'" y="'+(ly-H)+'" width="'+W+'" height="'+H+'" viewBox="'+o.viewBox+'" preserveAspectRatio="xMidYMax meet" overflow="visible" data-obj="'+id+'">'+o.svg+'</svg></a>'+
+           '<text class="lab" x="'+cx+'" y="'+(ly+30)+'">'+esc(o.label)+'</text>';
+  }
+  function section(title,sub,ids){
+    if(!ids.length) return '';
+    var rows=Math.ceil(ids.length/5), vbH=rows*ROWH+40, s='';
+    for(var r=0;r<rows;r++) s+=line(LINEY0+r*ROWH);
+    ids.forEach(function(id,i){ s+=cell(id,i); });
+    return '<h2>'+title+' <small>'+sub+' · '+ids.length+'종</small></h2>'+
+           '<div class="stage"><svg class="scene" viewBox="0 0 1200 '+vbH+'" xmlns="http://www.w3.org/2000/svg">'+s+'</svg></div>';
+  }
+  var used=ORD.filter(function(id){return O[id]&&O[id].used;});
+  var unused=ORD.filter(function(id){return O[id]&&!O[id].used;});
+  document.getElementById('gallery').innerHTML =
+    section('사용 중','페이지에 배치됨',used) +
+    section('미사용','라이브러리에만 있음',unused);
+  var mh='';
+  ORD.forEach(function(id){ var o=O[id]; if(!o) return;
+    var st=o.style?(' style="'+o.style+'"'):'', kf=o.keepfill?' data-keepfill':'';
+    mh+='<div class="lbx" id="'+id+'"><a class="lbx-bg" href="#_"></a><div class="lbx-card"><a class="lbx-x" href="#_">×</a>'+
+        '<div class="lbx-art"><svg class="'+o.cls+'"'+st+kf+' width="100%" height="100%" viewBox="'+o.viewBox+'" preserveAspectRatio="xMidYMid meet" overflow="visible" data-obj="'+id+'">'+o.svg+'</svg></div>'+
+        '<div class="lbx-label">'+esc(o.label)+'</div></div></div>';
+  });
+  document.getElementById('modals').innerHTML=mh;
+})();
+</script>
+<script>
+// 선굵기 정규화 — 페이지(웨딩)와 동일 기준, 화면 크기에 완전 비례(상한 없음).
+// 각 선 요소의 화면 배율(getScreenCTM)로 user-unit 굵기를 역산해 적용한다.
+(function(){
+  var GRID_BASE=4.4, GRID_REF=1120;   // 스테이지 폭 1120px일 때 그리드 윤곽선 4.4px
+  var MODAL_BASE=5.5, MODAL_REF=540;  // 모달 아트 540px일 때 5.5px
+  function apply(root, targetPx){
+    root.querySelectorAll('path,circle,ellipse,line,polyline,polygon').forEach(function(el){
+      if(el.classList.contains('line')) return;                    // 골드 가이드선 제외
+      if(el.closest('[data-keepfill]')) return;                    // 리본형 아이콘(빌딩 등): 채움 유지 = 한 겹 선
+
+      var cs=getComputedStyle(el);
+      var filled=cs.fill&&cs.fill!=='none'&&!/rgba\(0, 0, 0, 0\)/.test(cs.fill);
+      var stroked=cs.stroke&&cs.stroke!=='none'&&!/rgba\(0, 0, 0, 0\)/.test(cs.stroke);
+      if(!filled&&!stroked) return;
+      if(filled){                                   // 채움형 → 선형(윤곽선)으로 변환
+        if(!stroked) el.style.setProperty('stroke', cs.fill);     // 원래 채움색을 선색으로
+        el.style.setProperty('fill','none');
+      }
+      var ctm=el.getScreenCTM(); if(!ctm) return;
+      var s=Math.hypot(ctm.a,ctm.b); if(!s) return;
+      var w=targetPx/s;                             // 전부 선형 동일 풀 굵기
+      el.style.setProperty('stroke-width', w.toFixed(3));
+      el.style.setProperty('vector-effect','none');
+    });
+  }
+  function run(){
+    var scene=document.querySelector('.stage');
+    if(scene){
+      var w=scene.getBoundingClientRect().width||GRID_REF;
+      document.querySelectorAll('.scene').forEach(function(sc){ apply(sc, GRID_BASE*w/GRID_REF); });
+    }
+    var open=document.querySelector('.lbx:target,.lbx.open');
+    if(open){
+      var art=open.querySelector('.lbx-art');
+      var aw=art?art.getBoundingClientRect().width:MODAL_REF;
+      apply(open, MODAL_BASE*aw/MODAL_REF);
+    }
+  }
+  addEventListener('load',run);
+  addEventListener('resize',function(){ requestAnimationFrame(run); });
+  addEventListener('hashchange',function(){ requestAnimationFrame(run); });
+})();
+</script>
+</body></html>
