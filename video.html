@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>곁의 온도 · 동영상</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+<style>
+  :root{ --board:#0e0e0f; --chalk:#f2ede2; --gold:#e9c552; --azure:#6fa9d9; --muted:rgba(242,237,226,.55); }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{min-height:100%}
+  body{
+    background:var(--board); color:var(--chalk); font-family:'Gaegu',sans-serif;
+    min-height:100vh; min-height:100dvh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:max(20px,env(safe-area-inset-top)) 16px calc(20px + env(safe-area-inset-bottom));
+    background-image:
+      radial-gradient(ellipse at 28% 18%, rgba(255,255,255,.035), transparent 60%),
+      radial-gradient(ellipse at 78% 82%, rgba(255,255,255,.025), transparent 55%);
+  }
+  h1{ font-size:clamp(24px,7vw,34px); font-weight:700; letter-spacing:.02em;
+    text-shadow:0 0 16px rgba(242,237,226,.18); text-align:center; margin-bottom:4px }
+  .sub{ font-family:'Nanum Pen Script',cursive; font-size:clamp(15px,4.5vw,19px); color:var(--muted); margin-bottom:16px }
+  .stage{ width:100%; max-width:960px; display:flex; flex-direction:column; align-items:center }
+  video{
+    width:100%; height:auto; background:#000; border-radius:12px; display:block;
+    border:1px solid rgba(242,237,226,.14); box-shadow:0 8px 40px rgba(0,0,0,.5);
+  }
+  .hint{ font-family:'Nanum Pen Script',cursive; font-size:15px; color:rgba(242,237,226,.4); margin-top:12px; text-align:center }
+  .back{ margin-top:18px; display:inline-flex; align-items:center; gap:8px;
+    text-decoration:none; color:var(--muted); font-size:16px;
+    border:1px solid rgba(242,237,226,.2); border-radius:10px; padding:9px 16px;
+    -webkit-tap-highlight-color:transparent; transition:border-color .2s,color .2s }
+  .back:hover,.back:focus-visible{ color:var(--gold); border-color:rgba(233,197,82,.5); outline:none }
+</style>
+</head>
+<body>
+  <main class="stage">
+    <h1>곁의 온도</h1>
+    <p class="sub">식전영상 · 아이폰용 동영상</p>
+    <video controls playsinline preload="metadata" poster="">
+      <source src="video1.mp4?v=038fec81" type="video/mp4">
+      브라우저가 동영상을 지원하지 않습니다.
+    </video>
+    <p class="hint">▶︎ 재생 버튼을 누르면 소리와 함께 재생됩니다 · 우측 하단 아이콘으로 전체화면</p>
+    <a class="back" href="./index.html">‹ 메뉴로</a>
+  </main>
+</body>
+</html>
