@@ -2588,7 +2588,8 @@ items.forEach(it=>{ if(it.vineSuck) it.dur=1.1; });   // 덩굴: 멀리서 오�
   }
   var BOARD=(getComputedStyle(document.documentElement).getPropertyValue('--board')||'#0e0e0f').trim();
   function col(el,which){ var c=(el.style&&el.style[which])||el.getAttribute(which); if(!c||c==='none')return null;
-    if(c==='currentColor'||c.indexOf('var(')===0){ c=getComputedStyle(el).color||'#f2ede2'; } return c; }
+    if(c==='currentColor'||c.indexOf('var(')===0){ var cs=getComputedStyle(el); var rc=cs[which];   // var()/currentColor은 실제 stroke/fill 계산값으로 해석(.color는 검정이라 흰색이 검정으로 나옴)
+      c=(rc&&rc!=='none')?rc:(cs.color||'#f2ede2'); } return c; }
   window.__mirrorDraw=function(){
     ctx.setTransform(1,0,0,1,0,0); ctx.fillStyle=BOARD; ctx.fillRect(0,0,mcv.width,mcv.height);
     ctx.lineCap='round'; ctx.lineJoin='round';
