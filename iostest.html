@@ -1,0 +1,63 @@
+<!doctype html><html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>아이폰 캔버스 성능 테스트</title>
+<style>
+  html,body{margin:0;height:100%;background:#0e0e0f;overflow:hidden;font:14px -apple-system,sans-serif}
+  #c{display:block;width:100vw;height:100vh}
+  #hud{position:fixed;top:8px;left:8px;color:#f2ede2;background:rgba(0,0,0,.5);padding:6px 10px;border-radius:6px;z-index:9;white-space:pre-line}
+  #modeBtn{position:fixed;top:8px;right:8px;z-index:9;background:rgba(242,237,226,.1);color:#f2ede2;border:1px solid rgba(242,237,226,.3);border-radius:6px;padding:8px 12px}
+</style></head><body>
+<canvas id="c"></canvas>
+<div id="hud">측정 중…</div>
+<button id="modeBtn">모드: 캔버스</button>
+<script>
+const cv=document.getElementById('c'), hud=document.getElementById('hud');
+const DPR=Math.min(3, window.devicePixelRatio||1);
+let W,H;
+function resize(){ W=cv.clientWidth; H=cv.clientHeight; cv.width=Math.round(W*DPR); cv.height=Math.round(H*DPR); }
+resize(); addEventListener('resize',resize);
+const ctx=cv.getContext('2d');
+
+// ── 실제 씬과 비슷한 부하: 색색 링(비눗방울/오브젝트) 스프라이트 40개를 오프스크린에 한 번 굽고 팬 ──
+const COLORS=['#3d8ee0','#5fb8c8','#e07a9a','#79c25a','#f2c94c','#f2ede2'];
+function makeSprite(size, col){
+  const s=Math.round(size*DPR), off=document.createElement('canvas'); off.width=off.height=s;
+  const o=off.getContext('2d'); o.lineWidth=3*DPR; o.strokeStyle=col; o.lineCap='round';
+  // 링 + 하이라이트 호(비눗방울 느낌) + 약간의 손떨림
+  o.beginPath();
+  for(let a=0;a<=Math.PI*2+0.1;a+=0.25){ const r=s*0.42*(1+ (Math.random()-0.5)*0.03); const x=s/2+Math.cos(a)*r, y=s/2+Math.sin(a)*r; a===0?o.moveTo(x,y):o.lineTo(x,y);} o.stroke();
+  o.beginPath(); o.arc(s*0.36,s*0.34,s*0.12,Math.PI*1.1,Math.PI*1.6); o.stroke();
+  return off;
+}
+const N=44, sprites=[];
+for(let i=0;i<N;i++){
+  const size=40+Math.random()*90; const col=COLORS[i%COLORS.length];
+  sprites.push({img:makeSprite(size,col), size, x:Math.random()*4000, y:Math.random()*(H-120)+20});
+}
+const SPEED=130; // px/s 팬 (실제 카메라와 유사)
+let panX=0, useCanvas=true;
+
+// DOM(SVG-유사) 비교 모드: 실제 앱은 SVG라, 참고로 canvas만 측정. 버튼은 재시작용.
+document.getElementById('modeBtn').onclick=()=>{ panX=0; frames=0; longF=0; t0=performance.now(); };
+
+let last=performance.now(), t0=last, frames=0, longF=0, fpsShown=0;
+function loop(now){
+  const dt=(now-last)/1000; last=now; frames++;
+  if((now-last)>0){} if(dt>0.032) longF++;
+  panX += SPEED*dt*DPR;
+  const total=4000*DPR;
+  ctx.clearRect(0,0,cv.width,cv.height);
+  for(const sp of sprites){
+    let sx=(sp.x*DPR - panX) % total; if(sx<-200*DPR) sx+=total;
+    ctx.drawImage(sp.img, sx, sp.y*DPR);
+  }
+  if(now-t0>=1000){
+    fpsShown=(frames/((now-t0)/1000));
+    hud.textContent='캔버스 팬 테스트 (스프라이트 '+N+'개)\nFPS: '+fpsShown.toFixed(0)+'\n느린프레임(>32ms): '+longF+'\nDPR: '+DPR;
+    frames=0; longF=0; t0=now;
+  }
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+</script>
+</body></html>
