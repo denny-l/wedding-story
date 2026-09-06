@@ -263,7 +263,8 @@
 const {COUPLE_V,HOUSE_V,OAK_V,BUSHY_V,LEAFY_V,COUPLE2_V,BIKE_V,ROUNDTREE_V,MOON_V}=window.WEDDING_SHAPES;  // 공용 objects.js 의 shape 데이터 참조
 
 const NS='http://www.w3.org/2000/svg';
-const CHALK_ON=true;   // ★ 분필(chalkSoft) 필터 전체 on/off — 여기 true/false 한 곳만 바꾸면 모든 오브젝트에 적용
+// ★ 분필(chalkSoft) 필터 on/off. 기본 ON. URL ?chalk=off 로 끄면 진단용(필터가 아이폰 끊김 원인인지 즉시 확인).
+const CHALK_ON = !/[?&]chalk=off\b/.test(location.search);
 document.documentElement.setAttribute('data-chalk', CHALK_ON ? 'on' : 'off');
 const CPS=0.145;  // 글자 하나 쓰는 데 걸리는 초. 키우면 더 천천히 써짐
 const OS=1.5;   // 오브젝트 크기 배율
