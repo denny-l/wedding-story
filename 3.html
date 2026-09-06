@@ -2467,6 +2467,8 @@ function frame(ts){
     endStars.setAttribute('opacity',o.toFixed(3));
   }
 
+  if(window.__mirrorReady) window.__mirrorDraw(camX);   // [아이폰 캔버스] SVG 상태를 캔버스로 미러
+
   if(t<DURATION){ raf=requestAnimationFrame(frame); }
   else{ running=false; document.getElementById('ui').classList.remove('hide');
         document.getElementById('hint').classList.remove('hide'); }
@@ -2539,5 +2541,83 @@ tl.addEventListener('click', e=>{
 
 prep();
 items.forEach(it=>{ if(it.vineSuck) it.dur=1.1; });   // 덩굴: 멀리서 오기 + 밑둥으로 빨려들어감 시간
+
+// ═══════════════ [아이폰 캔버스 미러] ?canvas=1 일 때만 ═══════════════
+// iOS 사파리는 SVG 필터/대형 SVG 실시간 팬이 무거움 → SVG는 계산만(화면 숨김), 매 프레임
+// 각 획의 dashoffset(그리기 진행)·CTM(위치/바운스)을 읽어 캔버스에 손떨림 선으로 미러.
+// 선단위 draw-on·모든 효과 유지 + 캔버스라 아이폰 부드러움. 1·2·3.html(?canvas 없음)엔 영향 0.
+(function(){
+  if(!/[?&]canvas=1\b/.test(location.search)) return;
+  document.documentElement.setAttribute('data-chalk','off');   // 필터 제거(캔버스 손떨림이 질감 담당)
+  var scene=document.getElementById('scene'), stage=document.getElementById('stage');
+  var mcv=document.createElement('canvas');
+  mcv.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none';
+  scene.parentNode.insertBefore(mcv, scene.nextSibling);   // scene 위, caption 아래(자막 유지)
+  var ctx=mcv.getContext('2d'), DPR=Math.min(3, window.devicePixelRatio||1);
+  // #scene <svg>(viewBox 1920x1080)가 stage를 꽉 채우고, getCTM은 이미 [뷰박스 스케일 × cam 팬]을
+  // 적용해 scene 좌상단 기준 CSS px 좌표를 준다. 따라서 캔버스=stage크기×DPR, 매핑은 CSS px×DPR 뿐.
+  function rz(){ mcv.width=Math.round(stage.clientWidth*DPR); mcv.height=Math.round(stage.clientHeight*DPR); }
+  rz(); addEventListener('resize',rz);
+  function rng(sd){ var s=sd; return function(){ s=(s*9301+49297)%233280; return s/233280-0.5; }; }
+  function samp(el){ var tg=el.tagName.toLowerCase(), P=[], L=0;
+    try{
+      if(tg==='path'||tg==='line'){ L=el.getTotalLength(); var st=Math.max(2,L/Math.max(2,Math.ceil(L/5)));
+        for(var l=0;l<=L;l+=st){ var q=el.getPointAtLength(l); P.push([q.x,q.y]); } }
+      else if(tg==='ellipse'){ var cx=+el.getAttribute('cx'),cy=+el.getAttribute('cy'),rx=+el.getAttribute('rx'),ry=+el.getAttribute('ry');
+        for(var a=0;a<=6.3;a+=0.28) P.push([cx+Math.cos(a)*rx, cy+Math.sin(a)*ry]); L=Math.PI*(rx+ry); }
+      else if(tg==='circle'){ var CX=+el.getAttribute('cx'),CY=+el.getAttribute('cy'),R=+el.getAttribute('r');
+        for(var b=0;b<=6.3;b+=0.28) P.push([CX+Math.cos(b)*R, CY+Math.sin(b)*R]); L=2*Math.PI*R; }
+      else if(tg==='polygon'||tg==='polyline'){ var ps=(el.getAttribute('points')||'').trim().split(/[\s,]+/).map(Number);
+        for(var i=0;i<ps.length-1;i+=2) P.push([ps[i],ps[i+1]]); L=1; }
+    }catch(e){}
+    var rnd=rng((el.__mi||1)*131+7), ph=rnd()*6.28;
+    var W=P.map(function(p,i){ var w=Math.sin(i*0.6+ph)*0.6+rnd()*0.6; return [p[0]+w*0.5, p[1]+w]; });
+    return {pts:W, L:L||1};
+  }
+  var list=[], deco=document.getElementById('deco');
+  function ownerOf(el){ var g=el; while(g&&g.parentNode){ var pid=g.parentNode.id; if(pid==='cam'||pid==='deco'||pid==='endStars'||pid==='scene') return g; g=g.parentNode; } return el; }
+  function collect(){ list.length=0;
+    var els=scene.querySelectorAll('path,ellipse,circle,line,polygon,polyline');
+    for(var i=0;i<els.length;i++){ var el=els[i]; el.__mi=i;
+      if(el.closest('mask')||el.closest('clipPath')||el.closest('defs')) continue;
+      if(el.id==='lineClipRect') continue;
+      var s=samp(el); if(!s.pts.length) continue;
+      list.push({el:el, pts:s.pts, L:s.L, sw:parseFloat((el.style&&el.style.strokeWidth)||el.getAttribute('stroke-width')||'2'), owner:ownerOf(el)});
+    }
+    window.__mirrorReady=true;
+  }
+  var BOARD=(getComputedStyle(document.documentElement).getPropertyValue('--board')||'#0e0e0f').trim();
+  function col(el,which){ var c=(el.style&&el.style[which])||el.getAttribute(which); if(!c||c==='none')return null;
+    if(c==='currentColor'||c.indexOf('var(')===0){ c=getComputedStyle(el).color||'#f2ede2'; } return c; }
+  window.__mirrorDraw=function(){
+    ctx.setTransform(1,0,0,1,0,0); ctx.fillStyle=BOARD; ctx.fillRect(0,0,mcv.width,mcv.height);
+    ctx.lineCap='round'; ctx.lineJoin='round';
+    for(var i=0;i<list.length;i++){ var it=list[i], el=it.el;
+      if(el.style && el.style.visibility==='hidden') continue;
+      var ow=it.owner, oa=ow?parseFloat(ow.getAttribute('opacity')||(ow.style&&ow.style.opacity)||'1'):1;
+      if(isNaN(oa)) oa=1; if(oa<=0.01) continue;
+      var m; try{ m=el.getCTM(); }catch(e){ continue; } if(!m) continue;   // display:none면 null → 컬링됨
+      var P=it.pts, n=P.length;
+      var stroke=col(el,'stroke'), fill=col(el,'fill');
+      var sc=Math.hypot(m.a,m.b);   // 로컬→CSS px 스케일(뷰박스 0.51…)
+      function TX(p){ return [(m.a*p[0]+m.c*p[1]+m.e)*DPR, (m.b*p[0]+m.d*p[1]+m.f)*DPR]; }
+      if(fill){ var fo=parseFloat((el.style&&el.style.fillOpacity)||el.getAttribute('fill-opacity')||'1'); if(fo>0.01){
+        ctx.globalAlpha=oa*fo; ctx.fillStyle=fill; ctx.beginPath(); var g0=TX(P[0]); ctx.moveTo(g0[0],g0[1]);
+        for(var j=1;j<n;j++){ var g=TX(P[j]); ctx.lineTo(g[0],g[1]); } ctx.closePath(); ctx.fill(); ctx.globalAlpha=1; } }
+      if(!stroke) continue;
+      var frac=1, off=el.style&&el.style.strokeDashoffset, da=el.style&&el.style.strokeDasharray;   // 그리기 진행 = 1-offset/길이
+      if(off!==undefined && off!==''){ var ov=parseFloat(off), dl=parseFloat(da); if(isNaN(dl)||dl<=0) dl=it.L;
+        if(!isNaN(ov)&&dl>0){ frac=1-ov/dl; if(frac<0)frac=0; if(frac>1)frac=1; } }
+      if(frac<=0.004) continue;
+      var last=Math.min(n, Math.max(2, Math.ceil(frac*(n-1))+1));
+      ctx.globalAlpha=oa; ctx.strokeStyle=stroke; ctx.lineWidth=Math.max(0.6, it.sw*sc*DPR);
+      ctx.beginPath(); var s0=TX(P[0]); ctx.moveTo(s0[0],s0[1]);
+      for(var k=1;k<last;k++){ var sp=TX(P[k]); ctx.lineTo(sp[0],sp[1]); } ctx.stroke(); ctx.globalAlpha=1;
+    }
+  };
+  collect();
+  scene.style.visibility='hidden';   // SVG는 계산용만(화면 안 그림=iOS 비용 0)
+})();
+
 reset();
 </script>
