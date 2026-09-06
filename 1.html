@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<title>식전영상 · 한 줄로 이어진 이야기</title>
+<title>식전영상 · 곁의 온도</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
@@ -137,6 +137,19 @@
   #tlTime{position:absolute;right:2%;top:4px;font-size:12px;color:var(--gold)}
   #tlTitle{position:absolute;left:2%;top:4px;font-size:11px;color:rgba(242,237,226,.55);
     max-width:60%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  /* ── 모바일 최적화 ── */
+  @media (max-width:640px), (pointer:coarse){
+    #ui{ bottom:calc(14px + env(safe-area-inset-bottom)); gap:.8rem; width:auto; }
+    button{ font-size:1.15rem; padding:.75rem 1.5rem; min-height:48px; border-radius:8px;
+      background:rgba(242,237,226,.12); -webkit-tap-highlight-color:transparent; }
+    #hint{ display:none; }                         /* 키보드 단축키 안내는 모바일에서 숨김 */
+    #timeline{ height:52px; }
+    #tlTrack{ top:30px; height:8px; }
+    .tlSeg{ height:8px; }
+    .tlTick{ font-size:11px; }
+    .tlSegNum{ font-size:11px; }
+  }
 </style>
 
 <div id="stage">
@@ -2511,11 +2524,21 @@ function play(){
 }
 
 document.getElementById('play').onclick=play;
-document.getElementById('full').onclick=()=>document.documentElement.requestFullscreen();
+// 전체화면: iOS 사파리는 문서 요소 전체화면 미지원 → 지원 안 하면 버튼 숨김, 지원하면 webkit 폴백까지
+(function(){
+  var fsEl=document.documentElement;
+  var reqFS=fsEl.requestFullscreen||fsEl.webkitRequestFullscreen;
+  var exitFS=document.exitFullscreen||document.webkitExitFullscreen;
+  window.__fsOk=!!((document.fullscreenEnabled||document.webkitFullscreenEnabled)&&reqFS);
+  var btn=document.getElementById('full');
+  if(window.__fsOk){
+    window.__toggleFS=function(){ (document.fullscreenElement||document.webkitFullscreenElement)
+      ? exitFS.call(document) : reqFS.call(fsEl); };
+    btn.onclick=window.__toggleFS;
+  } else { btn.style.display='none'; }   // iOS 등 미지원 환경
+})();
 addEventListener('keydown',e=>{
-  if(e.key==='f'||e.key==='F'){
-    document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();
-  }
+  if((e.key==='f'||e.key==='F') && window.__fsOk){ window.__toggleFS(); }
   if(e.key===' '){e.preventDefault();play();}
   if(e.key==='t'||e.key==='T'){ tl.classList.toggle('hide'); }
 });

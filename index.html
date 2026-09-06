@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>식전영상 · 한 줄로 이어진 이야기</title>
+<title>식전영상 · 곁의 온도</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
@@ -77,6 +77,22 @@
 
   .foot{margin-top:26px;font-family:'Nanum Pen Script',cursive;
     font-size:16px;color:rgba(242,237,226,.35);text-align:center}
+
+  /* ── 모바일: 카드가 한 화면에 담기도록 여백·크기 압축 + 노치 대응 ── */
+  @media (max-width:640px){
+    body{ padding:max(16px,env(safe-area-inset-top)) 16px calc(20px + env(safe-area-inset-bottom)); }
+    .motif{ width:180px;height:50px;margin-bottom:8px }
+    h1{ font-size:clamp(28px,9vw,38px) }
+    .sub{ margin-top:2px }
+    .divider{ margin:14px 0 16px }
+    .cards{ gap:10px }
+    a.card{ padding:14px 16px;gap:13px;border-radius:12px }
+    .num{ width:40px;height:40px;font-size:18px }
+    .meta .t{ font-size:18px }
+    .meta .d{ font-size:13px }
+    .lib-card,.cIphone{ margin-top:8px }
+    a.card{ -webkit-tap-highlight-color:transparent }
+  }
 </style>
 </head>
 <body>
@@ -89,32 +105,32 @@
       <path d="M110 22 l1.5 -6 M118 26 l5 -4 M102 26 l-5 -4" stroke="var(--gold)" stroke-width="2" stroke-linecap="round"/>
     </svg>
 
-    <h1>한 줄로 이어진 이야기</h1>
+    <h1>곁의 온도</h1>
     <p class="sub">식전영상 · 세 가지 BGM</p>
 
     <div class="divider"></div>
 
     <nav class="cards">
-      <a class="card c1" href="./1.html?v=ec838487">
+      <a class="card c1" href="./1.html?v=bfff7f60">
         <span class="num">1</span>
         <span class="meta"><span class="t">버전 1</span><span class="d">BGM A</span></span>
         <span class="go">›</span>
       </a>
 
-      <a class="card c2" href="./2.html?v=60d65a73">
+      <a class="card c2" href="./2.html?v=19aa5eb0">
         <span class="num">2</span>
         <span class="meta"><span class="t">버전 2</span><span class="d">BGM B · Piano Valentine</span></span>
         <span class="go">›</span>
       </a>
 
-      <a class="card c3" href="./3.html?v=83c1e365">
+      <a class="card c3" href="./3.html?v=91a7070f">
         <span class="num">3</span>
         <span class="meta"><span class="t">버전 3</span><span class="d">BGM C · Romantic Piano</span></span>
         <span class="go">›</span>
       </a>
 
-      <a class="card cIphone" href="./1.html?canvas=1&v=ec838487">
-        <span class="num"></span>
+      <a class="card cIphone" href="./1.html?canvas=1&v=bfff7f60">
+        <span class="num">📱</span>
         <span class="meta"><span class="t">아이폰용 (버전 1)</span><span class="d">iPhone 전용 · 캔버스 렌더 (끊김 방지)</span></span>
         <span class="go">›</span>
       </a>
