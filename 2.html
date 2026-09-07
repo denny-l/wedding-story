@@ -271,7 +271,7 @@
   <audio id="bgmAudio" preload="auto" src="./bgm2.mp3?v=02411d67"></audio>
 </div>
 
-<script src="objects.js?v=8f39746a"></script>
+<script src="objects.js?v=9ad1b36b"></script>
 <script>
 const {COUPLE_V,HOUSE_V,OAK_V,BUSHY_V,LEAFY_V,COUPLE2_V,BIKE_V,ROUNDTREE_V,MOON_V}=window.WEDDING_SHAPES;  // 공용 objects.js 의 shape 데이터 참조
 
@@ -1199,12 +1199,12 @@ add(star(6960, 560, 10, 'var(--chalk)', 2.4), 6960, 'season', 0.5);    // 눈송
 
 // [헤어짐3] "서로의 위로가 되어주고" (자막 런타임 x6582) — 우산커플 + 비. 코드 x = 런타임 x − 1360.
 // [헤어짐3 재구성] "서로의 위로" — 남자(손뻗음)가 웅크린 여자에게 우산 건넴. codeX=inv(화면x,'comfort')=화면x-1618
-add(libNode('lb134', 5016, 700, 200, {topDown:true, sw:2.4, keepfill:true}), 5016, 'comfort', 0.3); var _hoBoyDown=items[items.length-1];   // 남자 팔내림(기본, 던지기 전). 몸 정렬 위해 x-16
-add(libNode('lb133', 5032, 700, 200, {topDown:true, sw:2.4, keepfill:true}), 5032, 'comfort', 0.3); var _hoBoy=items[items.length-1]; _hoBoy.hoCtl=1;   // 남자 손뻗음(던지는 순간). hoCtl=애니가 opacity 제어
-add(libNode('lb129', 5236, 190, 188, {anchor:'center', topDown:true, sw:2.4, keepfill:true, rot:29}), 5236, 'comfort', 1.6); var _hoUmbO=items[items.length-1]; _hoUmbO.hoCtl=1;   // 펼친 우산 — 착지 위치(건네기 애니가 도착시 펼침). 머리 위 살짝 기울임
-window.HANDOVER={umbOpenIt:_hoUmbO, boyDown:_hoBoyDown, boyReach:_hoBoy, X:6854, startX:6720, startY:530, endX:6854, endY:238, T0:null};   // [건네기] 닫힌우산이 남자손(start)→여자위(end) 포물선→열림. boyDown=팔내림/boyReach=팔뻗음 스왑
-add(libNode('lb132', 5282, 430, 48, {anchor:'center', topDown:true, sw:2.4, keepfill:true}), 5282, 'comfort', 0.45); var _hoPud=items[items.length-1];   // 물웅덩이(여자 발밑)
-add(libNode('lb131', 5282, 405, 175, {topDown:true, sw:2.4, keepfill:true}), 5282, 'comfort', 0.5); var _hoGirl=items[items.length-1];   // 웅크린 여자(위선 y401)
+add(libNode('lb134', 5016, 700, 220, {topDown:true, sw:2.4, keepfill:true}), 5016, 'comfort', 0.3); var _hoBoyDown=items[items.length-1];   // 남자 팔내림(기본, 던지기 전). 몸 정렬 위해 x-16
+add(libNode('lb133', 5032, 700, 220, {topDown:true, sw:2.4, keepfill:true}), 5032, 'comfort', 0.3); var _hoBoy=items[items.length-1]; _hoBoy.hoCtl=1;   // 남자 손뻗음(던지는 순간). hoCtl=애니가 opacity 제어
+add(libNode('lb129', 5236, 220, 188, {anchor:'center', topDown:true, sw:2.4, keepfill:true, rot:29}), 5236, 'comfort', 1.6); var _hoUmbO=items[items.length-1]; _hoUmbO.hoCtl=1;   // 펼친 우산 — 착지 위치(건네기 애니가 도착시 펼침). 머리 위 살짝 기울임. 씬 +30 하강
+window.HANDOVER={umbOpenIt:_hoUmbO, boyDown:_hoBoyDown, boyReach:_hoBoy, X:6854, startX:6720, startY:530, endX:6854, endY:268, T0:null};   // [건네기] 닫힌우산이 남자손(start)→여자위(end) 포물선→열림. boyDown=팔내림/boyReach=팔뻗음 스왑
+add(libNode('lb132', 5282, 460, 48, {anchor:'center', topDown:true, sw:2.4, keepfill:true}), 5282, 'comfort', 0.45); var _hoPud=items[items.length-1];   // 물웅덩이(여자 발밑). 씬 +30 하강
+add(libNode('lb131', 5282, 435, 175, {topDown:true, sw:2.4, keepfill:true}), 5282, 'comfort', 0.5); var _hoGirl=items[items.length-1];   // 웅크린 여자. 씬 +30 하강
 // [실 수렴 동반하강] 우산·물웅덩이·여자 = 위선(x6900) 추종 → 실 수렴으로 위 메인선 내려오면 함께 하강
 _hoUmbO.follow='top'; _hoUmbO.followX=6900; _hoPud.follow='top'; _hoPud.followX=6900; _hoGirl.follow='top'; _hoGirl.followX=6900;
 add(libNode('lb106', 3760, 540, 210, {topDown:true, sw:4.0}), 3760, 'comfort', 0.3); items[items.length-1].node.setAttribute('data-selfpivot','1'); var _shCoupleIt=items[items.length-1];   // [감전개그] 카페 커플 — 갈라짐 지점(최종x5378), 발=선540
@@ -1212,14 +1212,17 @@ add(libNode('lb128', 3760, 540, 210, {topDown:true, sw:2.0, fill:true, color:'va
 window.SHOCK={coupleIt:_shCoupleIt, skelIt:_shSkelIt, X:5378, T0:null};
 // 비(물방울) — 우산 위·양옆으로 흩뿌려 내림
 // 비(물방울) — 우산 위·양옆 gap. 실 수렴 때 위선(x6900) 따라 우산·여자와 함께 하강.
-[[5200,110,20,0.35],[5225,88,18,0.38],[5250,100,20,0.41],[5370,280,20,0.44],[5378,360,18,0.47],[5362,210,18,0.5],[5160,320,20,0.4],[5155,400,18,0.46],[5385,320,18,0.42],[5175,250,20,0.48]].forEach(function(d){
+[[5200,140,20,0.35],[5225,118,18,0.38],[5250,130,20,0.41],[5370,310,20,0.44],[5378,390,18,0.47],[5362,240,18,0.5],[5160,350,20,0.4],[5155,430,18,0.46],[5385,350,18,0.42],[5175,280,20,0.48]].forEach(function(d){   // 씬 +30 하강
   add(libNode('lb53', d[0], d[1], d[2], {fill:true, anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), d[0], 'comfort', d[3]);
   var it=items[items.length-1]; it.follow='top'; it.followX=6900;
 });
 
-// [헤어짐4] "보이지 않은 인연의 끈을 놓지 않은 채" (자막 런타임 x7313) — 여자선=편지, 남자선=전화기(선-추종).
-add(libNode('lb47', 5940, 364, 78, {topDown:true, sw:2.8, color:'var(--rose)'}), 5940, 'thread', 0.3); items[items.length-1].follow='top'; items[items.length-1].followX=7300;    // 편지(여자선 위) rt7300 — 100%↑, +50%
-add(libNode('lb46', 5970, 609, 84, {topDown:true, sw:2.8, color:'var(--azure)'}), 5970, 'thread', 0.35); items[items.length-1].follow='bottom'; items[items.length-1].followX=7330;  // 전화기(남자선) rt7330 — 100%↑, +50%
+// [헤어짐4] "보이지 않은 인연의 끈을 놓지 않은 채" (자막 런타임 x7313) — 여자(위선)가 엎드려 두 손으로 선물을 아래로 건네고 남자(아래선)가 받음. 실(끈) 애니는 유지.
+add(libNode('lb135', 5738, 388, 144, {topDown:true, sw:2.4, keepfill:true}), 5738, 'thread', 0.3); var _gtGW=items[items.length-1]; _gtGW.follow='top'; _gtGW.followX=7614;   // 여자 대기. 배(하단)가 위선(y373)에 닿게 y=407, followX=렌더x
+add(libNode('lb136', 5738, 388, 144, {topDown:true, sw:2.4, keepfill:true}), 5738, 'thread', 0.3); var _gtGG=items[items.length-1]; _gtGG.follow='top'; _gtGG.followX=7614;   // 여자 주기(두 손 아래로)
+add(libNode('lb137', 5970, 722, 215, {topDown:true, sw:2.4, keepfill:true}), 5970, 'thread', 0.3); var _gtBW=items[items.length-1]; _gtBW.follow='bottom'; _gtBW.followX=7846;   // 남자 대기(팔내림, 아래선-추종). 여자와 머리크기 일치=177
+add(libNode('lb138', 5970, 722, 215, {topDown:true, sw:2.4, keepfill:true}), 5970, 'thread', 0.3); var _gtBC=items[items.length-1]; _gtBC.follow='bottom'; _gtBC.followX=7846;   // 남자 받기(두 팔 위로)
+window.GIFTTOSS={girlWait:_gtGW, girlGive:_gtGG, boyWait:_gtBW, boyCatch:_gtBC, girlX:7614, boyX:7846, X:7614, T0:null, sdx:10, sdyDown:14, edx:-58, eyUp:183};   // [선물 건네기] 여자 손(위선아래)→남자 손(아래선위) 낙하
 
 // 두번째 실 위치(P2X=7598, 두 선 사이)에 coconut tree on an island 그림. 펜은 이미 지나갔으므로(52.1s) lag로 실 소멸시점(~56.9s)에 등장.
 add(libNode('lb3', 6238, 540, 130, {fill:true, anchor:'center', topDown:true, sw:3, color:'var(--leaf)'}), 6238, 'island', 4.85);   // coconut tree on an island — 두번째 실 자리(rt7598), 실 사라질 때 등장. 라이브러리 원색(leaf 초록)
@@ -2447,6 +2450,35 @@ function animateHandover(t){
   }
 }
 
+// [선물 건네기] 여자(엎드려 대기→두 손으로 아래로 건넴) → 선물박스 낙하 → 남자(대기→두 팔 받기). 실 애니와 독립.
+var _gtInit=false, _gtGiftNode=null;
+function animateGiftToss(t){
+  var G=window.GIFTTOSS; if(!G) return;
+  if(!_gtInit){ _gtInit=true;
+    _gtGiftNode=libNode('lb139',0,0,60,{anchor:'center',topDown:true,keepfill:true}); _gtGiftNode.style.opacity='0';
+    var deco=document.getElementById('deco'); if(deco) deco.appendChild(_gtGiftNode);
+    G.T0=storyTimeAtX(G.X)+2.6;   // 씬 자막 쓰인 뒤 건네기 시작(튜닝값)
+  }
+  var dt=t-G.T0, FLIGHT=1.2;
+  var ss=function(u){u=Math.max(0,Math.min(1,u));return u*u*(3-2*u);};
+  var giving=(dt>=0), catching=(dt>=FLIGHT-0.3);
+  if(G.girlWait&&G.girlWait.node) G.girlWait.node.setAttribute('opacity', giving?'0':'1');
+  if(G.girlGive&&G.girlGive.node) G.girlGive.node.setAttribute('opacity', giving?'1':'0');
+  if(G.boyWait&&G.boyWait.node) G.boyWait.node.setAttribute('opacity', catching?'0':'1');
+  if(G.boyCatch&&G.boyCatch.node) G.boyCatch.node.setAttribute('opacity', catching?'1':'0');
+  var topY=(FORK_PULL.lineY?FORK_PULL.lineY(G.girlX,'top'):382), botY=(FORK_PULL.lineY?FORK_PULL.lineY(G.boyX,'bottom'):697);
+  var sx=G.girlX+G.sdx, sy=topY+G.sdyDown, ex=G.boyX+G.edx, ey=botY-G.eyUp;   // 시작=여자 손(위선 아래), 끝=남자 손(아래선 위)
+  if(dt<0){ _gtGiftNode.style.opacity='0'; return; }
+  if(dt<FLIGHT){                                   // 선물 아래로 낙하(살짝 회전)
+    var p=ss(dt/FLIGHT), x=sx+(ex-sx)*p, y=sy+(ey-sy)*p, ang=p*180;
+    _gtGiftNode.style.opacity='1';
+    _gtGiftNode.setAttribute('transform','translate('+x.toFixed(1)+' '+y.toFixed(1)+') rotate('+ang.toFixed(1)+')');
+  } else {                                          // 남자 손에 안착
+    _gtGiftNode.style.opacity='1';
+    _gtGiftNode.setAttribute('transform','translate('+ex.toFixed(1)+' '+ey.toFixed(1)+') rotate(0)');
+  }
+}
+
 let start=null, raf=null, running=false;
 
 function frame(ts){
@@ -2606,6 +2638,7 @@ function frame(ts){
 
   animateShock(t);   // [감전개그] 커플→번개→감전 깜빡임→해골 (opacity 스왑, item 렌더 뒤 덮어씀)
   animateHandover(t);   // [건네기] 닫힌우산 남자손→여자위 포물선→펼쳐짐
+  animateGiftToss(t);   // [선물 건네기] 여자 엎드려 두 손으로 아래로 → 선물 낙하 → 남자 받기
 
   // 하트가 그려지기 시작하면 좌측 홈 오브젝트(집·나무·별·달)를 알파로 페이드아웃 → 깨끗한 하트 피날레
   items.forEach(it=>{
