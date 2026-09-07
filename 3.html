@@ -271,7 +271,7 @@
   <audio id="bgmAudio" preload="auto" src="./bgm3.mp3?v=cae8f7cf"></audio>
 </div>
 
-<script src="objects.js?v=6f56e65d"></script>
+<script src="objects.js?v=8f39746a"></script>
 <script>
 const {COUPLE_V,HOUSE_V,OAK_V,BUSHY_V,LEAFY_V,COUPLE2_V,BIKE_V,ROUNDTREE_V,MOON_V}=window.WEDDING_SHAPES;  // 공용 objects.js 의 shape 데이터 참조
 
@@ -690,7 +690,7 @@ function twinkle(x,y,s,color){
 // 가로등 불빛 광선 — 원본 그림 그대로: 램프 좌·우로 수평 부채꼴(한쪽 3줄), 램프와 간격 두고 바깥으로.
 function lampGlow(x,y,color){
   const g=el('g',{}); g.setAttribute('filter','url(#chalkSoft)');
-  const G=18, r1=5, r2=31, spread=27*Math.PI/180;   // G=원점 좌우 오프셋, r1~r2=광선 길이, ±27° 부채꼴
+  const G=20, r1=6, r2=18, spread=27*Math.PI/180;   // G=원점 좌우 오프셋, r1~r2=광선 길이(짧게), ±27° 부채꼴
   let d='';
   [-1,1].forEach(side=>{                              // -1=왼쪽, 1=오른쪽
     const ox=x+side*G, base=(side>0?0:Math.PI);       // 바깥 수평 기준
@@ -701,6 +701,18 @@ function lampGlow(x,y,color){
     });
   });
   g.appendChild(el('path',{d,stroke:color,'stroke-width':2.6,fill:'none','stroke-linecap':'round'}));
+  return g;
+}
+// 가로등 트윙클 — 원본 이미지 6개 직선(각도·길이 픽셀 추출) 그대로. cx,cy=전구 중심, s=배율.
+//  세그먼트 = bulb 기준 상대오프셋(우리 스케일). 위→아래 순서로 배열(드로우온 순서).
+function lampTwinkle(cx,cy,s,color){
+  const g=el('g',{}); g.setAttribute('filter','url(#chalkSoft)');
+  const segs=[[-40.7,-7.0,-34.2,-4.7],[40.7,-6.5,33.7,-4.7],   // 위(좌·우) — 각 선 위끝부터
+              [-33.2,6.5,-40.7,9.8],[32.3,7.5,40.7,12.2],       // 중(좌·우)
+              [-28.0,17.3,-32.2,23.4],[25.7,17.8,29.9,23.4]];   // 아래(좌·우) → 드로우온 위→아래
+  let d='';
+  segs.forEach(v=>{ d+=`M ${(cx+v[0]*s).toFixed(1)} ${(cy+v[1]*s).toFixed(1)} L ${(cx+v[2]*s).toFixed(1)} ${(cy+v[3]*s).toFixed(1)} `; });
+  g.appendChild(el('path',{d,stroke:color,'stroke-width':2.4,fill:'none','stroke-linecap':'round'}));
   return g;
 }
 // 선 끝 화살촉
@@ -1186,21 +1198,24 @@ add(star(6760, 525, 12, 'var(--chalk)', 2.4), 6760, 'season', 0.45);   // 눈송
 add(star(6960, 560, 10, 'var(--chalk)', 2.4), 6960, 'season', 0.5);    // 눈송이 (rt8320)
 
 // [헤어짐3] "서로의 위로가 되어주고" (자막 런타임 x6582) — 우산커플 + 비. 코드 x = 런타임 x − 1360.
-add(libNode('lb28', 5222, 684, 300, {fill:true, topDown:true, sw:2.4}), 5222, 'comfort', 0.3); items[items.length-1].follow='bottom'; items[items.length-1].followX=6582;   // 우산커플(발=아래선 684, +20%) rt6582
+// [헤어짐3 재구성] "서로의 위로" — 남자(손뻗음)가 웅크린 여자에게 우산 건넴. codeX=inv(화면x,'comfort')=화면x-1618
+add(libNode('lb134', 5016, 700, 200, {topDown:true, sw:2.4, keepfill:true}), 5016, 'comfort', 0.3); var _hoBoyDown=items[items.length-1];   // 남자 팔내림(기본, 던지기 전). 몸 정렬 위해 x-16
+add(libNode('lb133', 5032, 700, 200, {topDown:true, sw:2.4, keepfill:true}), 5032, 'comfort', 0.3); var _hoBoy=items[items.length-1]; _hoBoy.hoCtl=1;   // 남자 손뻗음(던지는 순간). hoCtl=애니가 opacity 제어
+add(libNode('lb129', 5236, 190, 188, {anchor:'center', topDown:true, sw:2.4, keepfill:true, rot:29}), 5236, 'comfort', 1.6); var _hoUmbO=items[items.length-1]; _hoUmbO.hoCtl=1;   // 펼친 우산 — 착지 위치(건네기 애니가 도착시 펼침). 머리 위 살짝 기울임
+window.HANDOVER={umbOpenIt:_hoUmbO, boyDown:_hoBoyDown, boyReach:_hoBoy, X:6854, startX:6720, startY:530, endX:6854, endY:238, T0:null};   // [건네기] 닫힌우산이 남자손(start)→여자위(end) 포물선→열림. boyDown=팔내림/boyReach=팔뻗음 스왑
+add(libNode('lb132', 5282, 430, 48, {anchor:'center', topDown:true, sw:2.4, keepfill:true}), 5282, 'comfort', 0.45); var _hoPud=items[items.length-1];   // 물웅덩이(여자 발밑)
+add(libNode('lb131', 5282, 405, 175, {topDown:true, sw:2.4, keepfill:true}), 5282, 'comfort', 0.5); var _hoGirl=items[items.length-1];   // 웅크린 여자(위선 y401)
+// [실 수렴 동반하강] 우산·물웅덩이·여자 = 위선(x6900) 추종 → 실 수렴으로 위 메인선 내려오면 함께 하강
+_hoUmbO.follow='top'; _hoUmbO.followX=6900; _hoPud.follow='top'; _hoPud.followX=6900; _hoGirl.follow='top'; _hoGirl.followX=6900;
 add(libNode('lb106', 3760, 540, 210, {topDown:true, sw:4.0}), 3760, 'comfort', 0.3); items[items.length-1].node.setAttribute('data-selfpivot','1'); var _shCoupleIt=items[items.length-1];   // [감전개그] 카페 커플 — 갈라짐 지점(최종x5378), 발=선540
 add(libNode('lb128', 3760, 540, 210, {topDown:true, sw:2.0, fill:true, color:'var(--chalk)'}), 3760, 'comfort', 0.3); var _shSkelIt=items[items.length-1]; _shSkelIt.shockSkel=1;   // [감전개그] 해골 커플(lb128) — 흰색(chalk), 커플 위 겹침, 감전때 번쩍
 window.SHOCK={coupleIt:_shCoupleIt, skelIt:_shSkelIt, X:5378, T0:null};
 // 비(물방울) — 우산 위·양옆으로 흩뿌려 내림
-add(libNode('lb53', 5110, 415, 20, {fill:true, anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5110, 'comfort', 0.35);  // rt6470
-add(libNode('lb53', 5180, 400, 18, {fill:true, anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5180, 'comfort', 0.38);  // rt6540
-add(libNode('lb53', 5240, 420, 22, {fill:true, anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5240, 'comfort', 0.41);  // rt6600
-add(libNode('lb53', 5300, 410, 18, {fill:true, anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5300, 'comfort', 0.44);  // rt6660
-add(libNode('lb53', 5150, 465, 20, {fill:true, anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5150, 'comfort', 0.47);  // rt6510
-add(libNode('lb53', 5220, 455, 18, {fill:true, anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5220, 'comfort', 0.5);   // rt6580
-add(libNode('lb53', 5080, 520, 22, {fill:true, anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5080, 'comfort', 0.4);   // rt6440(좌)
-add(libNode('lb53', 5100, 610, 18, {fill:true, anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5100, 'comfort', 0.46);  // rt6460(좌아래)
-add(libNode('lb53', 5340, 530, 20, {fill:true, anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5340, 'comfort', 0.42);  // rt6700(우)
-add(libNode('lb53', 5350, 620, 18, {fill:true, anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), 5350, 'comfort', 0.48);  // rt6710(우아래)
+// 비(물방울) — 우산 위·양옆 gap. 실 수렴 때 위선(x6900) 따라 우산·여자와 함께 하강.
+[[5200,110,20,0.35],[5225,88,18,0.38],[5250,100,20,0.41],[5370,280,20,0.44],[5378,360,18,0.47],[5362,210,18,0.5],[5160,320,20,0.4],[5155,400,18,0.46],[5385,320,18,0.42],[5175,250,20,0.48]].forEach(function(d){
+  add(libNode('lb53', d[0], d[1], d[2], {fill:true, anchor:'center', topDown:true, sw:2.6, color:'#7ec8e3'}), d[0], 'comfort', d[3]);
+  var it=items[items.length-1]; it.follow='top'; it.followX=6900;
+});
 
 // [헤어짐4] "보이지 않은 인연의 끈을 놓지 않은 채" (자막 런타임 x7313) — 여자선=편지, 남자선=전화기(선-추종).
 add(libNode('lb47', 5940, 364, 78, {topDown:true, sw:2.8, color:'var(--rose)'}), 5940, 'thread', 0.3); items[items.length-1].follow='top'; items[items.length-1].followX=7300;    // 편지(여자선 위) rt7300 — 100%↑, +50%
@@ -1208,8 +1223,8 @@ add(libNode('lb46', 5970, 609, 84, {topDown:true, sw:2.8, color:'var(--azure)'})
 
 // 두번째 실 위치(P2X=7598, 두 선 사이)에 coconut tree on an island 그림. 펜은 이미 지나갔으므로(52.1s) lag로 실 소멸시점(~56.9s)에 등장.
 add(libNode('lb3', 6238, 540, 130, {fill:true, anchor:'center', topDown:true, sw:3, color:'var(--leaf)'}), 6238, 'island', 4.85);   // coconut tree on an island — 두번째 실 자리(rt7598), 실 사라질 때 등장. 라이브러리 원색(leaf 초록)
-// 첫번째 실 위치(P1X=6100, 두 선 사이)에 메시지폰. 펜은 42.1s에 지남 → lag 4.85로 첫실 소멸(≈47.0s)에 등장.
-add(libNode('lb82', 4740, 540, 100, {anchor:'center', topDown:true, sw:4.6}), 4740, 'island', 4.85);   // 메시지폰 — 첫번째 실 자리(rt6100), 실 사라질 때 등장. 빨강(원색). 굵기↑↑
+// 첫번째 실 위치(P1X=7120, 두 선 사이)에 메시지폰. lag 4.85 → 첫 실 애니 끝(소멸) 시점에 등장.
+add(libNode('lb82', 5502, 540, 100, {anchor:'center', topDown:true, sw:4.6}), 5502, 'island', 4.85);   // 메시지폰 — 첫 실 자리(렌더x7120=코드5502+시프트1618), 실 사라질 때 등장. 빨강(원색). 굵기↑↑
 
 // [헤어짐2] "서로 다른 곳에서 각자의 꿈을 향해 / 서로의 하루를 살아갔습니다" — 각자의 일상 비네트.
 //   위선(로즈)=여자: 캐리어 소녀 + 커피 + 책 + 꽃 / 아래선(애저)=남자: 산책 소년(lb77) + 노트북 + 빌딩 + 별.  발이 선에 닿게(bottom-anchor), y=선 안착값.
@@ -1265,6 +1280,8 @@ add(libNode('lb71', 11900, 353, 76, {anchor:'center', topDown:true, sw:3.0, colo
 // [씬] 마음이 무거운 날에는 서로의 곁을 지켰습니다 — 계단 커플(계단 바닥=선 y540, rt≈12573)
 add(libNode('lb88', 6962, 570, 240, {fill:true, topDown:true, sw:2.4, occlude:true}), 6962, 'days', 0.0);   // 윗단 라인=호 능선(실측 y≈505). occlude=B(그리기 따라 선 가림)
 add(libNode('lb89', 6850, 512, 320, {fill:true, topDown:true, sw:2.2}), 6850, 'days', 0.0);   // 가로등: 커플 왼쪽(렌더≈12516), 밑둥=호 램프선 y≈508
+// [계단씬] 가로등 전구 양옆 트윙클 — 원본 이미지 6직선 그대로(lampTwinkle). nobounce=바운스없이 위→아래 드로우온
+add(lampTwinkle(6850, 254, 1, 'var(--gold)'), 6850, 'days', 1.4); items[items.length-1].nobounce=true;   // lag 1.4 = 램프(dur1.2) 다 그려진 뒤 시작
 add(libNode('lb30', 6800, 513, 66, {topDown:true, sw:3.6, color:'var(--rose)'}), 6800, 'days', 0.4);   // 가로등 왼쪽 꽃(핑크 5장, 이미지대로)
 // 도시 건물 배경(원본처럼 커플 오른쪽, 좌 낮고 우 높음). 렌더 x = fwd(codeX), 슬로프 1.9. 배경이라 커플보다 작고 밑둥은 지평선 위.
 add(libNode('lb90', 7075, 420, 118, {fill:true, topDown:true, sw:2.0}), 7075, 'days', 0.35);   // 건물(좌·반높이 wing) 커플에서 띄움 렌더≈13010
@@ -1290,7 +1307,7 @@ add(libNode('lb92', 7156, 471, 50, {topDown:true, sw:2.6}), 7156, 'days', 0.6); 
 
 // [씬] 별일 없는 날에는 그저 나란히 걸으며 (자막 off 33.09) — 걷는 커플 + 위 전구줄 + 양옆 꽃. 계단↔피크닉 사이, 선 위.
 // 전구 가랜드(lb95) — 2줄 크로스 스웨그+전구+점+반짝임, 커플 머리 위. keepfill로 baked 색 유지.
-add(libNode('lb95', 7280, 205, 124, {anchor:'center', topDown:true, keepfill:true}), 7280, 'days', 0.15);   // 전구 가랜드 1개. size 105->124(폭 496->585): 원본 커플대비 전구폭 비율 ~2.4 맞춤
+add(libNode('lb95', 7280, 205, 136, {anchor:'center', topDown:true, keepfill:true}), 7280, 'days', 0.15);   // 전구 가랜드 1개. size 124->136(+10%)
 add(libNode('lb97', 7280, 540, 240, {fill:true, topDown:true, sw:3.4, occlude:true}), 7280, 'days', 0.4);   // 걷는 커플(중앙, 선 위·발=y540). occlude=B. sw 2.4->3.4: 단일선이라 계단커플(외곽선)보다 얇고 흐려 보여 굵기 상향
 // 양옆 꽃 — flower()(초록 줄기·잎 + 분홍 꽃잎 + 골드 심). 이미지대로 전구 좌우폭(화면 7032~7526) 안쪽 양 끝에 배치.
 // codeX=7280(커플과 동일 씬 시점에 그려짐; 전구 lb95도 codeX 7280에 폭 7032~7526 차지). 좌2+우3. 줄기끝 y+1.5s=지면 y540.
@@ -1572,6 +1589,8 @@ function tAtX(x){
 //  · fork/p2: 모든 x +DX  · 오브젝트: ax>=X_INS 이면 ax+=DX + 노드 translate
 //  · 자막은 오브젝트 ax를 참조하므로 자동 추종. tbl/속도/시간은 아래에서 갱신된 geometry로 재계산됨.
 //  재사용: 새 씬 넣을 때 insertGap(그_x, 길이) 한 줄만 추가하면 뒤가 전부 자동 이동.
+// ═══ [fwd/inv 좌표 변환] 각 시프트 연산이 자기 스펙을 여기 기록 → fwd 가 그대로 재생(단일 소스, 드리프트 방지). ═══
+let SHIFT_LOG=[];
 function insertGap(X_INS, DX){
   function shiftAllX(d){ let cmd='', k=0;
     return d.replace(/\s+/g,' ').trim().split(' ').map(function(tok){
@@ -1592,6 +1611,7 @@ function insertGap(X_INS, DX){
   p1.setAttribute('d', d1 + wavyBridge(ex, ey, DX, s1));                  // 밸리 브릿지(접선 연속 → 자연스러운 연결)
   ['pPink','pBlue','p2'].forEach(id=>{ const e=document.getElementById(id); if(e) e.setAttribute('d', shiftAllX(e.getAttribute('d'))); });
   items.forEach(it=>{ if(it.ax!=null && !it.pin && it.ax>=X_INS && it.grp!=='dream'){ it.ax+=DX; it.dx=(it.dx||0)+DX; } });   // dream 씬은 브릿지 구간(3등분)에 직접 배치하므로 시프트 제외. pin(하늘 구름 등)도 제외=화면좌표 고정. dx: 렌더가 매 프레임 반영
+  SHIFT_LOG.push({t:'add', dx:DX, cond:{minAx:X_INS, noDream:true}});
   LINE_END_X += DX;
 }
 insertGap(3685, 1360);   // 함께웃고(dream)↔그리고(fork 갈라짐) 사이를 약 3배로
@@ -1616,6 +1636,7 @@ function insertForkGap(DX){
   // 피날레 그룹만 +DX (분기 안 오브젝트=apart/season 은 안 밀림). x기준이 아니라 grp기준이라 확장 구간에 오브젝트 배치 가능.
   const FINALE=['reunite','stronger','together','days','home','today'];
   items.forEach(function(it){ if(it.ax!=null && !it.pin && FINALE.indexOf(it.grp)>=0){ it.ax+=DX; it.dx=(it.dx||0)+DX; } });
+  SHIFT_LOG.push({t:'add', dx:DX, cond:{finaleSet:FINALE}});
   LINE_END_X += DX;
 }
 insertForkGap(2400);   // 헤어짐 1600→4000u (2씬→5씬 예정)
@@ -1637,6 +1658,7 @@ document.getElementById('pBlue').setAttribute('d',
   function shiftX(d){ let k=0; return d.replace(/\s+/g,' ').trim().split(' ').map(function(t){ if(/^[A-Za-z]$/.test(t)){k=0;return t;} const v=+t,isX=(k%2===0);k++; return (isX&&v>AT)?(v+DX):v; }).join(' '); }
   const p2=document.getElementById('p2'); if(p2) p2.setAttribute('d', shiftX(p2.getAttribute('d')));
   items.forEach(function(it){ if(it.ax!=null && !it.pin && it.ax>AT){ it.ax+=DX; it.dx=(it.dx||0)+DX; } });
+  SHIFT_LOG.push({t:'add', dx:DX, cond:{gtAx:AT}});
   LINE_END_X += DX;
 })();
 // [별거아닌 다음 = fork 앞 1초] fork 시작 앞에 직선 129 삽입 + p2·재회이후 오브젝트·선끝 +129 (pPink/pBlue·animateForkPull·상수·자막은 위/아래서 +129 조정)
@@ -1648,6 +1670,7 @@ document.getElementById('pBlue').setAttribute('d',
   p1.setAttribute('d', d+' L '+(ex+DX)+' '+ey);
   const p2=document.getElementById('p2'); if(p2) p2.setAttribute('d', shiftAllX(p2.getAttribute('d')));
   items.forEach(function(it){ if(it.ax!=null && !it.pin && it.ax>=ex && it.grp!=='dream'){ it.ax+=DX; it.dx=(it.dx||0)+DX; } });
+  SHIFT_LOG.push({t:'add', dx:DX, cond:{minAx:ex, noDream:true}});
   LINE_END_X += DX;
 })();
 // 라싱 실 2개(동적) — cam 그룹에 넣어 마스크 밖(선명). frame()에서 pull 진행에 맞춰 위치·불투명도 갱신.
@@ -1704,6 +1727,7 @@ let P2_STRETCH_DELTA=0;
   P2_STRETCH_DELTA += 258;   // [fork 두줄 2초 등속 보정] 삽입분 258을 SPEED 계산에서 제외 → 속도 불변, 시간만 +2초
   P2_STRETCH_DELTA += 258;   // [fork 앞 2초 등속 보정] 삽입분 258(1초+1초) 제외 → 속도 불변, 시간만 +2초
   items.forEach(function(it){ if(it.ax!=null && !it.pin && it.ax>=R){ const na=R+(it.ax-R)*F; it.dx=(it.dx||0)+(na-it.ax); it.ax=na; } });  // 함께2 오브젝트 재회기준 벌림. pin 제외
+  SHIFT_LOG.push({t:'stretch', R:R, F:F, cond:{minAx:R}});
   LINE_END_X = R+(LINE_END_X-R)*F;   // 선끝 x·마스크 폭 갱신
 })();
 
@@ -1720,6 +1744,7 @@ let P2_STRETCH_DELTA=0;
   }).join(' ');
   p2el.setAttribute('d', nd);
   items.forEach(function(it){ if(it.ax!=null && !it.pin && it.ax>atX){ it.ax+=DX; it.dx=(it.dx||0)+DX; } });
+  SHIFT_LOG.push({t:'add', dx:DX, cond:{gtAx:atX}});
   LINE_END_X += DX;
   P2_STRETCH_DELTA += DX;
 })();
@@ -1737,6 +1762,7 @@ let P2_STRETCH_DELTA=0;
     }).join(' ');
     p2el.setAttribute('d', nd);
     items.forEach(function(it){ if(it.ax!=null && !it.pin && it.ax>atX){ it.ax+=DX; it.dx=(it.dx||0)+DX; } });
+    SHIFT_LOG.push({t:'add', dx:DX, cond:{gtAx:atX}});
     LINE_END_X += DX;
     P2_STRETCH_DELTA += DX;
   });
@@ -1756,10 +1782,45 @@ let P2_STRETCH_DELTA=0;
     }).join(' ');
     p2el.setAttribute('d', nd);
     items.forEach(function(it){ if(it.ax!=null && !it.pin && it.ax>atX){ it.ax+=DX; it.dx=(it.dx||0)+DX; } });
+    SHIFT_LOG.push({t:'add', dx:DX, cond:{gtAx:atX}});
     LINE_END_X += DX;
     P2_STRETCH_DELTA += DX;
   });
 })();
+
+// ═══ [fwd/inv 좌표 변환] SHIFT_LOG(각 시프트 연산이 기록한 스펙)을 순서대로 재생. ═══
+//  fwd(codeX, grp, pin) = 오브젝트의 최종 화면 x. inv(screenX, grp) = 그 화면 x를 만드는 codeX.
+//  → 화면 x에 배치: add(libNode('id', inv(화면x,grp), y, size,...), inv(화면x,grp), grp, lag)
+//  pin(하늘 구름 등)은 시프트 제외라 codeX=화면x(fwd 항등). grp 는 dream/FINALE 조건을 가름(필수).
+function fwd(codeX, grp, pin){
+  if(pin) return codeX;
+  let ax=codeX;
+  for(let i=0;i<SHIFT_LOG.length;i++){ const op=SHIFT_LOG[i], c=op.cond;
+    if(c.minAx!=null && !(ax>=c.minAx)) continue;
+    if(c.gtAx!=null  && !(ax> c.gtAx)) continue;
+    if(c.finaleSet   && c.finaleSet.indexOf(grp)<0) continue;
+    if(c.noDream     && grp==='dream') continue;
+    if(op.t==='stretch') ax = op.R + (ax-op.R)*op.F;
+    else ax += op.dx;
+  }
+  return ax;
+}
+function inv(screenX, grp){   // fwd 는 codeX↑ 이면 화면x↑(단조) → 이분탐색. 절벽 갭이면 근접값+경고.
+  let lo=0, hi=screenX;       // 시프트는 항상 +이므로 codeX ≤ screenX
+  for(let i=0;i<48;i++){ const mid=(lo+hi)/2; if(fwd(mid,grp)<screenX) lo=mid; else hi=mid; }
+  const cx=Math.round((lo+hi)/2), got=fwd(cx,grp);
+  if(Math.abs(got-screenX)>2) console.warn('[inv] 화면x',screenX,'grp',grp,'→ 절벽 근처. 근접 codeX',cx,'(fwd',got.toFixed(1)+')');
+  return cx;
+}
+function _fwdSelfTest(){   // 기존 오브젝트 전부 fwd(codeX,grp)===it.ax 검증 → fwd 드리프트 즉시 검출
+  let fails=0, n=0;
+  items.forEach(it=>{ if(it.ax==null) return; n++;
+    const codeX=it.ax-(it.dx||0), got=fwd(codeX, it.grp, it.pin);
+    if(Math.abs(got-it.ax)>0.5){ fails++; if(fails<=8) console.error('[fwd mismatch] codeX',codeX.toFixed(1),'grp',it.grp,'pin',!!it.pin,'expect',it.ax.toFixed(1),'got',got.toFixed(1)); }
+  });
+  console.log('[fwd self-test]', fails===0?('PASS '+n+' items'):('FAIL '+fails+'/'+n));
+  return fails;
+}
 
 // [지평선 호] 계단(lb88) 윗단 라인에 메인선을 정확히 접합.
 //  계단 렌더 중심 x = fwd(codeX 6962) = 12729.3 (insertGap+forkGap+stretchP2×1.9+finaleGap+gaps55).
@@ -2355,6 +2416,37 @@ function animateShock(t){
   }
 }
 
+// [건네기] 닫힌우산(lb130)이 남자손→여자위 포물선으로 날아가 → 도착시 열린우산(lb129)으로 펼쳐짐. animateShock와 동일 패턴.
+var _hoInit=false, _hoClosed=null;
+function animateHandover(t){
+  var H=window.HANDOVER; if(!H||!H.umbOpenIt) return;
+  var oN=H.umbOpenIt.node;
+  if(!_hoInit){ _hoInit=true;
+    _hoClosed=libNode('lb130', 0, 0, 165, {anchor:'center', topDown:true, keepfill:true}); _hoClosed.style.opacity='0';
+    var deco=document.getElementById('deco'); if(deco) deco.appendChild(_hoClosed);
+    H.T0 = storyTimeAtX(H.X) + 1.4;   // 남자·여자 그려진 뒤 건네기 시작
+  }
+  var dt=t-H.T0, FLIGHT=1.3;
+  var ss=function(u){u=Math.max(0,Math.min(1,u));return u*u*(3-2*u);};
+  // 남자 자세 스왑: 던지기 전(dt<0)=팔내림, 던진 뒤=팔뻗음(손 떠난 뒤에도 유지)
+  var bd=H.boyDown&&H.boyDown.node, br=H.boyReach&&H.boyReach.node, reach=(dt>=0);
+  if(bd) bd.setAttribute('opacity', reach?'0':'1');
+  if(br) br.setAttribute('opacity', reach?'1':'0');
+  if(dt<0){ _hoClosed.style.opacity='0'; oN.setAttribute('opacity','0'); return; }
+  if(dt<FLIGHT){                                   // 닫힌우산 포물선 비행
+    var p=ss(dt/FLIGHT);
+    var x=H.startX+(H.endX-H.startX)*p, y=H.startY+(H.endY-H.startY)*p - 95*Math.sin(Math.PI*(dt/FLIGHT));
+    var ang=45 - p*110;                             // 크게 반대방향 텀블(가시적)
+    _hoClosed.style.opacity='1';
+    _hoClosed.setAttribute('transform','translate('+x.toFixed(1)+' '+y.toFixed(1)+') rotate('+ang.toFixed(1)+')');
+    oN.setAttribute('opacity','0');
+  } else {                                          // 도착 → 열린우산 펼침
+    _hoClosed.style.opacity='0';
+    if(!H._drawn){ H._drawn=true; oN.querySelectorAll('path,circle,ellipse,line,polygon,polyline').forEach(function(p){ p.style.strokeDashoffset='0'; p.style.visibility='visible'; }); }
+    oN.setAttribute('opacity','1');
+  }
+}
+
 let start=null, raf=null, running=false;
 
 function frame(ts){
@@ -2490,7 +2582,7 @@ function frame(ts){
     // 바운스: 자리에 도착할 때 통통 튀며 안착 (감쇠 스프링)
     let spring;
     if(r<1){
-      spring = Math.sin(r*Math.PI*2.3)*Math.exp(-3.2*r)*(it.sprout?0.07:0.22);  // 새싹은 바운스 약하게(자라나듯)
+      spring = it.nobounce ? 0 : Math.sin(r*Math.PI*2.3)*Math.exp(-3.2*r)*(it.sprout?0.07:0.22);  // 새싹은 바운스 약하게. nobounce=바운스 없이 드로우온만
     }else{
       spring = 0;
     }
@@ -2513,6 +2605,7 @@ function frame(ts){
   });
 
   animateShock(t);   // [감전개그] 커플→번개→감전 깜빡임→해골 (opacity 스왑, item 렌더 뒤 덮어씀)
+  animateHandover(t);   // [건네기] 닫힌우산 남자손→여자위 포물선→펼쳐짐
 
   // 하트가 그려지기 시작하면 좌측 홈 오브젝트(집·나무·별·달)를 알파로 페이드아웃 → 깨끗한 하트 피날레
   items.forEach(it=>{
@@ -2655,6 +2748,7 @@ tl.addEventListener('click', e=>{
 
 prep();
 items.forEach(it=>{ if(it.vineSuck) it.dur=1.1; });   // 덩굴: 멀리서 오기 + 밑둥으로 빨려들어감 시간
+try{ _fwdSelfTest(); }catch(e){ console.error('[fwd self-test] 예외', e); }   // fwd 정확성 자체검증(콘솔)
 
 
 reset();
