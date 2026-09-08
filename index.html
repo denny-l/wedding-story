@@ -143,7 +143,22 @@
     </nav>
 
     <p class="foot">화면을 켜고 소리와 함께 봐주세요 · ♪</p>
-    <p class="foot" id="lastUpdated" style="margin-top:6px;opacity:.7">마지막 업데이트: 2026-09-07 19:18 KST</p>
+    <p class="foot" style="margin-top:6px;opacity:.7"><span id="lastUpdated">마지막 업데이트: 2026-09-08 10:12 KST</span><span id="todayCount"></span></p>
   </main>
+  <script>
+  /* 오늘(KST) 방문자 수 — 정적 사이트라 외부 무료 카운터(Abacus) 사용. 브라우저당 하루 1회만 증가(localStorage). 실패 시 조용히 미표시. */
+  (function(){
+    var el=document.getElementById('todayCount'); if(!el) return;
+    var kst=new Date(Date.now()+9*3600*1000);
+    var key=''+kst.getUTCFullYear()+String(kst.getUTCMonth()+1).padStart(2,'0')+String(kst.getUTCDate()).padStart(2,'0');
+    var NS='wedding-story-denny-l', flag='wv_'+key, base='https://abacus.jasoncameron.dev';
+    var already=false; try{ already=localStorage.getItem(flag)==='1'; }catch(e){}
+    fetch(base+(already?'/get/':'/hit/')+NS+'/'+key).then(function(r){return r.json();}).then(function(d){
+      var n=(d&&d.value!=null)?d.value:(d&&d.count!=null?d.count:null); if(n==null) return;
+      if(!already){ try{ localStorage.setItem(flag,'1'); }catch(e){} }
+      el.textContent=' · 오늘 '+n+'명 방문';
+    }).catch(function(){});
+  })();
+  </script>
 </body>
 </html>
