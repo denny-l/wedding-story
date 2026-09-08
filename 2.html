@@ -271,7 +271,7 @@
   <audio id="bgmAudio" preload="auto" src="./bgm2.mp3?v=02411d67"></audio>
 </div>
 
-<script src="objects.js?v=9ad1b36b"></script>
+<script src="objects.js?v=e449ba63"></script>
 <script>
 const {COUPLE_V,HOUSE_V,OAK_V,BUSHY_V,LEAFY_V,COUPLE2_V,BIKE_V,ROUNDTREE_V,MOON_V}=window.WEDDING_SHAPES;  // 공용 objects.js 의 shape 데이터 참조
 
@@ -1248,9 +1248,9 @@ add(libNode('lb63', 4858, 652, 158, {topDown:true, sw:2.4, color:'var(--azure)'}
 // ┌──────── [5. 함께2] 재회 ~ 피날레 · 다시 함께 (단일선 p2 = 스크래치 무지개) ────────┐
 //   씬: 돌고돌아 재회 · 더 단단해진 · 함께 걷습니다 · 특별한 하루(자전거) · 앞으로의 날(집·나무) · 오늘부터(하트 터짐)
 //   grp: reunite / stronger / together / days / home / today
-// [씬] 돌고 돌아, 운명처럼 다시 만났습니다
-add(twinkle(5285,540,30,'var(--gold)'), 5275, 'reunite'); items[items.length-1].subkey='reunite';
-items[items.length-1].bounce=true;   // 나온 뒤 계속 통통 바운스
+// [씬] 돌고 돌아, 운명처럼 다시 만났습니다 — 손 흔드는 남자(왼) + 차 탄 여자(오른, 재회)
+add(libNode('lb140', 4976, 580, 200, {topDown:true, sw:2.4, keepfill:true, occlude:true}), 4976, 'reunite', 0.3); items[items.length-1].subkey='reunite';   // 손 흔드는 남자아이. occlude=메인선 가림
+add(libNode('lb141', 5234, 410, 220, {topDown:true, sw:2.4, keepfill:true}), 5234, 'reunite', 0.5);   // 차 탄 여자아이 — 하트 위치로 이동
 
 // [씬] 조금 달라진 모습으로, 여전히 익숙한 사람으로 — 벤치 커플(선 위, 렌더 x≈9682, 선 y540, 등장 71.4s)
 add(libNode('lb83', 5620, 540, 231, {fill:true, topDown:true, sw:2.4, occlude:true}), 5620, 'stronger', 0.0);   // 벤치 커플 +10%. occlude=B
@@ -1261,8 +1261,6 @@ add(libNode('lb55', 5655, 288, 44, {fill:true, anchor:'center', topDown:true, sw
 add(libNode('lb85', 5708, 222, 48, {fill:true, anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}), 5708, 'stronger', 1.9);   // 8분음표
 
 // [씬] 다시 만나, 더 단단해진 우리는
-add(heart(5285,322,52,'var(--ember)',5), 5285, 'stronger'); items[items.length-1].subkey='stronger';   // '다시 만났을 때' 하트 — 60% 더 위로
-add(twinkle(5285,322,40,'var(--gold)'),     5285, 'stronger', 0.7);   // 하트(5285,322) 감싸는 트윙클 — 하트 나온 뒤(lag 0.7) 광선 하나씩 그려짐
 add(pansy(5510,458,54,'var(--lilac)'), 5510, 'stronger');   // 재회 선 위 팬지 — 벤치 왼쪽(더 좁힘)
 add(cherry(5720,460,54,'var(--rose)'), 5720, 'stronger');   // 재회 선 위 벚꽃 — 벤치 오른쪽(살짝 더 왼쪽)
 
@@ -2128,7 +2126,7 @@ const SUBS=[
   // [함께2] 재회~피날레 자막 12개. 모두 재회 시점(x9045)에 앵커 + 누적 off(=(n-1)*4.6: 표시3.6+간격1.0).
   //  선 속도는 등속(불변). 자막이 선 완성보다 길면 피날레를 유지하며 이어짐 → 전체 시간만 늘어남.
   {at:'x', x:REUNION_X, off:0.0,  dur:3.6, text:'그러던 어느 날,\n참 신기하게도 우리의 시간은\n운명처럼 다시 만났습니다.'},
-  {at:'x', x:REUNION_X, off:4.6,  dur:3.6, text:'조금 달라진 모습으로,\n여전히 익숙한 사람으로.'},
+  {at:'x', x:REUNION_X, off:5.1,  dur:3.6, text:'조금 달라진 모습으로,\n여전히 익숙한 사람으로.'},
   {at:'x', x:REUNION_X, off:11.07,  dur:3.6, text:'우리는 다시\n서로의 하루를 나누기 시작했습니다.'},
   {at:'x', x:REUNION_X, off:16.6, dur:3.6, text:'특별하지 않는 날들이\n조금씩 특별해졌습니다.'},
   {at:'x', x:REUNION_X, off:22.87, dur:3.6, text:'좋은 날에는 함께 웃고,'},
@@ -2227,6 +2225,8 @@ function animateForkPull(t){
     F.pkLive=el('path',{fill:'none',stroke:'url(#roseFade)','stroke-width':'9','stroke-opacity':'0.95','stroke-linecap':'round','stroke-linejoin':'round'});
     F.blLive=el('path',{fill:'none',stroke:'url(#azureFade)','stroke-width':'9','stroke-opacity':'0.95','stroke-linecap':'round','stroke-linejoin':'round'});
     flG.appendChild(F.pkLive); flG.appendChild(F.blLive);
+    // [남자 재회] 남자 노드를 fork선(flG) 위 레이어로 올림 → occlude 실루엣이 머리에 겹치는 윗 fork선을 가림
+    var _boyOcc=(typeof items!=='undefined')&&items.find(function(it){return it.subkey==='reunite'&&it.node;}); if(_boyOcc) document.getElementById('cam').appendChild(_boyOcc.node);
   }
   const ss=u=>{u=Math.max(0,Math.min(1,u));return u*u*(3-2*u);};
   const EM=0.4;   // 실이 여자선(위)→남자선(아래) 뻗어 붙는 시간. attach = T+EM.
@@ -2246,12 +2246,12 @@ function animateForkPull(t){
     if(y<YNK) return 0.06 + (OVER-0.06)*ss(y/YNK);                      // 홱 조임 → 오버슈트
     return OVER - (OVER-1)*ss(Math.min(1,(y-YNK)/SET)); };              // 탄성 정착 → 1.0
   const sp=(x,X)=>Math.exp(-Math.pow((x-X)/470,2));   // 넓은 가우시안(전체 선 각으로 수렴) — 단, 두 pull 사이에선 0으로 떨어져 확실히 벌어짐
-  const GB=160, DIPAMT=58;                         // 벌어진 반폭 160(간격 320) — 첫 fork(유년 pFAt/pFAb ±160)와 동일. 당기면 ~102
+  const GB=160, DIPAMT=58, DIPAMT2=72;             // 벌어진 반폭 160. 첫 실=58, 둘째 실(P2)=72(조금 더 당김)
   const REB=40, RBO=470;   // 핀치 직후(오른쪽 RBO)에서 바깥으로 벌어지는 반동 — 좁힌 뒤 다시 간격 유지
   const hgc=x=>{ const e=env(x); if(e<=0) return 0;
     let g=GB
       - DIPAMT*dip(F.T1)*sp(x,F.P1X) + REB*dip(F.T1)*sp(x,F.P1X+RBO)
-      - DIPAMT*dip(F.T2)*sp(x,F.P2X) + REB*dip(F.T2)*sp(x,F.P2X+RBO);
+      - DIPAMT2*dip(F.T2)*sp(x,F.P2X) + REB*dip(F.T2)*sp(x,F.P2X+RBO);
     return e*Math.max(24,g); };
   // 당기는 순간 감쇠 물결(각자 위상) — attach 후 짧게
   const rip=(x,ph)=>{ let r=0; const A=[[F.T1+EM,F.P1X],[F.T2+EM,F.P2X]];
@@ -2265,7 +2265,7 @@ function animateForkPull(t){
   const penX=xAtTime(t);   // 실제 선 그려진 지점(=펜, 오른쪽 1/3). 라이브선을 여기까지만 그림 → 딱 펜에서 끝남.
   const build=fy=>{ if(penX<=FORK_X+15) return ''; const xe=Math.min(REUNION_X,penX); let d='M '+FORK_X+' '+fy(FORK_X).toFixed(1);
     for(let x=FORK_X-218;x<=xe;x+=40){ d+=' L '+x+' '+fy(x).toFixed(1); }
-    if(xe<REUNION_X-1) d+=' L '+xe.toFixed(1)+' '+fy(xe).toFixed(1);   // 정확히 펜까지
+    d+=' L '+xe.toFixed(1)+' '+fy(xe).toFixed(1);   // 항상 끝점(=펜 또는 REUNION_X)까지 붙임 — 40px 루프가 REUNION_X에 못 미쳐 생기던 재회 지점 갭 방지
     return d; };
   if(F.pkLive){ F.pkLive.setAttribute('d', build(yTop)); F.blLive.setAttribute('d', build(yBot)); }
   // 실: 여자선(위)에서 나와 → 남자선(아래) 붙음(매듭) → 당김/유지 → 다시 벌어질 때 사라짐
