@@ -271,7 +271,7 @@
   <audio id="bgmAudio" preload="auto" src="./bgm3.mp3?v=cae8f7cf"></audio>
 </div>
 
-<script src="objects.js?v=e449ba63"></script>
+<script src="objects.js?v=7d394553"></script>
 <script>
 const {COUPLE_V,HOUSE_V,OAK_V,BUSHY_V,LEAFY_V,COUPLE2_V,BIKE_V,ROUNDTREE_V,MOON_V}=window.WEDDING_SHAPES;  // 공용 objects.js 의 shape 데이터 참조
 
@@ -712,7 +712,7 @@ function lampTwinkle(cx,cy,s,color){
               [-28.0,17.3,-32.2,23.4],[25.7,17.8,29.9,23.4]];   // 아래(좌·우) → 드로우온 위→아래
   let d='';
   segs.forEach(v=>{ d+=`M ${(cx+v[0]*s).toFixed(1)} ${(cy+v[1]*s).toFixed(1)} L ${(cx+v[2]*s).toFixed(1)} ${(cy+v[3]*s).toFixed(1)} `; });
-  g.appendChild(el('path',{d,stroke:color,'stroke-width':2.4,fill:'none','stroke-linecap':'round'}));
+  g.appendChild(el('path',{d,stroke:color,'stroke-width':5.6,fill:'none','stroke-linecap':'round'}));   // 트윙클 더 굵게(2.4->4.0->5.6)
   return g;
 }
 // 선 끝 화살촉
@@ -1037,6 +1037,7 @@ function libNode(id,x,y,size,opt){
   var cx=vb[0]+vb[2]/2, cy=(opt.anchor==='center')?(vb[1]+vb[3]/2):(vb[1]+vb[3]);
   var outer=el('g',{filter:'url(#chalkSoft)'});   // chalkSoft 부착(전체 토글 CHALK_ON로 on/off). off면 CSS가 해제
   if(opt.topDown) outer.setAttribute('data-topdown','1');   // 위→아래 순차 선-그리기(규칙)
+  if(opt.randDraw) outer.setAttribute('data-randdraw','1');   // 랜덤 순서로 그리기(꽃 등) — y정렬 대신 위치해시로 섞음
   if(opt.color) outer.style.color=opt.color;
   var inner=el('g',{transform:'translate('+x+' '+y+')'+(opt.rot?(' rotate('+opt.rot+')'):'')+' scale('+sc.toFixed(4)+') translate('+(-cx).toFixed(1)+' '+(-cy).toFixed(1)+')'});   // opt.rot: 배치점(bottom-center) 기준 회전(deg, 양수=시계)
   inner.innerHTML=o.svg;
@@ -1178,24 +1179,13 @@ items[items.length-1].subkey='byeol';   // 자막 "별거 아닌 하루도" 앵�
 // [씬] 헤어짐5 "그렇게 많은 계절이 지났습니다"(자막 런타임 x8044) — 네 계절을 한 장면에 모아 배치(흩뿌리지 않음).
 //  코드 x = 런타임 x − 1360(insertGap +1360). grp='season'. 하늘(봄꽃→여름해→가을잎/구름) · 사이(나비·지는잎·하트) · 아래선(눈사람·눈·하트).
 // (라싱 실은 정적 배치 대신 frame()의 animateForkPull 이벤트로 동적 처리 — FORK_PULL)
-// 하늘 (봄꽃 → 여름해 → 가을잎)
-add(libNode('lb33', 6360, 426, 81, {topDown:true, sw:3.4, color:'var(--rose)'}),   6360, 'season', 0.2); items[items.length-1].follow='top'; items[items.length-1].followX=7720;   // 벚꽃(위선에 밀착, base=선. 선-추종) rt7720. 사이즈 +50%
-add(libNode('lb30', 6480, 429, 75, {topDown:true, sw:3.6, color:'var(--lilac)'}),  6480, 'season', 0.25); items[items.length-1].follow='top'; items[items.length-1].followX=7840;  // 꽃(위선에 밀착, base=선. 선-추종) rt7840. 사이즈 +50%
-add(libNode('lb16', 6600, 234, 82, {fill:true, anchor:'center', topDown:true, sw:3.6, color:'var(--gold)'}),   6600, 'season', 0.3);   // 해 (rt7960)
-add(libNode('lb60', 6730, 220, 44, {fill:true, anchor:'center', topDown:true, sw:3, color:'var(--coral)'}),    6730, 'season', 0.35);  // 은행잎 (rt8090)
-add(libNode('lb42', 6850, 630, 42, {anchor:'center', topDown:true, sw:3, color:'var(--coral)'}),    6850, 'season', 0.4); items[items.length-1].follow='bottom'; items[items.length-1].followX=8210;   // 잎(풀잎) — 땅으로 내림, 아래선 추종 (rt8210)
-add(libNode('lb71', 6950, 292, 56, {anchor:'center', topDown:true, sw:3.2, color:'var(--cloud)'}),  6950, 'season', 0.45);  // 구름 (rt8310)
-// 두 선 사이 (나비 · 지는 잎 · 하트)
-add(libNode('lb76', 6410, 342, 44, {anchor:'center', topDown:true, sw:3}),                          6410, 'season', 0.3);   // 나비 (rt7770) — 200%(88) 위로 이동
-add(libNode('lb60', 6650, 405, 38, {fill:true, anchor:'center', topDown:true, sw:3, color:'var(--gold)'}),     6650, 'season', 0.35);  // 지는 은행잎 (rt8010)
-add(libNode('lb38', 6340, 470, 32, {anchor:'center', fill:true, sw:3.6, color:'var(--rose)'}),      6340, 'season', 0.25);  // 하트 (rt7700)
-add(libNode('lb38', 6560, 448, 30, {anchor:'center', fill:true, sw:3.6, color:'var(--ember)'}),     6560, 'season', 0.3);   // 하트 (rt7920)
-add(libNode('lb38', 6780, 474, 32, {anchor:'center', fill:true, sw:3.6, color:'var(--rose)'}),      6780, 'season', 0.35);  // 하트 (rt8140)
-// 아래선 · 겨울 (눈사람 · 눈 · 하트)
-add(libNode('lb14', 6890, 656, 144, {fill:true, topDown:true, sw:0.4, color:'var(--cloud)'}),                  6890, 'season', 0.5); items[items.length-1].follow='bottom'; items[items.length-1].followX=8250;   // 눈사람(아래선, 선-추종) rt8250, +50%. 굵기 더 얇게
-add(libNode('lb38', 6700, 612, 30, {anchor:'center', fill:true, sw:3.6, color:'var(--ember)'}),     6700, 'season', 0.4);   // 하트(아래) (rt8060)
-add(star(6760, 525, 12, 'var(--chalk)', 2.4), 6760, 'season', 0.45);   // 눈송이 (rt8120)
-add(star(6960, 560, 10, 'var(--chalk)', 2.4), 6960, 'season', 0.5);    // 눈송이 (rt8320)
+// [오브젝트 전체 삭제] "그렇게 많은 계절이 지났습니다" 씬의 기존 오브젝트는 사용자 지시로 모두 제거. 아래에 벚나무(lb143) 배치.
+// [벚나무 숲] 좁은 간격 구간 윗선(여자쪽)에 큰 벚나무(lb143)+작은 벚나무(lb144)를 레퍼런스처럼 나란히. codeX=renderX-1876. 바닥-앵커라 y=윗선.
+// [벚나무 = 줄기 먼저 → 벚꽃 나중에 하나씩] 줄기(lb142)는 정적(keepfill)으로 먼저, 벚꽃(lb145/146)은 lag 늦춰 topDown stroke-draw(꽃잎 순차).
+add(libNode('lb142', 6764, 464, 329, {topDown:true, keepfill:true}), 6764, 'season', 0.30);   // 큰 나무 줄기 renderX≈8640 (사이즈 +40%)
+add(libNode('lb145', 6764, 464, 329, {topDown:true, sw:2.4, randDraw:true}), 6764, 'season', 1.25);   // 큰 벚꽃 — 선(stroke), 랜덤 순서로 하나씩 그려짐
+add(libNode('lb142', 6894, 468, 210, {topDown:true, keepfill:true}), 6894, 'season', 0.42);   // 작은 나무 줄기 renderX≈8770 (사이즈 +40%)
+add(libNode('lb146', 6894, 468, 210, {topDown:true, sw:2.4, randDraw:true}), 6894, 'season', 1.40);   // 작은 벚꽃 — 선(stroke), 랜덤 순서로 그려짐
 
 // [헤어짐3] "서로의 위로가 되어주고" (자막 런타임 x6582) — 우산커플 + 비. 코드 x = 런타임 x − 1360.
 // [헤어짐3 재구성] "서로의 위로" — 남자(손뻗음)가 웅크린 여자에게 우산 건넴. codeX=inv(화면x,'comfort')=화면x-1618
@@ -1218,11 +1208,11 @@ window.SHOCK={coupleIt:_shCoupleIt, skelIt:_shSkelIt, X:5378, T0:null};
 });
 
 // [헤어짐4] "보이지 않은 인연의 끈을 놓지 않은 채" (자막 런타임 x7313) — 여자(위선)가 엎드려 두 손으로 선물을 아래로 건네고 남자(아래선)가 받음. 실(끈) 애니는 유지.
-add(libNode('lb135', 5738, 388, 144, {topDown:true, sw:2.4, keepfill:true}), 5738, 'thread', 0.3); var _gtGW=items[items.length-1]; _gtGW.follow='top'; _gtGW.followX=7614;   // 여자 대기. 배(하단)가 위선(y373)에 닿게 y=407, followX=렌더x
-add(libNode('lb136', 5738, 388, 144, {topDown:true, sw:2.4, keepfill:true}), 5738, 'thread', 0.3); var _gtGG=items[items.length-1]; _gtGG.follow='top'; _gtGG.followX=7614;   // 여자 주기(두 손 아래로)
-add(libNode('lb137', 5970, 722, 215, {topDown:true, sw:2.4, keepfill:true}), 5970, 'thread', 0.3); var _gtBW=items[items.length-1]; _gtBW.follow='bottom'; _gtBW.followX=7846;   // 남자 대기(팔내림, 아래선-추종). 여자와 머리크기 일치=177
+add(libNode('lb135', 5738, 403, 144, {topDown:true, sw:2.4, keepfill:true}), 5738, 'thread', 0.3); var _gtGW=items[items.length-1]; _gtGW.follow='top'; _gtGW.followX=7614;   // 여자 대기. 하단(몸통)이 분홍선에 닿게 y 388->403
+add(libNode('lb136', 5738, 403, 144, {topDown:true, sw:2.4, keepfill:true}), 5738, 'thread', 0.3); var _gtGG=items[items.length-1]; _gtGG.follow='top'; _gtGG.followX=7614;   // 여자 주기(두 손 아래로). y 388->403
+add(libNode('lb137', 5970, 722, 215, {topDown:true, sw:2.4, keepfill:true}), 5970, 'thread', 0.3); var _gtBW=items[items.length-1]; _gtBW.follow='bottom'; _gtBW.followX=7846;   // 남자 대기(팔내림, 아래선-추종)
 add(libNode('lb138', 5970, 722, 215, {topDown:true, sw:2.4, keepfill:true}), 5970, 'thread', 0.3); var _gtBC=items[items.length-1]; _gtBC.follow='bottom'; _gtBC.followX=7846;   // 남자 받기(두 팔 위로)
-window.GIFTTOSS={girlWait:_gtGW, girlGive:_gtGG, boyWait:_gtBW, boyCatch:_gtBC, girlX:7614, boyX:7846, X:7614, T0:null, sdx:10, sdyDown:14, edx:-58, eyUp:183};   // [선물 건네기] 여자 손(위선아래)→남자 손(아래선위) 낙하
+window.GIFTTOSS={girlWait:_gtGW, girlGive:_gtGG, boyWait:_gtBW, boyCatch:_gtBC, girlX:7614, boyX:7846, X:7614, T0:null, sdx:10, sdyDown:14, edx:-64, eyUp:150};   // [선물 건네기] 여자 손→남자 뻗은 손(실측 viewBox 4,164=화면572,387) 낙하. edx=-46·eyUp=150: 얼굴/머리 아니라 왼쪽 위로 뻗은 손에 안착
 
 // 두번째 실 위치(P2X=7598, 두 선 사이)에 coconut tree on an island 그림. 펜은 이미 지나갔으므로(52.1s) lag로 실 소멸시점(~56.9s)에 등장.
 add(libNode('lb3', 6238, 540, 130, {fill:true, anchor:'center', topDown:true, sw:3, color:'var(--leaf)'}), 6238, 'island', 4.85);   // coconut tree on an island — 두번째 실 자리(rt7598), 실 사라질 때 등장. 라이브러리 원색(leaf 초록)
@@ -1249,13 +1239,13 @@ add(libNode('lb63', 4858, 652, 158, {topDown:true, sw:2.4, color:'var(--azure)'}
 //   씬: 돌고돌아 재회 · 더 단단해진 · 함께 걷습니다 · 특별한 하루(자전거) · 앞으로의 날(집·나무) · 오늘부터(하트 터짐)
 //   grp: reunite / stronger / together / days / home / today
 // [씬] 돌고 돌아, 운명처럼 다시 만났습니다 — 손 흔드는 남자(왼) + 차 탄 여자(오른, 재회)
-add(libNode('lb140', 4976, 580, 200, {topDown:true, sw:2.4, keepfill:true, occlude:true}), 4976, 'reunite', 0.3); items[items.length-1].subkey='reunite';   // 손 흔드는 남자아이. occlude=메인선 가림
-add(libNode('lb141', 5234, 410, 220, {topDown:true, sw:2.4, keepfill:true}), 5234, 'reunite', 0.5);   // 차 탄 여자아이 — 하트 위치로 이동
+add(libNode('lb140', 4976, 580, 230, {topDown:true, sw:2.4, keepfill:true, occlude:true}), 4976, 'reunite', 0.3); items[items.length-1].subkey='reunite';   // 손 흔드는 남자아이(+15%: 200->230). occlude=메인선 가림
+add(libNode('lb141', 5234, 410, 253, {topDown:true, sw:2.4, keepfill:true}), 5234, 'reunite', 0.5);   // 차 탄 여자아이(자동차) +15%: 220->253 — 하트 위치로 이동
 
 // [씬] 조금 달라진 모습으로, 여전히 익숙한 사람으로 — 벤치 커플(선 위, 렌더 x≈9682, 선 y540, 등장 71.4s)
 add(libNode('lb83', 5620, 540, 231, {fill:true, topDown:true, sw:2.4, occlude:true}), 5620, 'stronger', 0.0);   // 벤치 커플 +10%. occlude=B
 // 벤치 커플 위쪽에 음표 4개(떠다니는 멜로디)
-add(libNode('lb85', 5555, 300, 50, {fill:true, anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}), 5555, 'stronger', 1.3);   // 8분음표 — 커플 다 그려진 뒤
+add(libNode('lb85', 5555, 270, 50, {fill:true, anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}), 5555, 'stronger', 1.3);   // 8분음표(가장 왼쪽) — 조금 위로(y 300->270)
 add(libNode('lb86', 5605, 240, 58, {fill:true, anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}), 5605, 'stronger', 1.5);   // 연음표
 add(libNode('lb55', 5655, 288, 44, {fill:true, anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}), 5655, 'stronger', 1.7);   // music note
 add(libNode('lb85', 5708, 222, 48, {fill:true, anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}), 5708, 'stronger', 1.9);   // 8분음표
@@ -1274,9 +1264,9 @@ add(libNode('lb87', 6621, 574, 304, {fill:true, topDown:true, sw:2.4}), 6621, 't
 
 // [씬] 특별하지 않는 날들이 조금씩 특별해졌습니다 — 누운 커플(선 위, rt≈11164) + 구름 3개(그림처럼 하늘에)
 add(libNode('lb84', 6291, 653, 207, {fill:true, topDown:true, sw:2.4, occlude:true}), 6291, 'days', 0.0);   // 20% 더 아래로. occlude=B(그리기 따라 선 가림)
-add(libNode('lb71', 11599, 328, 92, {anchor:'center', topDown:true, sw:3.2, color:'var(--cloud)'}), 11599, 'days', 1.3); items[items.length-1].pin=1;   // 구름(좌·큼) — [PIN] 화면좌표 1:1. 100% 오른쪽 더(+82) 11517->11599
-add(libNode('lb71', 11786, 293, 58, {anchor:'center', topDown:true, sw:3.0, color:'var(--cloud)'}), 11786, 'days', 1.5); items[items.length-1].pin=1;   // 구름(중·작음) — [PIN] 좌표=화면좌표(1:1)
-add(libNode('lb71', 11900, 353, 76, {anchor:'center', topDown:true, sw:3.0, color:'var(--cloud)'}), 11900, 'days', 1.7); items[items.length-1].pin=1;   // 구름(우·중) — [PIN] 좌표=화면좌표(1:1)
+add(libNode('lb71', 12631, 328, 92, {anchor:'center', topDown:true, sw:3.2, color:'var(--cloud)'}), 12631, 'days', 1.3); items[items.length-1].pin=1;   // 구름(좌·큼) — [PIN] 화면좌표 1:1. 좁은구간 삽입분 +1032 반영(11599->12631)
+add(libNode('lb71', 12818, 293, 58, {anchor:'center', topDown:true, sw:3.0, color:'var(--cloud)'}), 12818, 'days', 1.5); items[items.length-1].pin=1;   // 구름(중·작음) — [PIN] +1032 (11786->12818)
+add(libNode('lb71', 12932, 353, 76, {anchor:'center', topDown:true, sw:3.0, color:'var(--cloud)'}), 12932, 'days', 1.7); items[items.length-1].pin=1;   // 구름(우·중) — [PIN] +1032 (11900->12932)
 
 // [씬] 마음이 무거운 날에는 서로의 곁을 지켰습니다 — 계단 커플(계단 바닥=선 y540, rt≈12573)
 add(libNode('lb88', 6962, 570, 240, {fill:true, topDown:true, sw:2.4, occlude:true}), 6962, 'days', 0.0);   // 윗단 라인=호 능선(실측 y≈505). occlude=B(그리기 따라 선 가림)
@@ -1309,7 +1299,7 @@ add(libNode('lb92', 7156, 471, 50, {topDown:true, sw:2.6}), 7156, 'days', 0.6); 
 // [씬] 별일 없는 날에는 그저 나란히 걸으며 (자막 off 33.09) — 걷는 커플 + 위 전구줄 + 양옆 꽃. 계단↔피크닉 사이, 선 위.
 // 전구 가랜드(lb95) — 2줄 크로스 스웨그+전구+점+반짝임, 커플 머리 위. keepfill로 baked 색 유지.
 add(libNode('lb95', 7280, 205, 136, {anchor:'center', topDown:true, keepfill:true}), 7280, 'days', 0.15);   // 전구 가랜드 1개. size 124->136(+10%)
-add(libNode('lb97', 7280, 540, 240, {fill:true, topDown:true, sw:3.4, occlude:true}), 7280, 'days', 0.4);   // 걷는 커플(중앙, 선 위·발=y540). occlude=B. sw 2.4->3.4: 단일선이라 계단커플(외곽선)보다 얇고 흐려 보여 굵기 상향
+add(libNode('lb97', 7280, 540, 240, {fill:true, topDown:true, sw:3.4}), 7280, 'days', 0.4);   // 걷는 커플(중앙, 선 위·발=y540). [메인선 지움(occlude) 삭제 — 사용자 지시]. sw 3.4
 // 양옆 꽃 — flower()(초록 줄기·잎 + 분홍 꽃잎 + 골드 심). 이미지대로 전구 좌우폭(화면 7032~7526) 안쪽 양 끝에 배치.
 // codeX=7280(커플과 동일 씬 시점에 그려짐; 전구 lb95도 codeX 7280에 폭 7032~7526 차지). 좌2+우3. 줄기끝 y+1.5s=지면 y540.
 // 꽃 종류 섞음(flower·pansy·cherry). 색도 살짝 변주(rose/ember).
@@ -1437,7 +1427,10 @@ function prep(){
         }
         // filled-only 비-path(예: 눈 점)은 it.shapes fill-opacity 로직에 맡김
       });
-      _segs.sort((a,b)=> _td ? (a.y-b.y) : (a.x-b.x));   // 위→아래 / 왼→오
+      if(it.node.getAttribute('data-randdraw')){   // 랜덤: 위치 그리드(꽃 단위) 해시로 섞음(결정적 → 렌더 일관성)
+        const rk=s=>{ const qx=Math.round(s.x/40), qy=Math.round(s.y/40); let v=Math.sin(qx*12.9898+qy*78.233)*43758.5453; return v-Math.floor(v); };
+        _segs.sort((a,b)=> rk(a)-rk(b));
+      } else _segs.sort((a,b)=> _td ? (a.y-b.y) : (a.x-b.x));   // 위→아래 / 왼→오
       it.segs=_segs; it.segTotal=_segs.reduce((s,x)=>s+x.len,0)||1;
     }
     it.solo = tAtX(it.ax);   // 선이 그 x(ax)에 닿는 시각
@@ -1789,6 +1782,17 @@ let P2_STRETCH_DELTA=0;
   });
 })();
 
+// [계절 나란히 3초 연장] 두번째 실 이후 '좁은 간격' 구간을 DX 만큼 늘려 3초 추가(등속 유지, 전체 시간만↑, 길이 자체가 늚).
+//  insertForkGap: pPink/pBlue 평행 연장(LEN_FORK+DX) + p2·피날레 오브젝트·선끝 +DX. 재회 자막(x:REUNION_X)은 상수 갱신으로 자동 추종.
+//  P2X(8114)는 삽입점(PARALLEL_END=8966)보다 앞이라 불변 → 둘째 실 이후 좁힌 간격이 DX 만큼 더 유지됨.
+window.NARROW3S_DX=1032;   // 좁은구간 연장: 3초(387)+재회앞 5초(645)=8초(≈1032px, SPEED≈129/s). arcAtStep 계단 x 보정에도 사용
+(function insertNarrow3s(){
+  const DX=window.NARROW3S_DX;
+  insertForkGap(DX);              // 평행 구간 연장 + 뒤(p2/피날레/선끝) 일괄 +DX
+  REUNION_X += DX; PARALLEL_END += DX;   // 수렴 시작/재회 x 이동 → env·자막 자동 반영
+  P2_STRETCH_DELTA += DX;         // SPEED 계산서 제외 → 등속, 전체 +3초
+})();
+
 // ═══ [fwd/inv 좌표 변환] SHIFT_LOG(각 시프트 연산이 기록한 스펙)을 순서대로 재생. ═══
 //  fwd(codeX, grp, pin) = 오브젝트의 최종 화면 x. inv(screenX, grp) = 그 화면 x를 만드는 codeX.
 //  → 화면 x에 배치: add(libNode('id', inv(화면x,grp), y, size,...), inv(화면x,grp), grp, lag)
@@ -1828,7 +1832,7 @@ function _fwdSelfTest(){   // 기존 오브젝트 전부 fwd(codeX,grp)===it.ax 
 //  윗단 라인 y = anchorY(570) - (vbBottom504 - topLine367)*sc(240/488) = 502.6 → 계단 각도=수평.
 //  ⇒ 윗단 폭(±PW)만큼 그 y로 '평평'하게 겹치고, 양옆은 코사인 램프로 원선 복귀(지평선 느낌).
 (function arcAtStep(){
-  const atX=13245.3, STEPY=502.6, PW=128, RW=520;   // PW=윗단 반폭(≈125), RW=지평선 램프폭
+  const atX=13245.3+(window.NARROW3S_DX||0), STEPY=502.6, PW=128, RW=520;   // PW=윗단 반폭(≈125), RW=지평선 램프폭. 계단은 p2 위 — 좁은구간 3초 삽입분(+DX) 보정
   const p2el=document.getElementById('p2');
   const L=p2el.getTotalLength(), N=Math.ceil(L/10);
   const pts=[];
@@ -2246,12 +2250,13 @@ function animateForkPull(t){
     if(y<YNK) return 0.06 + (OVER-0.06)*ss(y/YNK);                      // 홱 조임 → 오버슈트
     return OVER - (OVER-1)*ss(Math.min(1,(y-YNK)/SET)); };              // 탄성 정착 → 1.0
   const sp=(x,X)=>Math.exp(-Math.pow((x-X)/470,2));   // 넓은 가우시안(전체 선 각으로 수렴) — 단, 두 pull 사이에선 0으로 떨어져 확실히 벌어짐
-  const GB=160, DIPAMT=58, DIPAMT2=72;             // 벌어진 반폭 160. 첫 실=58, 둘째 실(P2)=72(조금 더 당김)
-  const REB=40, RBO=470;   // 핀치 직후(오른쪽 RBO)에서 바깥으로 벌어지는 반동 — 좁힌 뒤 다시 간격 유지
+  const sp2=(x,X)=> x<=X ? Math.exp(-Math.pow((x-X)/470,2)) : 1;   // 둘째 실: 왼쪽은 가우시안 램프-인, P2X 지난 뒤엔 1로 유지 → 좁힌 간격을 계속 유지(감쇠 X)
+  const GB=160, DIPAMT=58, DIPAMT2=88;             // 벌어진 반폭 160. 첫 실=58, 둘째 실(P2)=88 → 지난 뒤 반폭 ±72 유지
+  const REB=40, RBO=470;   // 핀치 직후(오른쪽 RBO)에서 바깥으로 벌어지는 반동 — 첫 실에만 적용(둘째는 좁게 유지)
   const hgc=x=>{ const e=env(x); if(e<=0) return 0;
     let g=GB
       - DIPAMT*dip(F.T1)*sp(x,F.P1X) + REB*dip(F.T1)*sp(x,F.P1X+RBO)
-      - DIPAMT2*dip(F.T2)*sp(x,F.P2X) + REB*dip(F.T2)*sp(x,F.P2X+RBO);
+      - DIPAMT2*dip(F.T2)*sp2(x,F.P2X);   // 둘째 실 이후 x>P2X 구간은 좁은 간격 유지(가우시안 감쇠·반동 제거)
     return e*Math.max(24,g); };
   // 당기는 순간 감쇠 물결(각자 위상) — attach 후 짧게
   const rip=(x,ph)=>{ let r=0; const A=[[F.T1+EM,F.P1X],[F.T2+EM,F.P2X]];
@@ -2479,6 +2484,41 @@ function animateGiftToss(t){
   }
 }
 
+// [벚꽃잎 날림] 벚나무(월드 renderX≈8640/8770) 주변에서 꽃잎이 흩날려 떨어짐. cam(월드좌표)에 파티클 레이어.
+//  결정적(인덱스 해시)이라 오프라인 렌더에도 동일. 트리 등장(≈t68)~나란히끝 이후(≈t82) 활성, 이후 페이드아웃.
+var _petalG=null, _petals=null;
+function animatePetals(t){
+  var START=72.4, ENDFADE=82.0, ENDGONE=84.5;   // 두 벚나무가 다 그려진 뒤(작은나무 완료 72.2s) 시작
+  if(t<START-1 || t>ENDGONE){ if(_petalG) _petalG.style.opacity='0'; return; }
+  if(!_petalG){
+    _petalG=el('g',{}); cam.appendChild(_petalG);
+    var PET='M0,-6 C4.2,-4 4.2,4.5 0,7.5 C-4.2,4.5 -4.2,-4 0,-6 Z';
+    var R=function(s){ var x=Math.sin(s*127.1+311.7)*43758.5453; return x-Math.floor(x); };
+    _petals=[];
+    for(var i=0;i<46;i++){
+      var col=(R(i)<0.5)?'var(--rose)':'#f7a9c4';
+      var p=el('path',{d:PET,fill:col,stroke:'none'}); p.style.opacity='0';
+      _petalG.appendChild(p);
+      _petals.push({el:p,
+        ox:8500+R(i*3+1)*380, oy:235+R(i*3+2)*150, sc:0.8+R(i*3+3)*0.9,   // 스폰 y=캐노피 상단~중단(235~385)에서 시작
+        loop:4.2+R(i*5+1)*3.0, ph:R(i*5+2), vy:46+R(i*5+3)*40,
+        drift:22+R(i*5+4)*36, amp:14+R(i*5+5)*22, fr:1.3+R(i*5+6)*1.6,
+        rs:(R(i*5+7)<0.5?-1:1)*(90+R(i*5+8)*180)});
+    }
+  }
+  _petalG.style.opacity=(t>ENDFADE?Math.max(0,(ENDGONE-t)/(ENDGONE-ENDFADE)):1).toFixed(2);
+  for(var k=0;k<_petals.length;k++){ var q=_petals[k];
+    var lc=(t-START)-q.ph*q.loop;                 // 스폰 지연(0~loop): 시작 땐 위(캐노피)에서만, 순차로 등장
+    if(lc<0){ q.el.style.opacity='0'; continue; }  // 아직 안 떨어진 꽃잎 = 안 보임(아래에 미리 있지 않음)
+    var lt=lc-Math.floor(lc/q.loop)*q.loop;        // 0~loop 반복(위→아래 낙하)
+    var x=q.ox+q.drift*lt+q.amp*Math.sin(lt*q.fr+q.ph*6.2832);
+    var y=q.oy+q.vy*lt, rot=q.rs*lt;
+    var op=0.85*Math.min(Math.min(1,lt/0.5), Math.min(1,(q.loop-lt)/1.0));
+    q.el.style.opacity=op.toFixed(2);
+    q.el.setAttribute('transform','translate('+x.toFixed(1)+' '+y.toFixed(1)+') rotate('+rot.toFixed(1)+') scale('+q.sc.toFixed(2)+')');
+  }
+}
+
 let start=null, raf=null, running=false;
 
 function frame(ts){
@@ -2545,6 +2585,7 @@ function frame(ts){
   }
 
   animateForkPull(t);   // [헤어짐] 실 당김 → 두 라이브 분기선이 파동치며 가까워지는 이벤트
+  animatePetals(t);     // [벚꽃잎] 벚나무 주변 꽃잎 흩날림
 
   // 장식 — 선에서 튀어오르듯 뻗어나감
   items.forEach(it=>{
