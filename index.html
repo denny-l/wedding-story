@@ -111,31 +111,31 @@
     <div class="divider"></div>
 
     <nav class="cards">
-      <a class="card c1" href="./1.html?v=bbf3fd9f">
+      <a class="card c1" href="./1.html?v=b97c0901">
         <span class="num">1</span>
         <span class="meta"><span class="t">버전 1</span><span class="d">BGM A</span></span>
         <span class="go">›</span>
       </a>
 
-      <a class="card c2" href="./2.html?v=ceb08062">
+      <a class="card c2" href="./2.html?v=85063bfa">
         <span class="num">2</span>
         <span class="meta"><span class="t">버전 2</span><span class="d">BGM B · Piano Valentine</span></span>
         <span class="go">›</span>
       </a>
 
-      <a class="card c3" href="./3.html?v=4cfae047">
+      <a class="card c3" href="./3.html?v=699c5f27">
         <span class="num">3</span>
         <span class="meta"><span class="t">버전 3</span><span class="d">BGM C · Romantic Piano</span></span>
         <span class="go">›</span>
       </a>
 
-      <a class="card cVideo" href="./video.html?v=bfb79829">
+      <a class="card cVideo" href="./video.html?v=5f6913fd">
         <span class="num">📱</span>
         <span class="meta"><span class="t">아이폰용 (동영상)</span><span class="d">끊김 없는 mp4 · BGM 포함</span></span>
         <span class="go">›</span>
       </a>
 
-      <a class="card cLib lib-card" href="./library.html?v=fd6086f9">
+      <a class="card cLib lib-card" href="./library.html?v=9a30fd0f">
         <span class="num">✦</span>
         <span class="meta"><span class="t">오브젝트 라이브러리</span><span class="d">우리 오브젝트 + 손그림 벡터 모음</span></span>
         <span class="go">›</span>
@@ -143,7 +143,7 @@
     </nav>
 
     <p class="foot">화면을 켜고 소리와 함께 봐주세요 · ♪</p>
-    <p class="foot" style="margin-top:6px;opacity:.7"><span id="lastUpdated">마지막 업데이트: 2026-09-10 11:15 KST</span><span id="todayCount"></span></p>
+    <p class="foot" style="margin-top:6px;opacity:.7"><span id="lastUpdated">마지막 업데이트: 2026-09-10 11:22 KST</span><span id="todayCount"></span></p>
   </main>
   <script>
   /* 오늘(KST) 방문자 수 — 정적 사이트라 외부 무료 카운터(Abacus) 사용. 브라우저당 하루 1회만 증가(localStorage). 실패 시 조용히 미표시. */
@@ -160,42 +160,6 @@
     }).catch(function(){});
   })();
   </script>
-  <script>
-  /* [방문 로그] 개인 페이지용 — 방문자 IP·위치·브라우저 정보를 구글시트(Apps Script 웹앱)에 기록.
-     세션당 1회. no-cors 라 응답은 못 읽고 fire-and-forget. IP API 차단 시 조용히 스킵. */
-  (function(){
-    var LOG_ENDPOINT='https://script.google.com/macros/s/AKfycbz_82M6GUCpo7rKJKpjVzVE2pLEV7X2A5all1oF4FkjNcPg1TPLL8P9ag9Y8c9S4l1J5A/exec';   // 방문 로그 → 구글시트(Apps Script)
-    if(!/^https:\/\/script\.google\.com\//.test(LOG_ENDPOINT)) return;   // URL 설정 전이면 아무것도 안 함
-    // [매 접속마다 기록] 세션 중복방지 없음 — 페이지 열 때마다 1행(시각 ts_kst 포함)
-    function post(geo){
-      var kst=new Date(Date.now()+9*3600*1000);
-      var p={
-        ts_kst: kst.toISOString().replace('T',' ').slice(0,19),
-        ip: geo.ip||'', city: geo.city||'', region: geo.region||geo.region_name||'',
-        country: geo.country||geo.country_name||'', country_code: geo.country_code||'',
-        org: (geo.connection&&geo.connection.org)||geo.org||geo.isp||'',
-        asn: (geo.connection&&geo.connection.asn)||geo.asn||'',
-        lat: geo.latitude!=null?geo.latitude:'', lon: geo.longitude!=null?geo.longitude:'',
-        postal: geo.postal||'', geo_tz: geo.timezone&&(geo.timezone.id||geo.timezone)||'',
-        ua: navigator.userAgent||'', lang: navigator.language||'',
-        platform: navigator.platform||'', referrer: document.referrer||'',
-        screen: (screen.width+'x'+screen.height), viewport: (innerWidth+'x'+innerHeight),
-        dpr: window.devicePixelRatio||1, tz: (Intl.DateTimeFormat().resolvedOptions().timeZone)||'',
-        page: location.href
-      };
-      try{
-        fetch(LOG_ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(p)});
-      }catch(e){}
-    }
-    // 1차 ipwho.is → 실패 시 ipapi.co → 그래도 실패면 IP 없이라도 기록
-    fetch('https://ipwho.is/').then(function(r){return r.json();}).then(function(d){
-      if(d&&d.success!==false&&d.ip){ post(d); } else { throw 0; }
-    }).catch(function(){
-      fetch('https://ipapi.co/json/').then(function(r){return r.json();}).then(function(d){
-        if(d&&d.ip){ post(d); } else { post({}); }
-      }).catch(function(){ post({}); });
-    });
-  })();
-  </script>
+  <script src="visit-log.js?v=c5bbd8ba"></script>
 </body>
 </html>
