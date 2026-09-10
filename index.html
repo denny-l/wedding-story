@@ -143,7 +143,7 @@
     </nav>
 
     <p class="foot">화면을 켜고 소리와 함께 봐주세요 · ♪</p>
-    <p class="foot" style="margin-top:6px;opacity:.7"><span id="lastUpdated">마지막 업데이트: 2026-09-10 00:18 KST</span><span id="todayCount"></span></p>
+    <p class="foot" style="margin-top:6px;opacity:.7"><span id="lastUpdated">마지막 업데이트: 2026-09-10 11:15 KST</span><span id="todayCount"></span></p>
   </main>
   <script>
   /* 오늘(KST) 방문자 수 — 정적 사이트라 외부 무료 카운터(Abacus) 사용. 브라우저당 하루 1회만 증가(localStorage). 실패 시 조용히 미표시. */
@@ -158,6 +158,43 @@
       if(!already){ try{ localStorage.setItem(flag,'1'); }catch(e){} }
       el.textContent=' · 오늘 '+n+'명 방문';
     }).catch(function(){});
+  })();
+  </script>
+  <script>
+  /* [방문 로그] 개인 페이지용 — 방문자 IP·위치·브라우저 정보를 구글시트(Apps Script 웹앱)에 기록.
+     세션당 1회. no-cors 라 응답은 못 읽고 fire-and-forget. IP API 차단 시 조용히 스킵. */
+  (function(){
+    var LOG_ENDPOINT='https://script.google.com/macros/s/AKfycbz_82M6GUCpo7rKJKpjVzVE2pLEV7X2A5all1oF4FkjNcPg1TPLL8P9ag9Y8c9S4l1J5A/exec';   // 방문 로그 → 구글시트(Apps Script)
+    if(!/^https:\/\/script\.google\.com\//.test(LOG_ENDPOINT)) return;   // URL 설정 전이면 아무것도 안 함
+    // [매 접속마다 기록] 세션 중복방지 없음 — 페이지 열 때마다 1행(시각 ts_kst 포함)
+    function post(geo){
+      var kst=new Date(Date.now()+9*3600*1000);
+      var p={
+        ts_kst: kst.toISOString().replace('T',' ').slice(0,19),
+        ip: geo.ip||'', city: geo.city||'', region: geo.region||geo.region_name||'',
+        country: geo.country||geo.country_name||'', country_code: geo.country_code||'',
+        org: (geo.connection&&geo.connection.org)||geo.org||geo.isp||'',
+        asn: (geo.connection&&geo.connection.asn)||geo.asn||'',
+        lat: geo.latitude!=null?geo.latitude:'', lon: geo.longitude!=null?geo.longitude:'',
+        postal: geo.postal||'', geo_tz: geo.timezone&&(geo.timezone.id||geo.timezone)||'',
+        ua: navigator.userAgent||'', lang: navigator.language||'',
+        platform: navigator.platform||'', referrer: document.referrer||'',
+        screen: (screen.width+'x'+screen.height), viewport: (innerWidth+'x'+innerHeight),
+        dpr: window.devicePixelRatio||1, tz: (Intl.DateTimeFormat().resolvedOptions().timeZone)||'',
+        page: location.href
+      };
+      try{
+        fetch(LOG_ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(p)});
+      }catch(e){}
+    }
+    // 1차 ipwho.is → 실패 시 ipapi.co → 그래도 실패면 IP 없이라도 기록
+    fetch('https://ipwho.is/').then(function(r){return r.json();}).then(function(d){
+      if(d&&d.success!==false&&d.ip){ post(d); } else { throw 0; }
+    }).catch(function(){
+      fetch('https://ipapi.co/json/').then(function(r){return r.json();}).then(function(d){
+        if(d&&d.ip){ post(d); } else { post({}); }
+      }).catch(function(){ post({}); });
+    });
   })();
   </script>
 </body>
