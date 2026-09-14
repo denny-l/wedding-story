@@ -273,7 +273,7 @@
   <audio id="bgmAudio" preload="auto" src="./bgm2.mp3?v=7ca907fb"></audio>
 </div>
 
-<script src="objects.js?v=5f3348fa"></script>
+<script src="objects.js?v=1ea09319"></script>
 <script>
 const {COUPLE_V,HOUSE_V,OAK_V,BUSHY_V,LEAFY_V,COUPLE2_V,BIKE_V,ROUNDTREE_V,MOON_V}=window.WEDDING_SHAPES;  // 공용 objects.js 의 shape 데이터 참조
 
@@ -768,7 +768,7 @@ function libNode(id,x,y,size,opt){
   var vb=o.viewBox.trim().split(/\s+/).map(Number);
   var sc=size/vb[3];
   var cx=vb[0]+vb[2]/2, cy=(opt.anchor==='center')?(vb[1]+vb[3]/2):(vb[1]+vb[3]);
-  var outer=el('g',{filter:'url(#chalkSoft)'});   // chalkSoft 부착(전체 토글 CHALK_ON로 on/off). off면 CSS가 해제
+  var outer=el('g',{});   // [라이브러리 오브젝트 chalk 필터 제거] libNode 오브젝트는 chalkSoft 미부착(깔끔한 벡터). 손그림 선·나무·불꽃 등은 각자 chalkSoft 유지
   if(opt.topDown) outer.setAttribute('data-topdown','1');   // 위→아래 순차 선-그리기(규칙)
   if(opt.bottomUp) outer.setAttribute('data-bottomup','1');   // 아래→위 순차(나무 줄기 등: 밑동→가지끝)
   if(opt.randDraw) outer.setAttribute('data-randdraw','1');   // 랜덤 순서로 그리기(꽃 등) — y정렬 대신 위치해시로 섞음
@@ -860,9 +860,9 @@ addAt(rays(200,540,60,'var(--gold)',22), 13.1, 0.5, true);   // 스파클 시계
   P('lb235',1000,431.7,44,0.70,0.1);   // 풀
   P('lb228',1200,375.7,120,0.91,0.15);   // 막대사탕 노랑
   P('lb235',1450,356.5,44,0.70,0.1);   // 풀
-  P('lb225',1690,365.8,196,1.12,0.2);   // 여아(걷기)
+  P('lb225',1690,365.8,196,1.7,0.2);   // 여아(걷기)
   P('lb229',1950,403.2,120,0.91,0.15);   // 막대사탕 보라
-  P('lb226',1051,667.6,196,1.12,0.2);   // 남아(걷기)
+  P('lb226',1051,667.6,196,1.7,0.2);   // 남아(걷기)
   P('lb235',1230,708.5,44,0.70,0.1);   // 풀
   P('lb230',1330,718.6,120,0.91,0.15);   // 막대사탕 파랑
   P('lb227',1560,722,120,0.91,0.15);   // 막대사탕 분홍
@@ -870,7 +870,7 @@ addAt(rays(200,540,60,'var(--gold)',22), 13.1, 0.5, true);   // 스파클 시계
   P('lb231',2000,661.9,120,0.91,0.15);   // 막대사탕 초록
   add(libNode('lb37', 880,250,46,{anchor:'center',topDown:true,sw:2.9}), 880,'young',0.1);   // 별(shy 씬 별 lb37로 변경)
   add(libNode('lb37',1500,245,42,{anchor:'center',topDown:true,sw:2.9}),1500,'young',0.1);   // 별(shy 씬 별)
-  add(libNode('lb37',1950,255,44,{anchor:'center',topDown:true,sw:2.9}),1950,'young',0.1);   // 별(shy 씬 별)
+  add(libNode('lb37',1950,195,44,{anchor:'center',topDown:true,sw:2.9}),1950,'young',0.1);   // 별(shy 씬 별)
   add(libNode('lb37',1250,540,42,{anchor:'center',topDown:true,sw:2.9}),1250,'young',0.1);   // 별(shy 씬 별)
   P('lb233',2130,440,54,0.91,0.12,1);   // 나비 분홍
   P('lb234',1420,548,54,0.91,0.12,1);   // 나비 파랑
@@ -896,13 +896,12 @@ add(libNode('lb40', 3260, 200, 24, {anchor:'center', topDown:true, sw:2.4}),   3
 add(libNode('lb40', 3350, 230, 18, {anchor:'center', topDown:true, sw:2.2}),   3350, 'dream', 0.2);    // 별 점(우-상)
 add(libNode('lb37', 3410, 305, 22, {anchor:'center', topDown:true, sw:2.4}),   3410, 'dream', 0.25);   // 작은 별(우, 달 왼쪽)
 add(libNode('lb36', 3490, 230, 95, {anchor:'center', topDown:true, sw:3.2}),   3490, 'dream', 0.3);    // 달(우상단 초승달, 아래로)
-add(libNode('lb57', 3260, 494, 192, {fill:true, topDown:true, sw:2.4}),                    3260, 'dream', 0.4);    // 뒷모습 커플(발=선 y494 정확히, 160→192 +20%, bottom-앵커)
+add(libNode('lb57', 3260, 494, 211, {fill:true, topDown:true, sw:2.4}),                    3260, 'dream', 0.4);    // 뒷모습 커플(발=선 y494 정확히, 160→192 +20%, bottom-앵커)
 items[items.length-1].subkey='shy';   // 자막 "아직은 서툴고" 앵커
 
 // 커플 씬(3씬-2)을 함께구간 중앙(x3830, t≈34)에 배치. 3자막을 커플 기준 offset으로 균등 배분(선 위 y는 yAtX, 떠있는 하트·나비는 커플과 함께 이동).
-add(libNode('lb237', 3852, 566, 266, {topDown:true, keepfill:true, fatten:1.2}), 3852, 'dream', 0.15);   // 비눗방울 남아(손 든·좌). -5%(280->266)
-add(libNode('lb238', 4050, 584, 247, {topDown:true, keepfill:true, fatten:1.2}), 4050, 'dream', 0.18);   // 비눗방울 여아(물통·우). -5%(260->247)
-add(libNode('lb241', 3905, 372, 60, {topDown:true, keepfill:true, fatten:1.2}), 3905, 'dream', 0.17);   // 남아 손 방울봉
+add(libNode('lb237', 3852, 566, 266, {topDown:true, sw:3.2}), 3852, 'dream', 0.15);   // 비눗방울 남아(손 든·좌). -5%(280->266)
+add(libNode('lb238', 4050, 584, 247, {topDown:true, sw:3.2}), 4050, 'dream', 0.18);   // 비눗방울 여아(물통·우). -5%(260->247)
 add(libNode('lb240', 3945, 332, 34, {topDown:true, keepfill:true, fatten:1.2}), 3945, 'dream', 0.22);   // 커플 사이 작은 방울
 items[items.length-1].subkey='dream';   // 자막 "함께 웃고" 앵커
 // 비눗방울 17개 — 각각 시차(lag)로 하나씩 등장
@@ -925,12 +924,12 @@ add(libNode('lb126', 3724, 410, 36, {anchor:'center', topDown:true, sw:2.4}), 39
 add(libNode('lb127', 4170, 418, 18, {anchor:'center', topDown:true, sw:2.4}), 3933, 'dream', 2.86); items[items.length-1].node.setAttribute('data-selfpivot','1');   // 비눗방울17
 
 // (하트 lb38·트윙클·나비 lb76 제거 — 비눗방울 커플 씬)
-add(libNode('lb239', 4133, 589, 100, {topDown:true, keepfill:true, fatten:1.0}), 4133, 'dream', 0.2);    // 우 데이지1
+add(libNode('lb239', 4133, 589, 100, {topDown:true, keepfill:true, fatten:1.0, bottomUp:true}), 4133, 'dream', 0.2);    // 우 데이지1
 // 꽃 총 6개(좌3·우3), 간격 좁게. 커플(3662~3998) 피해 양옆 지면
-add(libNode('lb239', 3653, 535, 96, {topDown:true, keepfill:true, fatten:1.0}), 3653, 'dream', 0.15);   // 좌 데이지2
-add(libNode('lb239', 3688, 543, 104, {topDown:true, keepfill:true, fatten:1.0}), 3688, 'dream', 0.18);   // 좌 데이지3
-add(libNode('lb239', 4168, 590, 98, {topDown:true, keepfill:true, fatten:1.0}), 4168, 'dream', 0.22);   // 우 데이지2
-add(libNode('lb239', 4203, 591, 96, {topDown:true, keepfill:true, fatten:1.0}), 4203, 'dream', 0.25);   // 우 데이지3
+add(libNode('lb239', 3653, 535, 96, {topDown:true, keepfill:true, fatten:1.0, bottomUp:true}), 3653, 'dream', 0.15);   // 좌 데이지2
+add(libNode('lb239', 3688, 543, 104, {topDown:true, keepfill:true, fatten:1.0, bottomUp:true}), 3688, 'dream', 0.18);   // 좌 데이지3
+add(libNode('lb239', 4168, 590, 98, {topDown:true, keepfill:true, fatten:1.0, bottomUp:true}), 4168, 'dream', 0.22);   // 우 데이지2
+add(libNode('lb239', 4203, 591, 96, {topDown:true, keepfill:true, fatten:1.0, bottomUp:true}), 4203, 'dream', 0.25);   // 우 데이지3
 
 // [씬] 별거 아닌 하루도 함께라서 참 좋았습니다 (3씬-3) — 자전거 커플(라이더 2명). 선 위(x4524,y585). grp='dream'로 두어 insertGap 시프트 제외.
 add(libNode('lb236', 4654, 578, 300, {topDown:true, keepfill:true, fatten:1.2, rot:-5.2}), 4654, 'dream', 0.3);   // 자전거 커플(lb236 신규·채움기반). rot:-5.2(선 기울기와 평행)+y578: 앞·뒷바퀴 모두 선에 얹힘
@@ -939,10 +938,10 @@ add(libNode('lb86', 4494, 300, 52, {fill:true, anchor:'center', topDown:true, sw
 add(libNode('lb85', 4585, 238, 46, {fill:true, anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}), 4585, 'dream', 0.45);  // 왼쪽 위 8분음표
 add(libNode('lb86', 4800, 252, 54, {fill:true, anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}), 4800, 'dream', 0.5);   // 오른쪽 위 연음표
 add(libNode('lb55', 4872, 330, 40, {fill:true, anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}), 4872, 'dream', 0.55);  // 오른쪽 작은 음표
-add(libNode('lb30', 4420, 648, 64, {topDown:true, sw:3.8, color:'var(--rose)'}),  4420, 'dream', 0.5);   // 왼쪽 꽃(분홍, 큰)
-add(libNode('lb30', 4482, 688, 48, {topDown:true, sw:3.8, color:'var(--gold)'}),  4482, 'dream', 0.55);  // 왼쪽 작은 꽃(노랑)
-add(libNode('lb30', 4888, 652, 60, {topDown:true, sw:3.8, color:'var(--rose)'}),  4888, 'dream', 0.6);   // 오른쪽 꽃(분홍)
-add(libNode('lb30', 4836, 690, 46, {topDown:true, sw:3.8, color:'var(--lilac)'}), 4836, 'dream', 0.65);  // 오른쪽 작은 꽃
+add(libNode('lb30', 4420, 648, 64, {topDown:true, sw:3.8, color:'var(--rose)', bottomUp:true}),  4420, 'dream', 0.5);   // 왼쪽 꽃(분홍, 큰)
+add(libNode('lb30', 4482, 688, 48, {topDown:true, sw:3.8, color:'var(--gold)', bottomUp:true}),  4482, 'dream', 0.55);  // 왼쪽 작은 꽃(노랑)
+add(libNode('lb30', 4888, 652, 60, {topDown:true, sw:3.8, color:'var(--rose)', bottomUp:true}),  4888, 'dream', 0.6);   // 오른쪽 꽃(분홍)
+add(libNode('lb30', 4836, 690, 46, {topDown:true, sw:3.8, color:'var(--lilac)', bottomUp:true}), 4836, 'dream', 0.65);  // 오른쪽 작은 꽃
 items[items.length-1].subkey='byeol';   // 자막 "별거 아닌 하루도" 앵커
 
 // ┌──────── [4. 헤어짐] 각자의 시간 (분기 pPink·pBlue) ────────┐
@@ -1030,11 +1029,11 @@ window.SHOCK={coupleIt:_shCoupleIt, skelIt:_shSkelIt, X:5378, T0:null};
 });
 
 // [헤어짐4] "보이지 않은 인연의 끈을 놓지 않은 채" (자막 런타임 x7313) — 여자(위선)가 엎드려 두 손으로 선물을 아래로 건네고 남자(아래선)가 받음. 실(끈) 애니는 유지.
-add(libNode('lb135', 5738, 383, 144, {topDown:true, sw:1.8, keepfill:true}), 5738, 'thread', 0.3); var _gtGW=items[items.length-1]; _gtGW.follow='top'; _gtGW.followX=7614;   // 여자 대기. 하단(몸통)이 분홍선에 닿게 y 388->403
-add(libNode('lb136', 5738, 383, 144, {topDown:true, sw:1.8, keepfill:true}), 5738, 'thread', 0.3); var _gtGG=items[items.length-1]; _gtGG.follow='top'; _gtGG.followX=7614;   // 여자 주기(두 손 아래로). y 388->403
+add(libNode('lb135', 5738, 360, 144, {topDown:true, sw:1.8, keepfill:true}), 5738, 'thread', 0.3); var _gtGW=items[items.length-1]; _gtGW.follow='top'; _gtGW.followX=7614;   // 여자 대기. 하단(몸통)이 분홍선에 닿게 y 388->403
+add(libNode('lb136', 5738, 360, 144, {topDown:true, sw:1.8, keepfill:true}), 5738, 'thread', 0.3); var _gtGG=items[items.length-1]; _gtGG.follow='top'; _gtGG.followX=7614;   // 여자 주기(두 손 아래로). y 388->403
 add(libNode('lb137', 5970, 722, 215, {topDown:true, sw:1.8, keepfill:true}), 5970, 'thread', 0.3); var _gtBW=items[items.length-1]; _gtBW.follow='bottom'; _gtBW.followX=7846;   // 남자 대기(팔내림, 아래선-추종)
 add(libNode('lb138', 5970, 722, 215, {topDown:true, sw:1.8, keepfill:true}), 5970, 'thread', 0.3); var _gtBC=items[items.length-1]; _gtBC.follow='bottom'; _gtBC.followX=7846;   // 남자 받기(두 팔 위로)
-window.GIFTTOSS={girlWait:_gtGW, girlGive:_gtGG, boyWait:_gtBW, boyCatch:_gtBC, girlX:7614, boyX:7846, X:7614, T0:null, sdx:10, sdyDown:14, edx:-64, eyUp:150};   // [선물 건네기] 여자 손→남자 뻗은 손(실측 viewBox 4,164=화면572,387) 낙하. edx=-46·eyUp=150: 얼굴/머리 아니라 왼쪽 위로 뻗은 손에 안착
+window.GIFTTOSS={girlWait:_gtGW, girlGive:_gtGG, boyWait:_gtBW, boyCatch:_gtBC, girlX:7614, boyX:7846, X:7614, T0:null, sdx:113, sdyDown:-45, edx:-64, eyUp:180};   // [선물 건네기] 여자 손→남자 뻗은 손(실측 viewBox 4,164=화면572,387) 낙하. edx=-46·eyUp=150: 얼굴/머리 아니라 왼쪽 위로 뻗은 손에 안착
 
 // 두번째 실 위치(P2X=7598, 두 선 사이)에 coconut tree on an island 그림. 펜은 이미 지나갔으므로(52.1s) lag로 실 소멸시점(~56.9s)에 등장.
 // [삭제] coconut tree(lb3) — 사용자 지시로 제거(여름나무 대체). 기존: add(libNode('lb3', 6238, 540, 130, {fill:true, anchor:'center', topDown:true, sw:3, color:'var(--leaf)'}), 6238, 'island', 4.85);
@@ -1047,8 +1046,8 @@ add(libNode('lb82', 5502, 540, 100, {anchor:'center', topDown:true, sw:4.6}), 55
 // 여자(위선) — 런타임 5340~5860
 // [여행 씬 교체 = 서로 다른 곳에서] 그림 참고: 여아=위선(핑크) 캐리어 끌고 공항으로 / 남아=아래선(블루) 산책 / 하늘 구름·비행기 / 사이 별. 선y=ax(codeX+1618)에서 pPink·pBlue 샘플값.
 // 여자(위선·핑크)
-add(libNode('lb252', 4000, 445, 95,  {topDown:true, keepfill:true, fatten:1.2}),                 4000, 'apartlife', 0.10);  // 분홍 꽃(위선 좌)
-add(libNode('lb253', 4095, 427, 30,  {topDown:true, keepfill:true, fatten:1.2}),                 4095, 'apartlife', 0.14);  // 풀(위선)
+add(libNode('lb252', 4000, 494, 95,  {topDown:true, keepfill:true, fatten:1.2, bottomUp:true}),  4000, 'apartlife', 0.10);  // 분홍 꽃(위선 좌)
+add(libNode('lb253', 4095, 448, 30,  {topDown:true, keepfill:true, fatten:1.2, bottomUp:true}),  4095, 'apartlife', 0.14);  // 풀(위선)
 add(libNode('lb242', 4235, 414, 210, {topDown:true, keepfill:true, fatten:1.2}),                 4235, 'apartlife', 0.20);  // 여행 여아(발=위선)
 add(libNode('lb243', 4330, 412, 72,  {topDown:true, keepfill:true, fatten:1.2}),                 4330, 'apartlife', 0.30);  // 분홍 캐리어(여아 뒤)
 add(libNode('lb245', 4520, 411, 150, {topDown:true, keepfill:true, fatten:1.2}),                 4520, 'apartlife', 0.34);  // 공항 표지판(기둥=위선)
@@ -1059,18 +1058,18 @@ add(libNode('lb246', 4790, 200, 85,  {anchor:'center', topDown:true, keepfill:tr
 add(libNode('lb248', 4890, 231, 52,  {anchor:'center', topDown:true, keepfill:true, fatten:1.2}), 4890, 'apartlife', 0.36);  // 구름B
 // 사이(별)
 add(libNode('lb250', 4300, 541, 42,  {anchor:'center', topDown:true, keepfill:true, fatten:1.2}), 4300, 'apartlife', 0.16);  // 별A(사이)
-add(libNode('lb251', 4690, 604, 42,  {anchor:'center', topDown:true, keepfill:true, fatten:1.2}), 4690, 'apartlife', 0.44);  // 별B(사이)
+add(libNode('lb251', 4690, 490, 42,  {anchor:'center', topDown:true, keepfill:true, fatten:1.2}), 4690, 'apartlife', 0.44);  // 별B(사이)
 // 남자(아래선·블루)
-add(libNode('lb244', 4470, 673, 205, {topDown:true, keepfill:true, fatten:1.2}),                 4470, 'apartlife', 0.25);  // 여행 남아(발=아래선)
-add(libNode('lb253', 4560, 669, 30,  {topDown:true, keepfill:true, fatten:1.2}),                 4560, 'apartlife', 0.48);  // 풀(아래선)
+add(libNode('lb244', 4470, 694, 205, {topDown:true, keepfill:true, fatten:1.2}),                 4470, 'apartlife', 0.25);  // 여행 남아(발=아래선)
+add(libNode('lb253', 4560, 669, 30,  {topDown:true, keepfill:true, fatten:1.2, bottomUp:true}),  4560, 'apartlife', 0.48);  // 풀(아래선)
 add(libNode('lb45', 4780, 590, 105, {anchor:'center', topDown:true, sw:4.2, color:'var(--azure)'}), 4780, 'apartlife', 0.42);  // 노트북(복원) — 남아 우측 빈 공간
 
 // ┌──────── [5. 함께2] 재회 ~ 피날레 · 다시 함께 (단일선 p2 = 스크래치 무지개) ────────┐
 //   씬: 돌고돌아 재회 · 더 단단해진 · 함께 걷습니다 · 특별한 하루(자전거) · 앞으로의 날(집·나무) · 오늘부터(하트 터짐)
 //   grp: reunite / stronger / together / days / home / today
 // [씬] 돌고 돌아, 운명처럼 다시 만났습니다 — 손 흔드는 남자(왼) + 차 탄 여자(오른, 재회)
-add(libNode('lb192', 4976, 580, 230, {topDown:true, keepfill:true, occlude:true}), 4976, 'reunite', 0.3); items[items.length-1].subkey='reunite';   // 손 흔드는 남아3(벡터·매끈, 바지흰색). occlude=메인선 가림
-add(libNode('lb193', 5234, 424, 279, {topDown:true, keepfill:true}), 5234, 'reunite', 0.5);   // 차 탄 여아3(벡터·매끈) — 하트 위치
+add(libNode('lb192', 5016, 580, 230, {topDown:true, keepfill:true, occlude:true}), 5016, 'reunite', 0.3); items[items.length-1].subkey='reunite';   // 손 흔드는 남아3(벡터·매끈, 바지흰색). occlude=메인선 가림
+add(libNode('lb193', 5274, 424, 279, {topDown:true, keepfill:true}), 5274, 'reunite', 0.5);   // 차 탄 여아3(벡터·매끈) — 하트 위치
 
 // [씬] 조금 달라진 모습으로, 여전히 익숙한 사람으로 — 벤치 커플(선 위, 렌더 x≈9682, 선 y540, 등장 71.4s)
 add(libNode('lb194', 5620, 540, 231, {topDown:true, keepfill:true, occlude:true}), 5620, 'stronger', 0.0);   // 벤치 커플3(벡터·매끈). occlude=B
@@ -1174,7 +1173,7 @@ add(seaLayer('cloud',1.4), 7525, 'home', 1.4);
 add(seaLayer('bird',0.8),  7525, 'home', 2.1);
 add(libNode('lb198', 7560, 783, 206, {topDown:true, keepfill:true}), 7525, 'home', 1.1);   // 앉은 커플+돗자리2(벡터·매끈). 중심을 해 중심(7560)에 정렬. 머리는 수평선 '아래'
 add(libNode('lb30', 7667, 758, 44, {topDown:true, bottomUp:true, sw:3.6, color:'var(--rose)'}),      7632, 'home', 1.6);  // 작은 꽃 — 커플 이동만큼 +35 (7632->7667)
-add(libNode('lb100', 7713, 758, 92, {fill:true, topDown:true, sw:2.4}), 7678, 'home', 1.9);  // 피크닉 바구니 — 커플 이동만큼 +35 (7678->7713)
+add(libNode('lb100', 7713, 758, 92, {fill:true, topDown:true, sw:2.4}), 7678, 'home', 1.3);  // 피크닉 바구니 — 커플 이동만큼 +35 (7678->7713)
 
 // [씬] 곁이란, 서로의 하루를 나누고 — 창가 커플(방 구도: 창+커플+밴치 중앙, 좌우 화분, 우상단 전등). 원래 집(houseT)은 제거하고 교체.
 add(libNode('lb199', 7815, 540, 300, {topDown:true, keepfill:true}), 7815, 'home', 0.3); items[items.length-1].subkey='home';   // 창가 커플2(별 보는 창가·벡터·매끈)
@@ -1191,17 +1190,17 @@ add(oakT(8075,540,222),               8075, 'home', 1.32);
 // [씬] 혼자 걷던 길을 나란히 걷는 것 — 카페 건물(선 위, off 52.09 ≈ codeX 8300)
 add(libNode('lb107', 8300, 549, 345, {topDown:true, sw:2.4}), 8300, 'home', 0.6); items[items.length-1].subkey='cafe';   // 카페 건물(추가 10%축소 383->345) — 선이 건물 뒤로 계속 보임
 add(libNode('lb200', 8242, 619, 245, {topDown:true, keepfill:true, occlude:true}), 8300, 'home', 0.9); items[items.length-1].node.setAttribute('data-selfpivot','1');   // 카페 커플2(15%축소 262->223). occlude=투명 내부 검정. data-selfpivot=피벗 실제 중심. 위로 20%(45px) 올림 664->619
-add(libNode('lb103', 8450, 549, 153, {topDown:true, bottomUp:true, sw:2.4}), 8450, 'home', 0.1);   // 화분 — 건물 오른쪽(문 옆), 밑동=메인선(y669->549). lag 최소(0.1)
+add(libNode('lb103', 8415, 549, 153, {topDown:true, bottomUp:true, sw:2.4}), 8415, 'home', 0.1);   // 화분 — 건물 오른쪽(문 옆), 밑동=메인선(y669->549). lag 최소(0.1)
 
 // [씬] 우리는 서로에게 '곁'이라는 선물을 받았습니다 — 등돌린 커플(선 위, 렌더 x≈15648, 선 y540)
 // 야경 강변 씬(강 윗라인=메인선 y540, 준 이미지 그대로 배치·스케일 0.65). 산·건물·다리·강물·바닥·커플·풀 7종
-add(libNode('lb205', 8756, 541, 68,  {topDown:true, keepfill:true}), 8756, 'home', 1.9); items[items.length-1].subkey='riverStart';   // 산(뒤·수면선 위). riverStart=씬 앞 2초 삽입 앵커
-add(libNode('lb202', 8758, 543, 139, {topDown:true, keepfill:true}), 8758, 'home', 2.0);   // 도시 건물들+타워(밑=수면선)
-add(libNode('lb203', 8921, 589, 90,  {topDown:true, keepfill:true}), 8921, 'home', 2.1);   // 다리(우측, 같은 프레임)
-add(libNode('lb206', 8756, 674, 131, {topDown:true, keepfill:true}), 8756, 'home', 2.2);   // 강물(물결+반영, 수면선 아래)
-add(libNode('lb207', 8758, 736, 66,  {topDown:true, keepfill:true}), 8758, 'home', 2.3);   // 강변 바닥(둔치)
-add(libNode('lb201', 8758, 699, 331, {topDown:true, keepfill:true, occlude:true}), 8758, 'home', 2.5);   // 강변 커플(전경). occlude=뒤 가림
-add(libNode('lb204', 8756, 693, 43,  {topDown:true, bottomUp:true, keepfill:true}), 8756, 'home', 2.6);   // 강변 풀(둔치 좌우)
+add(libNode('lb205', 8756, 541, 68,  {topDown:true, keepfill:true}), 8756, 'home', -0.1); items[items.length-1].subkey='riverStart';   // 산(뒤·수면선 위). riverStart=씬 앞 2초 삽입 앵커
+add(libNode('lb202', 8758, 543, 139, {topDown:true, keepfill:true}), 8758, 'home', 0.0);   // 도시 건물들+타워(밑=수면선)
+add(libNode('lb203', 8921, 589, 90,  {topDown:true, keepfill:true}), 8921, 'home', 0.1);   // 다리(우측, 같은 프레임)
+add(libNode('lb206', 8756, 674, 131, {topDown:true, keepfill:true}), 8756, 'home', 0.2);   // 강물(물결+반영, 수면선 아래)
+add(libNode('lb207', 8758, 736, 66,  {topDown:true, keepfill:true}), 8758, 'home', 0.3);   // 강변 바닥(둔치)
+add(libNode('lb201', 8758, 699, 331, {topDown:true, keepfill:true, occlude:true}), 8758, 'home', 0.5);   // 강변 커플(전경). occlude=뒤 가림
+add(libNode('lb204', 8756, 693, 43,  {topDown:true, bottomUp:true, keepfill:true}), 8756, 'home', 0.6);   // 강변 풀(둔치 좌우)
 for(var _rv=items.length-7;_rv<items.length;_rv++){ items[_rv].riverScene=true; }   // [강변 씬 태그] 하트 중앙(피날레)에서 페이드아웃 대상
 
 // [씬] 오늘부터, 같은 시간을 걸어갑니다 — 선 완성(60s) 직후 하트가 터짐
@@ -2395,7 +2394,7 @@ function animateGiftToss(t){
   var sx=G.girlX+G.sdx, sy=topY+G.sdyDown, ex=G.boyX+G.edx, ey=botY-G.eyUp;   // 시작=여자 손(위선 아래), 끝=남자 손(아래선 위)
   if(dt<0){ _gtGiftNode.style.opacity='0'; return; }
   if(dt<FLIGHT){                                   // 선물 아래로 낙하(살짝 회전)
-    var p=ss(dt/FLIGHT), x=sx+(ex-sx)*p, y=sy+(ey-sy)*p, ang=p*180;
+    var p=ss(dt/FLIGHT), x=sx+(ex-sx)*p, y=sy+(ey-sy)*p, ang=ss(Math.min(1,(dt/FLIGHT)/0.6))*360;   // 회전은 비행 앞 50%에 완료(더 일찍)
     _gtGiftNode.style.opacity='1';
     _gtGiftNode.setAttribute('transform','translate('+x.toFixed(1)+' '+y.toFixed(1)+') rotate('+ang.toFixed(1)+')');
   } else {                                          // 남자 손에 안착
