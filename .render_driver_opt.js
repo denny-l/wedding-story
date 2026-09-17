@@ -42,7 +42,10 @@ window.__render = async function(startIdx, endIdx){
           const rm=/rotate\(([-0-9.]+)deg\)/.exec(cs.style.transform||''); const ang=rm?parseFloat(rm[1])*Math.PI/180:0;
           ctx.globalAlpha=Math.min(1,op*csOp);
           ctx.translate(cxp,sBot); ctx.rotate(ang); ctx.translate(-cxp,-sBot);
-          const g=ctx.createLinearGradient(sx,sTop,sx+sw,sBot); g.addColorStop(0,'#fffdf5'); g.addColorStop(.48,'#f0e9da'); g.addColorStop(1,'#cec5b0');
+          var _cc=getComputedStyle(cap).color, _gm=/(\d+)\D+(\d+)\D+(\d+)/.exec(_cc), _gold=_gm&&+_gm[1]>200&&+_gm[2]>150&&+_gm[3]<130;   // 자막 gold면 분필도 gold(페이지 일치)
+          const g=ctx.createLinearGradient(sx,sTop,sx+sw,sBot);
+          if(_gold){ g.addColorStop(0,'#fff6cf'); g.addColorStop(.48,'#eecb56'); g.addColorStop(1,'#caa233'); }
+          else { g.addColorStop(0,'#fffdf5'); g.addColorStop(.48,'#f0e9da'); g.addColorStop(1,'#cec5b0'); }
           ctx.shadowColor='rgba(255,253,245,.45)'; ctx.shadowBlur=12; ctx.fillStyle=g;
           ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(sx,sTop,sw,sh,[sw*0.22,sw*0.22,sw*0.4,sw*0.4]); else ctx.rect(sx,sTop,sw,sh); ctx.fill();
           ctx.shadowBlur=6; ctx.fillStyle='rgba(255,253,245,.5)'; ctx.beginPath(); ctx.arc(cxp,sBot+0.1*fs,0.17*fs,0,7); ctx.fill();

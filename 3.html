@@ -256,7 +256,7 @@
     </g>
   </svg>
 
-  <div id="caption"><div id="capInner"><span id="capText"></span><i id="chalkStick"></i></div></div>
+  <div id="caption"><div id="capInner"><span id="capText"></span><i id="chalkStick"></i><span id="capTail"></span></div></div>
   <div id="timeline">
     <div id="tlTitle"></div>
     <div id="tlTime">0.0s</div>
@@ -273,7 +273,7 @@
   <audio id="bgmAudio" preload="auto" src="./bgm3.mp3?v=291a0221"></audio>
 </div>
 
-<script src="objects.js?v=44f3506f"></script>
+<script src="objects.js?v=e2bd4be1"></script>
 <script>
 const {COUPLE_V,HOUSE_V,OAK_V,BUSHY_V,LEAFY_V,COUPLE2_V,BIKE_V,ROUNDTREE_V,MOON_V}=window.WEDDING_SHAPES;  // 공용 objects.js 의 shape 데이터 참조
 
@@ -857,23 +857,23 @@ addAt(rays(200,540,60,'var(--gold)',22), 13.1, 0.5, true);   // 스파클 시계
 // 두 갈래(rose 윗선=소녀 pFAt / azure 아랫선=소년 pFAb, x680~2435 프리롤 좌표)에 라이브러리 오브젝트를 선-드로잉(keepfill+dirDraw)으로 배치.
 (function youngScene(){
   function P(lib,x,y,size,fat,lag,center){ var opt={topDown:true, keepfill:true, fatten:fat}; if(center) opt.anchor='center'; add(libNode(lib,x,y,size,opt), x, 'young', lag); }
-  P('lb235',1000,431.7,44,0.70,0.1);   // 풀
+  P('lb235',1000,431.7,44,0.25,0.1);   // 풀
   P('lb228',1200,375.7,120,0.91,0.15);   // 막대사탕 노랑
-  P('lb235',1450,356.5,44,0.70,0.1);   // 풀
+  P('lb235',1450,356.5,44,0.25,0.1);   // 풀
   P('lb225',1690,365.8,196,1.7,0.2);   // 여아(걷기)
   P('lb229',1950,403.2,120,0.91,0.15);   // 막대사탕 보라
   P('lb226',1051,667.6,196,1.7,0.2);   // 남아(걷기)
-  P('lb235',1230,708.5,44,0.70,0.1);   // 풀
+  P('lb235',1230,708.5,44,0.25,0.1);   // 풀
   P('lb230',1330,718.6,120,0.91,0.15);   // 막대사탕 파랑
   P('lb227',1560,722,120,0.91,0.15);   // 막대사탕 분홍
-  P('lb235',1750,708.8,44,0.70,0.1);   // 풀
+  P('lb235',1750,708.8,44,0.25,0.1);   // 풀
   P('lb231',2000,661.9,120,0.91,0.15);   // 막대사탕 초록
   add(libNode('lb37', 880,250,46,{anchor:'center',topDown:true,sw:2.9}), 880,'young',0.1);   // 별(shy 씬 별 lb37로 변경)
   add(libNode('lb37',1500,245,42,{anchor:'center',topDown:true,sw:2.9}),1500,'young',0.1);   // 별(shy 씬 별)
   add(libNode('lb37',1950,195,44,{anchor:'center',topDown:true,sw:2.9}),1950,'young',0.1);   // 별(shy 씬 별)
   add(libNode('lb37',1250,540,42,{anchor:'center',topDown:true,sw:2.9}),1250,'young',0.1);   // 별(shy 씬 별)
-  P('lb233',2130,440,54,0.91,0.12,1);   // 나비 분홍
-  P('lb234',1420,548,54,0.91,0.12,1);   // 나비 파랑
+  P('lb233',2130,440,54,0.38,0.12,1);   // 나비 분홍
+  P('lb234',1420,548,54,0.38,0.12,1);   // 나비 파랑
 })();
 
 
@@ -1029,11 +1029,11 @@ window.SHOCK={coupleIt:_shCoupleIt, skelIt:_shSkelIt, X:5378, T0:null};
 });
 
 // [헤어짐4] "보이지 않은 인연의 끈을 놓지 않은 채" (자막 런타임 x7313) — 여자(위선)가 엎드려 두 손으로 선물을 아래로 건네고 남자(아래선)가 받음. 실(끈) 애니는 유지.
-add(libNode('lb135', 5738, 360, 144, {topDown:true, sw:1.8, keepfill:true}), 5738, 'thread', 0.3); var _gtGW=items[items.length-1]; _gtGW.follow='top'; _gtGW.followX=7614;   // 여자 대기. 하단(몸통)이 분홍선에 닿게 y 388->403
-add(libNode('lb136', 5738, 360, 144, {topDown:true, sw:1.8, keepfill:true}), 5738, 'thread', 0.3); var _gtGG=items[items.length-1]; _gtGG.follow='top'; _gtGG.followX=7614;   // 여자 주기(두 손 아래로). y 388->403
+add(libNode('lb135', 5738, 378, 144, {topDown:true, sw:1.8, keepfill:true}), 5738, 'thread', 0.3); var _gtGW=items[items.length-1]; _gtGW.follow='top'; _gtGW.followX=7614;   // 여자 대기. 하단(몸통)이 분홍선에 닿게 y 388->403
+add(libNode('lb136', 5738, 378, 144, {topDown:true, sw:1.8, keepfill:true}), 5738, 'thread', 0.3); var _gtGG=items[items.length-1]; _gtGG.follow='top'; _gtGG.followX=7614;   // 여자 주기(두 손 아래로). y 388->403
 add(libNode('lb137', 5970, 722, 215, {topDown:true, sw:1.8, keepfill:true}), 5970, 'thread', 0.3); var _gtBW=items[items.length-1]; _gtBW.follow='bottom'; _gtBW.followX=7846;   // 남자 대기(팔내림, 아래선-추종)
 add(libNode('lb138', 5970, 722, 215, {topDown:true, sw:1.8, keepfill:true}), 5970, 'thread', 0.3); var _gtBC=items[items.length-1]; _gtBC.follow='bottom'; _gtBC.followX=7846;   // 남자 받기(두 팔 위로)
-window.GIFTTOSS={girlWait:_gtGW, girlGive:_gtGG, boyWait:_gtBW, boyCatch:_gtBC, girlX:7614, boyX:7846, X:7614, T0:null, sdx:113, sdyDown:-45, edx:-64, eyUp:180};   // [선물 건네기] 여자 손→남자 뻗은 손(실측 viewBox 4,164=화면572,387) 낙하. edx=-46·eyUp=150: 얼굴/머리 아니라 왼쪽 위로 뻗은 손에 안착
+window.GIFTTOSS={girlWait:_gtGW, girlGive:_gtGG, boyWait:_gtBW, boyCatch:_gtBC, girlX:7614, boyX:7846, X:7614, T0:null, sdx:113, sdyDown:-27, edx:-64, eyUp:180};   // [선물 건네기] 여자 손→남자 뻗은 손(실측 viewBox 4,164=화면572,387) 낙하. edx=-46·eyUp=150: 얼굴/머리 아니라 왼쪽 위로 뻗은 손에 안착
 
 // 두번째 실 위치(P2X=7598, 두 선 사이)에 coconut tree on an island 그림. 펜은 이미 지나갔으므로(52.1s) lag로 실 소멸시점(~56.9s)에 등장.
 // [삭제] coconut tree(lb3) — 사용자 지시로 제거(여름나무 대체). 기존: add(libNode('lb3', 6238, 540, 130, {fill:true, anchor:'center', topDown:true, sw:3, color:'var(--leaf)'}), 6238, 'island', 4.85);
@@ -1068,7 +1068,7 @@ add(libNode('lb45', 4780, 590, 105, {anchor:'center', topDown:true, sw:4.2, colo
 //   grp: reunite / stronger / together / days / home / today
 // [씬] 돌고 돌아, 운명처럼 다시 만났습니다 — 손 흔드는 남자(왼) + 차 탄 여자(오른, 재회)
 add(libNode('lb192', 5016, 580, 230, {topDown:true, keepfill:true, occlude:true}), 5016, 'reunite', 0.3); items[items.length-1].subkey='reunite';   // 손 흔드는 남아3(벡터·매끈, 바지흰색). occlude=메인선 가림
-add(libNode('lb193', 5274, 424, 279, {topDown:true, keepfill:true}), 5274, 'reunite', 0.5);   // 차 탄 여아3(벡터·매끈) — 하트 위치
+add(libNode('lb193', 5274, 424, 279, {topDown:true, keepfill:true}), 5274, 'reunite', 0.5); window.__carIt=items[items.length-1];   // 차 탄 여아3(벡터·매끈) — 하트 위치. 슬라이드-인(왼쪽위→현재) 애니 대상
 
 // [씬] 조금 달라진 모습으로, 여전히 익숙한 사람으로 — 벤치 커플(선 위, 렌더 x≈9682, 선 y540, 등장 71.4s)
 add(libNode('lb194', 5620, 540, 231, {topDown:true, keepfill:true, occlude:true}), 5620, 'stronger', 0.0);   // 벤치 커플3(벡터·매끈). occlude=B
@@ -1165,7 +1165,7 @@ bird:`<path d="M 7561.0 431.6 L 7560.0 431.6 L 7559.0 432.1 L 7558.0 432.6 L 755
 };
 function seaLayer(name,dur){ const g=el('g',{'data-outline':'1','data-drawdur':String(dur||1.2)}); g.innerHTML=_SEA_LAYERS[name]; return g; }
 // [노을 배경] 요소별 개별 애니 — 모두 같은 앵커(7525, dx 정렬 유지) + 등장시점만 다름(바다→모래→글로우→해→구름→갈매기 순 각자 그려짐)
-add(seaLayer('sea',1.3),   7525, 'home', 0.0);
+add(seaLayer('sea',1.3),   7525, 'home', 0.0); items[items.length-1].subkey='picnicStart';   // [곁의 의미 씬 앞 0.5초 삽입] 앵커
 add(seaLayer('beach',1.0), 7525, 'home', 0.3);
 add(seaLayer('glow',1.0),  7525, 'home', 0.55);
 add(seaLayer('sun',1.1),   7525, 'home', 0.9);
@@ -1190,7 +1190,7 @@ add(oakT(8075,540,222),               8075, 'home', 1.32);
 // [씬] 혼자 걷던 길을 나란히 걷는 것 — 카페 건물(선 위, off 52.09 ≈ codeX 8300)
 add(libNode('lb107', 8300, 549, 345, {topDown:true, sw:2.4}), 8300, 'home', 0.6); items[items.length-1].subkey='cafe';   // 카페 건물(추가 10%축소 383->345) — 선이 건물 뒤로 계속 보임
 add(libNode('lb200', 8242, 619, 245, {topDown:true, keepfill:true, occlude:true}), 8300, 'home', 0.9); items[items.length-1].node.setAttribute('data-selfpivot','1');   // 카페 커플2(15%축소 262->223). occlude=투명 내부 검정. data-selfpivot=피벗 실제 중심. 위로 20%(45px) 올림 664->619
-add(libNode('lb103', 8415, 549, 153, {topDown:true, bottomUp:true, sw:2.4}), 8415, 'home', 0.1);   // 화분 — 건물 오른쪽(문 옆), 밑동=메인선(y669->549). lag 최소(0.1)
+add(libNode('lb103', 8491, 549, 153, {topDown:true, bottomUp:true, sw:2.4}), 8415, 'home', 0.1);   // 화분 — 건물 오른쪽(문 옆), 폭 50%(76px) 오른쪽 이동(8415->8491, 건물 겹침 방지). codeXarg는 8415 유지(fwd 일관). 밑동=메인선
 
 // [씬] 우리는 서로에게 '곁'이라는 선물을 받았습니다 — 등돌린 커플(선 위, 렌더 x≈15648, 선 y540)
 // 야경 강변 씬(강 윗라인=메인선 y540, 준 이미지 그대로 배치·스케일 0.65). 산·건물·다리·강물·바닥·커플·풀 7종
@@ -1670,6 +1670,47 @@ window.NARROW3S_DX=1032;   // 좁은구간 연장: 3초(387)+재회앞 5초(645)
   LINE_END_X += DX; P2_STRETCH_DELTA += DX;
 })();
 
+// [계절 앞 메인선 3초 삽입] '많은 계절이 흘렀습니다'(x8560) 앞에 387px(≈3초, SPEED≈129/s) 평행 연장 → 계절 씬+이후 전부 +3초(등속 유지)
+// [곁의 의미(노을 피크닉) 씬 앞 0.5초 삽입] picnicStart 앞에 65px(≈0.5초, SPEED≈129/s) → 그 씬+이후 전부 +0.5초(등속 유지)
+(function insertBeforePicnic05s(){
+  var it0=items.find(function(o){return o.subkey==='picnicStart';});
+  if(!it0){ console.warn('[picnic] anchor 없음'); return; }
+  var atX=it0.ax-5, DX=65;
+  var p2el=document.getElementById('p2'); var k=0;
+  p2el.setAttribute('d', p2el.getAttribute('d').replace(/\s+/g,' ').trim().split(' ').map(function(t){ if(/^[A-Za-z]$/.test(t)){k=0;return t;} var v=+t,isX=(k%2===0);k++; return (isX&&v>atX)?(v+DX).toFixed(1):t; }).join(' '));
+  items.forEach(function(it){ if(it.ax!=null && !it.pin && it.ax>atX){ it.ax+=DX; it.dx=(it.dx||0)+DX; } });
+  SHIFT_LOG.push({t:'add', dx:DX, cond:{gtAx:atX}});
+  LINE_END_X += DX; P2_STRETCH_DELTA += DX;
+})();
+
+(function insertBeforeSeason1s(){
+  const atX=8540, DX=387;
+  ['pPink','pBlue'].forEach(function(id){
+    const e=document.getElementById(id); if(!e) return; let k=0;
+    const nd=e.getAttribute('d').replace(/\s+/g,' ').trim().split(' ').map(function(t){
+      if(/^[A-Za-z]$/.test(t)){k=0;return t;}
+      const v=+t, isX=(k%2===0); k++;
+      return (isX && v>atX) ? (v+DX).toFixed(1) : t;
+    }).join(' ');
+    e.setAttribute('d', nd);
+  });
+  const p2el=document.getElementById('p2'); let k=0;
+  const nd2=p2el.getAttribute('d').replace(/\s+/g,' ').trim().split(' ').map(function(t){
+    if(/^[A-Za-z]$/.test(t)){k=0;return t;}
+    const v=+t, isX=(k%2===0); k++;
+    return (isX && v>atX) ? (v+DX).toFixed(1) : t;
+  }).join(' ');
+  p2el.setAttribute('d', nd2);
+  items.forEach(function(it){ if(it.pin) return;
+    // 계절 오브젝트(grp==='season')는 전부 + 삽입점 뒤(ax/followX>atX) 오브젝트 이동. 삽입점보다 앞이라도 계절이면 함께 이동(선-접지 유지)
+    var mv = (it.grp==='season') || (it.ax!=null && it.ax>atX) || (it.followX!=null && it.followX>atX);
+    if(mv){ if(it.ax!=null){ it.ax+=DX; it.dx=(it.dx||0)+DX; } if(it.followX!=null){ it.followX+=DX; } }
+  });
+  SHIFT_LOG.push({t:'add', dx:DX, cond:{gtAx:atX, orGrp:'season'}});   // 계절 grp는 삽입점 앞이라도 이동 → fwd/inv 에 반영
+  REUNION_X += DX; PARALLEL_END += DX; LINE_END_X += DX; P2_STRETCH_DELTA += DX;
+  window.SEASON_DX=DX; window.SEASON_DT=DX/129;   // 계절 파티클(벚꽃/낙엽/눈) X·시간 보정용 전역 오프셋
+})();
+
 // ═══ [fwd/inv 좌표 변환] SHIFT_LOG(각 시프트 연산이 기록한 스펙)을 순서대로 재생. ═══
 //  fwd(codeX, grp, pin) = 오브젝트의 최종 화면 x. inv(screenX, grp) = 그 화면 x를 만드는 codeX.
 //  → 화면 x에 배치: add(libNode('id', inv(화면x,grp), y, size,...), inv(화면x,grp), grp, lag)
@@ -1679,7 +1720,7 @@ function fwd(codeX, grp, pin){
   let ax=codeX;
   for(let i=0;i<SHIFT_LOG.length;i++){ const op=SHIFT_LOG[i], c=op.cond;
     if(c.minAx!=null && !(ax>=c.minAx)) continue;
-    if(c.gtAx!=null  && !(ax> c.gtAx)) continue;
+    if(c.gtAx!=null  && !(ax> c.gtAx || (c.orGrp && grp===c.orGrp))) continue;
     if(c.finaleSet   && c.finaleSet.indexOf(grp)<0) continue;
     if(c.noDream     && grp==='dream') continue;
     if(op.t==='stretch') ax = op.R + (ax-op.R)*op.F;
@@ -2041,7 +2082,7 @@ const SUBS=[
   {at:'x', x:6109, off:0, dur:5.2, text:'서로 다른 곳에서\n각자의 하루를 살아갔습니다.'},                        // 헤어짐2 (원래 2-1·2-2 두 자막 통합 — 그 구간 전체 동안 한 줄)
   {at:'x', x:6840, off:0, dur:3.6, text:'때로는 서로의 위로가 되어주며,'},                                            // 헤어짐3
   {at:'x', x:7829, off:0, dur:4.0, text:'보이지 않는 인연의 끈을\n놓지 않은 채.'},                             // 헤어짐4
-  {at:'x', x:8560, off:0, dur:3.8, text:'많은 계절이\n흘렀습니다.'},                                    // 헤어짐5
+  {at:'x', x:8947, off:3.0, dur:3.8, text:'많은 계절이\n흘렀습니다.'},                                    // 헤어짐5 (자막 +3초 뒤로)
   // [함께2] 재회~피날레 자막 12개. 모두 재회 시점(x9045)에 앵커 + 누적 off(=(n-1)*4.6: 표시3.6+간격1.0).
   //  선 속도는 등속(불변). 자막이 선 완성보다 길면 피날레를 유지하며 이어짐 → 전체 시간만 늘어남.
   {at:'x', x:REUNION_X, off:0.0,  dur:3.6, text:'그러던 어느 날,\n참 신기하게도 우리의 시간은\n다시 만났습니다.'},
@@ -2051,10 +2092,10 @@ const SUBS=[
   {at:'x', x:REUNION_X, off:23.87, dur:3.6, text:'좋은 날에는 함께 웃고,'},   // 이하 +1초(요리 씬 앞뒤 각0.5초)
   {at:'x', x:REUNION_X, off:29.59, dur:3.6, text:'마음이 무거운 날에는\n서로의 곁을 지키고,'},
   {at:'x', x:REUNION_X, off:36.59, dur:3.6, text:'별일 없는 날에는\n그저 나란히 걸으며,'},
-  {at:'x', x:REUNION_X, off:43.09, dur:3.6, text:'그렇게 우리는\n‘곁’의 의미를 알게 되었습니다.'},
-  {at:'x', x:REUNION_X, off:49.09, dur:3.6, text:'곁이란, 서로의 하루를 나누고'},
-  {at:'x', x:REUNION_X, off:57.59, dur:3.6, text:'혼자 걷던 길을\n나란히 걷는 것.'},
-  {at:'x', x:REUNION_X, off:68.09, dur:3.6, text:'우리는 서로에게\n‘곁’이라는 선물을 받았습니다.'},
+  {at:'x', x:REUNION_X, off:43.59, dur:3.6, text:'그렇게 우리는\n‘곁’의 의미를 알게 되었습니다.'},
+  {at:'x', x:REUNION_X, off:49.59, dur:3.6, text:'곁이란, 서로의 하루를 나누고'},
+  {at:'x', x:REUNION_X, off:58.09, dur:3.6, text:'혼자 걷던 길을\n나란히 걷는 것.'},
+  {at:'x', x:REUNION_X, off:68.59, dur:3.6, text:'우리는 서로에게\n‘곁’이라는 선물을 받았습니다.'},
   {at:'lineEnd', off:0.15, dur:5.0, text:'그리고 오늘,\n우리는 새로운 시간을 시작합니다.'},   // 선이 화면 끝(화살표)에 닿는 순간 등장
 ];
 const lines = SUBS.map(function(s){
@@ -2178,10 +2219,13 @@ function animateForkPull(t){
   // [파란선 하강] 선물 받는 씬(render≈7846) 이후 아래선만 여름나무 밑동을 향해 내려감 → 여름나무(9250)에서 840 도달 → 플래토(겨울나무 10350 포함, 평평 840 = 두 나무 밑동 정확히 통과) → 재회 전 원래 파형으로 복귀(재회 유지). yTop 불변=윗선 유지.
   //  플래토는 정확 정렬 위해 '평평 840'(파동 상쇄). 전환 구간은 normal↔840 블렌드로 자연스럽게 하강/상승.
   const BLUE_TARGET=840;   // 여름·겨울 밑동 y(≈840.2~840.3)
-  const BLUE_W=(function(){ const A=7846, B=9250, C=10820, D=REUNION_X; const ss=t=>t*t*(3-2*t);
+  const BLUE_W=(function(){ const A=7846, B=9250, C=10820, D=REUNION_X-(window.SEASON_DX||0); const ss=t=>t*t*(3-2*t);   // D는 삽입 전 재회x(remap과 이중계산 방지)
     return x=>{ if(x<=A||x>=D) return 0; if(x<B) return ss((x-A)/(B-A)); if(x<=C) return 1; return 1-ss((x-C)/(D-C)); }; })();
-  const yTop=x=>540-(hgc(x)+env(x)*(meander(x)+rip(x,0.0)));
-  const yBot=x=>{ const nb=540+(hgc(x)+env(x)*(meander(x)+rip(x,0.0))); const w=BLUE_W(x); return w>0? (nb*(1-w)+BLUE_TARGET*w) : nb; };
+  // [계절 삽입 remap] 계절 앞 메인선 DX 삽입 시, 파형(meander)의 x위상을 삽입만큼 되돌려 선 모양이 오브젝트(+DX 이동)와 일치하도록. 삽입구간은 평평 hold.
+  const _sATX=8540, _sDX=(window.SEASON_DX||0);
+  const _sRemap=x=> (_sDX<=0||x<=_sATX) ? x : (x>=_sATX+_sDX ? x-_sDX : _sATX);
+  const yTop=x=>540-(hgc(x)+env(x)*(meander(_sRemap(x))+rip(x,0.0)));
+  const yBot=x=>{ const nb=540+(hgc(x)+env(x)*(meander(_sRemap(x))+rip(x,0.0))); const w=BLUE_W(_sRemap(x)); return w>0? (nb*(1-w)+BLUE_TARGET*w) : nb; };
   const penX=xAtTime(t);   // 실제 선 그려진 지점(=펜, 오른쪽 1/3). 라이브선을 여기까지만 그림 → 딱 펜에서 끝남.
   const build=fy=>{ if(penX<=FORK_X+15) return ''; const xe=Math.min(REUNION_X,penX); let d='M '+FORK_X+' '+fy(FORK_X).toFixed(1);
     for(let x=FORK_X-218;x<=xe;x+=40){ d+=' L '+x+' '+fy(x).toFixed(1); }
@@ -2407,7 +2451,7 @@ function animateGiftToss(t){
 //  결정적(인덱스 해시)이라 오프라인 렌더에도 동일. 트리 등장(≈t68)~나란히끝 이후(≈t82) 활성, 이후 페이드아웃.
 var _petalG=null, _petals=null;
 function animatePetals(t){
-  var START=83.4, ENDFADE=93.0, ENDGONE=95.5;   // 두 벚나무가 다 그려진 뒤 시작 (+11s: 맨앞 인트로만큼 계절 씬이 밀림)
+  var _dt=window.SEASON_DT||0, START=83.4+_dt, ENDFADE=93.0+_dt, ENDGONE=95.5+_dt;   // 두 벚나무가 다 그려진 뒤 시작 (+11s 인트로 · +계절삽입 SEASON_DT)
   if(t<START-1 || t>ENDGONE){ if(_petalG) _petalG.style.opacity='0'; return; }
   if(!_petalG){
     _petalG=el('g',{}); cam.appendChild(_petalG);
@@ -2419,7 +2463,7 @@ function animatePetals(t){
       var p=el('path',{d:PET,fill:col,stroke:'none'}); p.style.opacity='0';
       _petalG.appendChild(p);
       _petals.push({el:p,
-        ox:8500+R(i*3+1)*380, oy:235+R(i*3+2)*150, sc:0.8+R(i*3+3)*0.9,   // 스폰 y=캐노피 상단~중단(235~385)에서 시작
+        ox:8500+(window.SEASON_DX||0)+R(i*3+1)*380, oy:235+R(i*3+2)*150, sc:0.8+R(i*3+3)*0.9,   // 스폰 y=캐노피 상단~중단(235~385)에서 시작
         loop:4.2+R(i*5+1)*3.0, ph:R(i*5+2), vy:46+R(i*5+3)*40,
         drift:22+R(i*5+4)*36, amp:14+R(i*5+5)*22, fr:1.3+R(i*5+6)*1.6,
         rs:(R(i*5+7)<0.5?-1:1)*(90+R(i*5+8)*180)});
@@ -2441,7 +2485,7 @@ function animatePetals(t){
 // [가을 낙엽 날림] 가을나무(월드 renderX≈9800) 주변에서 단풍잎이 흩날려 떨어짐. 벚꽃잎과 동일 파티클 방식(cam 월드좌표·결정적).
 var _leafG=null, _fleaves=null;
 function animateAutumnLeaves(t){
-  var START=91.0, ENDFADE=99.0, ENDGONE=101.5;   // 가을나무 잎이 다 그려진 뒤 시작 → 재회 즈음 페이드아웃 (+11s 인트로)
+  var _dt=window.SEASON_DT||0, START=91.0+_dt, ENDFADE=99.0+_dt, ENDGONE=101.5+_dt;   // 가을나무 잎이 다 그려진 뒤 시작 → 재회 즈음 페이드아웃 (+11s 인트로 · +SEASON_DT)
   if(t<START-1 || t>ENDGONE){ if(_leafG) _leafG.style.opacity='0'; return; }
   if(!_leafG){
     _leafG=el('g',{}); cam.appendChild(_leafG);
@@ -2455,7 +2499,7 @@ function animateAutumnLeaves(t){
       var p=el('path',{d:mp,fill:col,stroke:'none'}); p.style.opacity='0';
       _leafG.appendChild(p);
       _fleaves.push({el:p,
-        ox:9620+R(i*3+1)*380, oy:150+R(i*3+2)*210, sc:0.85+R(i*3+3)*1.0,   // 스폰=가을 캐노피(상단~중단)
+        ox:9620+(window.SEASON_DX||0)+R(i*3+1)*380, oy:150+R(i*3+2)*210, sc:0.85+R(i*3+3)*1.0,   // 스폰=가을 캐노피(상단~중단)
         loop:4.6+R(i*5+1)*3.4, ph:R(i*5+2), vy:40+R(i*5+3)*36,
         drift:20+R(i*5+4)*40, amp:16+R(i*5+5)*26, fr:1.1+R(i*5+6)*1.5,
         rs:(R(i*5+7)<0.5?-1:1)*(70+R(i*5+8)*150), flip:R(i*7+3)});
@@ -2478,7 +2522,7 @@ function animateAutumnLeaves(t){
 // [벚꽃잎 쌓임 애니메이션] 벚나무 밑동(render 8640/8770)에 꽃잎이 위에서 하나씩 착지하며 시차로 쌓임. cam 월드좌표·결정적.
 var _pileG=null, _pilePetals=null;
 function animatePetalPile(t){
-  var START=82.0, LANDSPAN=6.5, END=999;   // 벚나무 그려진 뒤부터 6.5초간 하나씩 착지(누적), 이후 유지 (+11s 인트로)
+  var START=82.0+(window.SEASON_DT||0), LANDSPAN=6.5, END=999;   // 벚나무 그려진 뒤부터 6.5초간 하나씩 착지(누적), 이후 유지 (+11s 인트로 · +SEASON_DT)
   if(t<START-0.5){ if(_pileG) _pileG.style.opacity='0'; return; }
   if(!_pileG){
     _pileG=el('g',{}); _pileG.setAttribute('filter','url(#chalkSoft)'); cam.appendChild(_pileG);
@@ -2486,7 +2530,7 @@ function animatePetalPile(t){
     var COLS=['var(--rose)','#f7a9c4','#f4bcd0','#efc0d2'];
     var R=function(s){ var x=Math.sin(s*91.7+13.3)*43758.5453; return x-Math.floor(x); };
     _pilePetals=[];
-    [{cx:8640,cy:476,n:38,spread:102,seed:1},{cx:8770,cy:480,n:22,spread:66,seed:50}].forEach(function(P){
+    [{cx:8640+(window.SEASON_DX||0),cy:476,n:38,spread:102,seed:1},{cx:8770+(window.SEASON_DX||0),cy:480,n:22,spread:66,seed:50}].forEach(function(P){
       for(var i=0;i<P.n;i++){
         var r1=R(P.seed+i*3+1), r2=R(P.seed+i*3+2), r3=R(P.seed+i*3+3);
         var dx=(r1-0.5)*2*P.spread, px=P.cx+dx, py=P.cy - Math.abs(dx)*0.05 + (r2-0.5)*20;
@@ -2510,7 +2554,7 @@ function animatePetalPile(t){
 // [가을 낙엽 쌓임 애니메이션] 가을나무 밑동(render≈9800)에 단풍잎이 위에서 하나씩 착지하며 시차로 쌓임. cam 월드좌표·결정적.
 var _lpileG=null, _lpile=null;
 function animateLeafPile(t){
-  var START=90.5, LANDSPAN=7.5;   // (+11s 인트로: 가을낙엽 쌓임 시작)
+  var START=90.5+(window.SEASON_DT||0), LANDSPAN=7.5;   // (+11s 인트로 · +SEASON_DT: 가을낙엽 쌓임 시작)
   if(t<START-0.5){ if(_lpileG) _lpileG.style.opacity='0'; return; }
   if(!_lpileG){
     _lpileG=el('g',{}); _lpileG.setAttribute('filter','url(#chalkSoft)'); cam.appendChild(_lpileG);
@@ -2518,7 +2562,7 @@ function animateLeafPile(t){
     var COLS=['#eca91d','#e57d24','#c73a1f','#e07022','#f0b52e'];
     var R=function(s){ var x=Math.sin(s*57.3+91.7)*43758.5453; return x-Math.floor(x); };
     _lpile=[];
-    var CX=9800, CY=492, N=55, SPREAD=165;
+    var CX=9800+(window.SEASON_DX||0), CY=492, N=55, SPREAD=165;
     for(var i=0;i<N;i++){
       var r1=R(i*3+1), r2=R(i*3+2), r3=R(i*3+3);
       var dx=(r1-0.5)*2*SPREAD, px=CX+dx, py=CY - Math.abs(dx)*0.045 + (r2-0.5)*22;
@@ -2542,7 +2586,7 @@ function animateLeafPile(t){
 // [겨울 눈] 겨울나무 밑 지면(하강한 파란선)에 흰 눈 두둑을 덮고 눈송이가 흩날림. cam 월드좌표, 파란선(FORK_PULL.lineY) 따라 덮음.
 var _snowG=null, _snowMound=null, _snowFlakes=null, _snowSegs=null, _snowMoundTop=null, _snowSegsTop=null;
 function animateWinterSnow(t){
-  var START=88.0, X0=9820, X1=10900;   // (+11s 인트로: 눈송이 낙하 위상 기준. x게이트 X0/X1은 지오메트리라 불변)
+  var START=88.0+(window.SEASON_DT||0), X0=9820+(window.SEASON_DX||0), X1=10900+(window.SEASON_DX||0);   // (+11s 인트로 · +SEASON_DT/DX: 눈 낙하 위상+x게이트 계절삽입만큼 이동)
   var F=FORK_PULL; if(!F.lineY){ return; }
   var FX=xAtTime(t);   // 펜(라인 front) 렌더X — 눈은 라인이 그려진 곳까지만 나타난다
   if(FX < X0-10){ if(_snowG) _snowG.style.opacity='0'; return; }   // 라인이 아직 눈 구간에 도달 안함
@@ -2563,7 +2607,7 @@ function animateWinterSnow(t){
   var _R=function(s){ var v=Math.sin(s*91.7+13.3)*43758.5453; return v-Math.floor(v); };
   if(!_snowSegs){ _snowSegs=[]; var cx2=X0, k2=0; while(cx2<X1){ var w=16+_R(k2*7+1)*74; _snowSegs.push([cx2, Math.min(cx2+w,X1), _R(k2*7+2), 0.35+_R(k2*7+5)*0.75]); cx2+=w; k2++; } }
   // 윗선 국소 두둑 세그먼트(겨울나무2 윗선 렌더≈10768 아래)
-  var TX0=10620, TX1=10920;
+  var TX0=10620+(window.SEASON_DX||0), TX1=10920+(window.SEASON_DX||0);
   if(!_snowSegsTop){ _snowSegsTop=[]; var cx3=TX0, k3=0; while(cx3<TX1){ var w3=16+_R(k3*7+101)*70; _snowSegsTop.push([cx3, Math.min(cx3+w3,TX1), _R(k3*7+102), 0.35+_R(k3*7+105)*0.75]); cx3+=w3; k3++; } }
   // 두둑 path 생성 헬퍼: side='bottom'/'top', 범위·세그먼트·taper폭 지정
   var _buildMound=function(side, mx0, mx1, segs, tapW){
@@ -2861,6 +2905,7 @@ function frame(ts){
     chalkStop();
   }else{
     cap.style.color=active[3]||'';            // [자막 색] per-sub 오버라이드(없으면 기본 --chalk)
+    chalk.style.background=(active[3]&&/gold/.test(active[3])) ? 'linear-gradient(170deg,#fff6cf 0%,#eecb56 48%,#caa233 100%)' : '';   // [분필색] 자막이 노란색(gold)이면 분필도 노란색, 아니면 기본(크림)
     cap.classList.toggle('mid', active[4]);   // [자막 위치] 인트로 타이틀은 화면 중앙
     const txt=active[2], win=active[1]-active[0], el0=t-active[0];
     const s5=active[5];   // 원본 sub 객체(seq/cps/pause 등 확장 속성)
@@ -2884,7 +2929,10 @@ function frame(ts){
       shown=txt.slice(0, Math.round(txt.length*wr)); penWriting=wr<1; writeEnd=writeDur;
     }
     const allDone = el0>=writeEnd;
-    if(cap.dataset.cur!==shown){ cap.dataset.cur=shown; capText.textContent=shown; }
+    if(cap.dataset.cur!==shown){ cap.dataset.cur=shown;
+      const _tr=(shown.match(/\n+$/)||[''])[0];   // 후행 개행(예약된 아랫줄) — 분필 뒤로 빼서 분필이 현재 쓰는 줄에 남게
+      capText.textContent=shown.slice(0, shown.length-_tr.length);
+      const _ct=document.getElementById('capTail'); if(_ct) _ct.textContent=_tr; }
     // 쓰는 동안엔 소리를 계속 재생(끊김 없음), 다 쓰면 멈춤
     if(penWriting) chalkPlay(); else chalkStop();
     const fade=Math.min(1,(active[1]-t)/0.45);
@@ -2923,6 +2971,13 @@ function frame(ts){
   }
 
 
+  if(window.__jejuUpdate) window.__jejuUpdate(t);   // [제주 매달기] 등장 갱신
+  if(window.__carIt && window.__carIt.node && window.__carIt.t!=null){   // [자동차 슬라이드-인] 왼쪽 위에서 현재 위치로 이동
+    var _ci=window.__carIt, _ce=t-_ci.t, _SL=1.2;
+    if(_ce>=0 && _ce<=_SL+0.05){ var _sp=Math.max(0,Math.min(1,_ce/_SL)); _sp=_sp*_sp*(3-2*_sp);
+      var _ox=-300*(1-_sp), _oy=-170*(1-_sp), _dx=(_ci.dx||0);
+      _ci.node.setAttribute('transform','translate('+(_dx+_ox).toFixed(1)+' '+_oy.toFixed(1)+')'); }
+  }
   if(t<DURATION){ raf=requestAnimationFrame(frame); }
   else{ running=false; document.getElementById('ui').classList.remove('hide');
         document.getElementById('hint').classList.remove('hide'); }
@@ -3021,6 +3076,59 @@ items.forEach(function(it){
 items.forEach(it=>{ if(it.vineSuck) it.dur=1.1; });   // 덩굴: 멀리서 오기 + 밑둥으로 빨려들어감 시간
 try{ _fwdSelfTest(); }catch(e){ console.error('[fwd self-test] 예외', e); }   // fwd 정확성 자체검증(콘솔)
 
+
+
+// ═══════ [제주 매달기 씬] 선물던지기~계절 사이. 둘째 실(P2) 애니 종료 후 왼쪽부터 지그재그 등장(오버레이) ═══════
+(function jejuHangScene(){
+  var O = {"lb255": {"viewBox": "0 0 310 163", "svg": "<g><path d=\"M 109.67 80.33 Q 126.00 81.00 128.17 82.50 Q 130.33 84.00 132.83 88.67 L 135.33 93.33 Q 141.00 93.67 145.17 91.00 L 149.33 88.33 Q 159.00 82.00 162.33 81.67 Q 165.67 81.33 168.83 83.17 L 172.00 85.00 Q 185.00 94.67 188.50 94.83 L 192.00 95.00 L 199.67 88.67 L 206.67 80.67 L 209.00 78.33 L 206.33 71.67 L 188.67 45.67 L 180.33 44.33 L 141.00 45.00 Q 130.67 45.00 128.67 46.33 Q 126.67 47.67 119.33 59.67 L 112.00 71.67 L 109.00 80.33 L 102.67 83.67 L 87.67 97.00 L 60.33 115.67 L 28.67 133.67 L 16.67 140.00 Q 16.00 145.33 16.67 146.50 L 17.33 147.67 L 45.00 149.00 L 151.67 151.67 L 240.67 150.00 Q 294.00 148.00 295.50 147.17 L 297.00 146.33 L 297.33 141.67 Q 294.00 138.33 280.50 130.83 L 267.00 123.33 L 238.33 103.67 L 218.67 86.33 Q 212.67 80.33 211.00 79.67 L 209.33 79.00\" fill=\"none\" stroke=\"#7cb972\" stroke-width=\"9.1\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M 266.00 53.00 Q 289.33 52.33 292.00 50.67 Q 294.67 49.00 296.00 46.33 Q 297.33 43.67 297.17 40.17 Q 297.00 36.67 295.17 33.83 Q 293.33 31.00 290.17 29.50 L 287.00 28.00 L 280.33 26.67 Q 276.67 19.67 273.00 16.83 Q 269.33 14.00 264.83 13.33 Q 260.33 12.67 256.33 13.83 Q 252.33 15.00 249.17 17.83 Q 246.00 20.67 244.33 24.00 L 242.67 27.33 Q 233.33 29.33 230.83 32.17 Q 228.33 35.00 228.00 39.00 Q 227.67 43.00 228.67 45.50 Q 229.67 48.00 232.00 49.83 Q 234.33 51.67 240.50 52.17 L 246.67 52.67 L 265.67 53.00 M 25.00 50.00 Q 27.67 48.67 29.33 45.33 Q 31.00 42.00 34.00 39.50 Q 37.00 37.00 41.00 36.00 Q 45.00 35.00 49.17 35.67 Q 53.33 36.33 56.83 38.83 Q 60.33 41.33 62.17 44.67 Q 64.00 48.00 65.00 49.00 Q 66.00 50.00 69.33 50.50 Q 72.67 51.00 75.50 53.00 Q 78.33 55.00 79.67 57.33 Q 81.00 59.67 81.17 63.83 Q 81.33 68.00 79.33 70.83 Q 77.33 73.67 74.67 74.50 Q 72.00 75.33 48.17 75.67 Q 24.33 76.00 20.50 74.83 Q 16.67 73.67 14.83 71.33 Q 13.00 69.00 12.50 65.33 Q 12.00 61.67 13.17 58.50 Q 14.33 55.33 17.50 53.00 Q 20.67 50.67 22.67 50.33 L 24.67 50.00\" fill=\"none\" stroke=\"#f4f1e8\" stroke-width=\"8.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></g>"}, "lb256": {"viewBox": "0 0 298 134", "svg": "<g><path d=\"M 279.00 122.00 Q 281.33 113.67 283.33 110.67 L 285.33 107.67 L 286.67 106.33 M 264.67 111.67 L 266.67 97.33 L 271.33 94.33 L 265.67 96.67 L 254.00 90.00 M 40.67 119.33 L 40.33 107.67 L 41.00 102.00 Q 45.00 99.00 47.17 95.17 L 49.33 91.33 L 51.33 86.00 Q 47.00 85.00 44.00 85.17 Q 41.00 85.33 38.33 87.33 L 35.67 89.33 Q 34.67 95.00 32.83 96.50 Q 31.00 98.00 28.50 98.33 L 26.00 98.67 L 24.67 103.33 Q 23.00 108.00 21.00 109.17 L 19.00 110.33 L 20.33 122.00 M 246.00 100.33 Q 251.33 108.67 252.50 113.83 L 253.67 119.00 L 254.33 122.00 M 56.33 115.33 Q 61.00 104.00 60.83 99.00 Q 60.67 94.00 58.83 91.17 L 57.00 88.33 L 52.00 87.00 M 32.00 98.33 Q 36.67 102.00 38.33 102.17 L 40.00 102.33 M 19.33 109.33 Q 12.00 105.33 11.50 104.83 L 11.00 104.33\" fill=\"none\" stroke=\"#7cb972\" stroke-width=\"9.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M 48.00 80.00 L 43.00 75.33 L 31.67 77.33 L 30.00 80.67 L 29.00 80.67 L 31.33 76.00 Q 27.67 67.67 27.83 63.67 Q 28.00 59.67 29.83 54.83 Q 31.67 50.00 35.50 46.50 Q 39.33 43.00 44.00 41.83 Q 48.67 40.67 52.50 41.50 L 56.33 42.33 L 65.00 45.67 L 68.00 52.33 Q 81.00 57.00 87.67 57.00 Q 94.33 57.00 104.83 53.83 L 115.33 50.67 Q 120.33 33.67 122.33 31.50 Q 124.33 29.33 124.67 27.00 L 125.00 24.67 Q 132.67 18.33 140.50 15.83 L 148.33 13.33 Q 161.67 12.33 167.67 13.83 Q 173.67 15.33 176.17 17.00 L 178.67 18.67 L 177.67 33.00 Q 183.67 36.33 185.17 39.17 L 186.67 42.00 Q 180.33 48.00 177.00 49.67 Q 173.67 51.33 172.50 54.17 L 171.33 57.00 L 168.33 61.00 Q 164.33 68.00 156.83 75.50 Q 149.33 83.00 148.17 83.67 L 147.00 84.33 L 141.00 81.00 Q 131.33 77.67 126.67 77.50 Q 122.00 77.33 118.00 79.50 Q 114.00 81.67 105.17 92.00 Q 96.33 102.33 95.17 107.17 L 94.00 112.00 L 71.00 115.33 L 66.67 115.67 L 65.67 114.33 L 66.00 116.00 Q 59.33 118.33 57.17 118.17 Q 55.00 118.00 54.83 117.83 L 54.67 117.67 M 237.33 118.00 L 232.67 116.67 Q 222.67 114.00 219.83 112.17 L 217.00 110.33 L 217.67 94.67 L 233.33 89.00 Q 243.67 85.33 248.17 85.17 Q 252.67 85.00 258.00 87.33 Q 263.33 89.67 264.67 89.83 L 266.00 90.00 L 270.67 86.67 L 271.67 87.33 Q 271.33 84.67 272.33 80.33 L 273.33 76.00 Q 273.00 65.67 270.50 60.33 L 268.00 55.00 L 264.33 49.00 L 248.00 47.00 L 235.33 44.00 Q 232.33 48.00 226.83 50.17 L 221.33 52.33 L 217.33 54.67 L 215.33 56.00 L 217.00 74.00 L 216.33 83.67 Q 215.33 87.00 216.50 90.67 L 217.67 94.33 M 215.00 86.33 Q 199.00 86.00 197.33 84.67 Q 195.67 83.33 190.50 81.33 Q 185.33 79.33 182.67 76.33 Q 180.00 73.33 178.50 68.83 L 177.00 64.33 Q 176.00 59.33 174.33 57.67 L 172.67 56.00 L 174.33 44.00 Q 176.33 34.00 176.83 33.50 L 177.33 33.00 M 122.33 76.67 L 120.00 68.33 Q 117.00 60.33 116.67 55.67 L 116.33 51.00 L 126.00 47.67 L 130.00 45.00 Q 127.00 32.67 125.83 31.50 Q 124.67 30.33 124.17 27.33 Q 123.67 24.33 120.00 21.33 Q 116.33 18.33 109.17 16.00 Q 102.00 13.67 96.00 13.50 Q 90.00 13.33 84.50 15.17 Q 79.00 17.00 74.17 20.33 Q 69.33 23.67 67.50 27.33 Q 65.67 31.00 65.17 38.00 L 64.67 45.00 M 95.00 112.00 Q 107.00 118.00 112.83 119.00 L 118.67 120.00 L 132.00 119.67 Q 144.00 116.33 147.83 113.83 L 151.67 111.33 L 152.33 96.67 Q 166.67 91.00 172.00 90.50 Q 177.33 90.00 182.17 91.17 L 187.00 92.33 L 191.33 94.67 L 193.33 109.00 L 195.33 115.67 L 207.67 114.00 L 217.00 111.00 M 235.00 43.67 L 232.00 38.33 Q 227.67 31.33 226.83 26.33 L 226.00 21.33 Q 233.00 16.33 240.00 14.33 Q 247.00 12.33 252.67 12.50 Q 258.33 12.67 261.33 15.00 Q 264.33 17.33 266.33 22.33 Q 268.33 27.33 268.50 34.50 Q 268.67 41.67 266.83 45.17 L 265.00 48.67 M 187.00 42.33 L 194.00 44.67 L 212.67 54.67 L 215.00 55.33 M 147.33 84.67 Q 151.00 96.00 151.50 96.33 L 152.00 96.67 M 67.33 52.33 Q 62.67 62.33 57.83 66.33 L 53.00 70.33 L 43.67 75.00 M 195.00 115.67 Q 189.33 117.67 181.17 118.17 Q 173.00 118.67 167.67 117.50 L 162.33 116.33 L 153.33 112.00 L 152.00 111.67 M 191.67 94.33 Q 197.00 90.33 198.00 88.33 L 199.00 86.33 M 172.33 53.00 Q 168.33 50.33 156.00 49.83 Q 143.67 49.33 137.83 47.50 L 132.00 45.67 L 130.33 45.33 M 225.33 21.67 L 218.33 19.33 Q 208.00 14.67 202.67 14.00 Q 197.33 13.33 192.00 14.50 L 186.67 15.67 L 179.00 18.33\" fill=\"none\" stroke=\"#f4f1e8\" stroke-width=\"8.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></g>"}, "lb257": {"viewBox": "0 0 301 184", "svg": "<g><path d=\"M 46.67 120.00 L 43.00 117.00 Q 34.33 119.67 31.17 123.17 L 28.00 126.67 Q 25.33 129.33 21.67 130.00 Q 18.00 130.67 15.67 132.83 Q 13.33 135.00 12.50 138.33 Q 11.67 141.67 12.50 145.00 Q 13.33 148.33 15.83 151.50 Q 18.33 154.67 19.00 159.00 Q 19.67 163.33 22.33 166.33 Q 25.00 169.33 29.33 170.50 L 33.67 171.67 L 43.00 172.00 M 256.67 109.67 Q 257.00 110.00 260.83 110.67 Q 264.67 111.33 267.50 114.17 Q 270.33 117.00 271.67 119.67 L 273.00 122.33 Q 281.33 124.67 284.33 127.83 Q 287.33 131.00 288.33 135.33 Q 289.33 139.67 288.67 142.67 Q 288.00 145.67 285.67 150.00 Q 283.33 154.33 282.67 158.67 Q 282.00 163.00 279.50 166.00 Q 277.00 169.00 273.00 170.17 L 269.00 171.33 L 256.67 171.67 L 253.67 168.33\" fill=\"none\" stroke=\"#7cb972\" stroke-width=\"8.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M 231.00 90.33 Q 237.00 88.67 243.00 89.33 L 249.00 90.00 L 249.00 128.67 L 233.67 126.33 Q 226.00 125.33 222.00 126.00 Q 218.00 126.67 215.83 127.83 Q 213.67 129.00 211.83 129.00 L 210.00 129.00 L 209.00 124.67 L 208.00 115.67 Q 211.33 112.33 212.00 107.50 Q 212.67 102.67 211.33 99.17 Q 210.00 95.67 208.83 95.00 Q 207.67 94.33 202.83 94.83 L 198.00 95.33 L 194.00 96.00 M 188.00 133.33 L 205.00 132.67 Q 208.33 152.00 208.00 153.00 L 207.67 154.00 Q 194.00 153.33 191.33 155.00 Q 188.67 156.67 187.83 158.67 L 187.00 160.67 M 84.33 94.67 Q 84.00 112.33 81.00 116.33 Q 78.00 120.33 77.17 122.50 L 76.33 124.67 L 61.33 126.67 L 51.00 128.00 L 51.33 88.67 Q 71.67 88.33 76.33 89.83 Q 81.00 91.33 82.83 92.83 Q 84.67 94.33 93.83 94.00 Q 103.00 93.67 105.83 94.83 Q 108.67 96.00 109.83 98.00 Q 111.00 100.00 110.67 102.33 L 110.33 104.67 L 103.00 109.67 L 99.67 112.67 L 102.00 132.00 L 95.00 133.00 L 93.00 150.00 L 105.33 150.67 Q 111.67 163.33 111.83 167.50 L 112.00 171.67 L 130.67 172.67 L 166.33 172.00 Q 249.00 172.33 250.67 173.83 L 252.33 175.33 L 248.67 171.33 L 249.33 161.33 L 249.00 153.33 L 223.67 150.67 Q 221.67 143.67 218.33 138.17 L 215.00 132.67 L 213.33 129.67 Q 210.00 129.67 207.83 131.17 L 205.67 132.67 M 86.67 171.67 L 86.33 155.00 L 67.67 153.00 L 51.00 154.00 L 51.33 171.67 L 111.67 171.67 M 207.33 115.67 L 193.00 112.33 L 189.33 112.00 M 249.00 90.00 L 249.67 84.33 M 105.33 150.00 L 111.00 142.00 M 223.67 151.00 L 214.33 154.67 L 208.67 156.00 L 209.00 171.33 M 51.00 128.67 L 51.00 153.33 M 94.67 133.00 L 86.33 128.33 Q 77.33 125.00 77.17 124.83 L 77.00 124.67 M 228.00 124.67 L 229.33 120.33 Q 230.67 117.67 234.50 113.83 L 238.33 110.00 L 248.33 109.67 M 92.67 150.33 L 86.67 154.67 M 102.67 132.00 L 108.67 132.00 M 249.33 153.00 L 249.33 129.00 M 84.67 112.00 L 99.33 113.00\" fill=\"none\" stroke=\"#f4f1e8\" stroke-width=\"8.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M 176.33 168.00 Q 173.00 164.33 172.83 133.17 L 172.67 102.00 Q 170.00 100.67 149.50 100.83 L 129.00 101.00 Q 127.67 104.00 127.83 134.67 L 128.00 165.33 L 131.33 168.33 M 212.00 52.67 L 213.33 59.67 M 125.67 60.33 L 125.67 53.33 M 168.00 60.00 L 167.67 52.00 M 86.33 60.00 L 88.33 51.33 M 217.67 20.33 L 230.33 26.67 L 243.33 37.67 L 256.33 55.33 Q 263.67 71.00 263.83 73.67 L 264.00 76.33 Q 260.00 77.33 245.00 76.83 L 230.00 76.33 L 51.67 76.67 L 37.00 76.67 Q 36.33 74.33 37.17 70.83 Q 38.00 67.33 42.50 59.33 L 47.00 51.33 L 59.00 36.67 Q 72.00 26.33 79.33 23.17 L 86.67 20.00 L 107.00 15.33 L 137.00 12.33 L 174.67 12.67 L 203.00 16.00 L 217.33 20.00\" fill=\"none\" stroke=\"#eec21f\" stroke-width=\"7.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></g>"}, "lb258": {"viewBox": "0 0 227 187", "svg": "<g><path d=\"M 67.67 59.00 L 73.00 56.00 L 74.00 56.67 Q 73.67 53.67 74.67 48.67 Q 75.67 43.67 77.50 41.67 Q 79.33 39.67 80.67 39.33 L 82.00 39.00 Q 98.00 50.00 102.83 50.67 L 107.67 51.33 Q 116.33 50.33 122.00 47.50 L 127.67 44.67 Q 140.33 33.67 143.83 28.00 Q 147.33 22.33 147.83 18.50 L 148.33 14.67 L 118.67 15.67 Q 104.67 19.00 98.50 22.33 L 92.33 25.67 Q 85.33 28.33 83.83 30.83 Q 82.33 33.33 82.00 35.83 L 81.67 38.33 M 166.00 107.33 Q 168.33 106.00 169.33 103.67 L 170.33 101.33 Q 173.33 91.33 174.83 89.83 Q 176.33 88.33 184.33 86.67 L 192.33 85.00 L 210.67 85.00 Q 209.67 92.33 206.50 96.33 Q 203.33 100.33 199.83 102.00 Q 196.33 103.67 190.67 104.33 Q 185.00 105.00 178.00 103.00 L 171.00 101.00 M 86.00 21.67 L 85.67 27.67\" fill=\"none\" stroke=\"#7cb972\" stroke-width=\"9.1\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M 164.00 100.67 L 159.33 103.00 L 146.67 107.67 Q 140.33 110.67 138.67 110.83 L 137.00 111.00 Q 134.33 93.33 131.33 86.50 L 128.33 79.67 L 122.33 71.00 Q 110.67 60.00 108.00 58.67 L 105.33 57.33 L 92.33 53.00 L 79.00 50.33 L 79.67 47.00 L 85.67 47.00 L 91.33 52.33 M 161.67 111.33 Q 167.00 113.00 168.67 112.67 L 170.33 112.33 L 170.00 113.00 L 174.33 114.33 L 178.00 112.33 L 179.00 108.33 L 173.67 106.00 M 137.33 111.67 L 136.00 118.33 L 132.67 130.67 Q 125.33 145.33 125.50 146.67 Q 125.67 148.00 129.17 154.33 Q 132.67 160.67 136.83 164.50 Q 141.00 168.33 146.50 171.00 Q 152.00 173.67 158.17 174.67 L 164.33 175.67 Q 177.67 175.67 185.50 173.50 Q 193.33 171.33 198.50 168.17 Q 203.67 165.00 207.50 160.83 Q 211.33 156.67 213.17 150.83 Q 215.00 145.00 214.67 138.83 Q 214.33 132.67 212.50 128.33 Q 210.67 124.00 206.83 119.33 Q 203.00 114.67 199.67 112.50 Q 196.33 110.33 189.67 109.67 L 183.00 109.00 M 153.67 154.33 L 156.33 153.33 L 158.00 155.00 L 158.00 156.00 M 124.67 147.33 L 119.00 149.67 L 107.33 157.67 L 95.00 162.67 L 81.00 165.33 L 65.33 165.33 L 51.33 162.33 L 38.33 156.33 L 27.67 148.33 Q 19.00 137.67 16.33 130.83 Q 13.67 124.00 12.83 116.17 Q 12.00 108.33 13.33 100.50 L 14.67 92.67 L 21.00 78.67 L 30.67 66.67 L 40.67 58.33 L 53.00 52.33 L 63.67 50.00 L 68.33 48.33 L 70.00 47.33 M 81.67 63.67 L 77.33 63.33 L 64.67 63.33 Q 59.33 63.67 59.00 63.83 L 58.67 64.00\" fill=\"none\" stroke=\"#eec21f\" stroke-width=\"7.1\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M 129.67 148.00 Q 134.67 158.00 139.50 162.17 Q 144.33 166.33 149.00 168.50 L 153.67 170.67 L 154.67 171.00 Q 164.67 172.67 166.33 173.67 Q 168.00 174.67 171.17 174.67 L 174.33 174.67 L 174.33 179.00 L 164.00 179.00 M 60.00 161.00 L 72.33 163.00 L 73.33 169.00 L 69.33 169.00 L 69.67 164.67 L 78.00 162.33 L 82.00 162.00 M 82.67 49.33 L 90.33 52.67 L 91.67 53.67 M 204.33 159.67 L 209.33 153.33 L 214.00 153.33 L 213.00 156.33 M 184.33 171.00 L 171.67 173.00 M 138.33 95.67 L 137.67 92.67 M 70.00 45.67 L 61.33 46.67 M 183.67 177.67 L 180.67 178.33 M 146.33 143.67 L 146.00 141.33 L 142.00 139.00 Q 140.33 140.67 140.17 141.67 L 140.00 142.67 M 140.33 107.00 L 139.67 103.33 M 130.00 75.33 L 133.00 81.00 M 191.33 111.33 L 185.67 110.00 M 124.33 151.33 L 126.00 155.00 M 82.67 168.67 L 75.00 169.00 M 172.67 115.67 L 175.67 113.33 L 175.67 111.67 L 173.00 113.00 L 175.33 111.33 M 18.67 128.67 Q 25.00 140.00 30.67 145.50 L 36.33 151.00 M 47.33 116.33 Q 44.00 116.00 43.67 115.67 L 43.33 115.33 M 212.33 120.33 L 201.67 109.00 L 200.33 108.00 M 111.33 56.67 L 117.67 61.00 L 126.67 70.33\" fill=\"none\" stroke=\"#ef8f4f\" stroke-width=\"1.1\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></g>"}, "lb259": {"viewBox": "0 0 229 249", "svg": "<g><path d=\"M 61.00 130.67 Q 52.67 143.33 52.33 146.50 L 52.00 149.67 Q 58.33 149.00 61.33 147.00 Q 64.33 145.00 65.33 142.50 Q 66.33 140.00 66.17 136.33 L 66.00 132.67 L 61.00 129.67 Q 58.67 127.67 52.33 127.33 L 46.00 127.00 M 131.67 194.00 Q 134.33 190.33 139.50 187.00 Q 144.67 183.67 152.50 184.67 Q 160.33 185.67 164.00 184.50 Q 167.67 183.33 169.83 181.17 Q 172.00 179.00 174.17 175.17 L 176.33 171.33 Q 187.00 169.33 191.50 166.83 Q 196.00 164.33 199.17 160.83 Q 202.33 157.33 204.00 152.00 Q 205.67 146.67 205.50 142.33 L 205.33 138.00 L 204.33 131.00 Q 212.67 121.67 214.33 117.50 Q 216.00 113.33 216.17 108.17 Q 216.33 103.00 214.83 98.83 Q 213.33 94.67 209.83 90.50 L 206.33 86.33 L 200.67 82.00 L 200.33 78.67 Q 201.33 67.00 200.33 62.83 Q 199.33 58.67 195.17 53.67 Q 191.00 48.67 186.83 46.67 L 182.67 44.67 L 175.33 43.00 Q 171.67 36.00 168.50 33.33 Q 165.33 30.67 160.00 29.83 L 154.67 29.00 L 146.67 29.33 Q 138.67 20.00 133.50 17.00 Q 128.33 14.00 121.67 12.83 Q 115.00 11.67 108.67 12.50 Q 102.33 13.33 97.33 15.83 Q 92.33 18.33 88.33 22.33 L 84.33 26.33 L 81.33 29.67 Q 68.00 29.33 64.50 30.83 Q 61.00 32.33 58.17 35.33 Q 55.33 38.33 54.17 40.83 L 53.00 43.33 Q 43.67 45.00 39.67 47.33 Q 35.67 49.67 32.67 53.67 Q 29.67 57.67 28.50 62.00 Q 27.33 66.33 27.67 73.17 L 28.00 80.00 L 29.33 80.67 Q 27.33 81.00 25.33 82.83 L 23.33 84.67 Q 16.00 92.00 14.17 96.17 Q 12.33 100.33 12.00 104.50 Q 11.67 108.67 12.50 112.67 Q 13.33 116.67 16.33 120.67 L 19.33 124.67 L 24.67 129.67 L 23.67 137.00 L 23.00 145.33 Q 24.33 153.00 26.67 157.00 Q 29.00 161.00 33.00 164.33 Q 37.00 167.67 41.50 169.17 L 46.00 170.67 Q 52.33 172.33 55.67 177.33 Q 59.00 182.33 62.50 183.83 Q 66.00 185.33 69.67 185.50 Q 73.33 185.67 78.17 184.50 L 83.00 183.33 L 88.33 186.67 Q 95.00 192.00 95.33 192.67 L 95.67 193.33 M 109.67 129.00 Q 118.33 124.00 119.83 122.17 L 121.33 120.33 M 155.00 72.00 L 162.00 72.00 L 169.00 65.67 M 25.33 130.33 L 30.33 129.67 M 76.67 65.33 Q 71.33 70.33 68.67 71.17 L 66.00 72.00 M 119.00 45.00 Q 112.00 47.33 108.33 51.17 Q 104.67 55.00 104.17 58.00 L 103.67 61.00 Q 106.67 62.33 110.17 61.33 Q 113.67 60.33 116.00 57.50 Q 118.33 54.67 119.00 50.17 L 119.67 45.67 L 119.33 45.33 M 184.33 134.67 Q 185.67 142.33 184.67 144.67 L 183.67 147.00 Q 178.67 148.00 176.67 146.83 Q 174.67 145.67 173.33 141.83 Q 172.00 138.00 172.00 133.33 L 172.00 128.67 L 174.67 126.67 Q 180.33 128.67 182.17 131.50 L 184.00 134.33\" fill=\"none\" stroke=\"#7cb972\" stroke-width=\"8.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M 127.00 201.67 Q 128.33 198.00 128.33 196.17 Q 128.33 194.33 128.67 193.17 L 129.00 192.00 L 128.00 193.33 L 124.33 192.67 L 124.00 188.33 Q 124.67 200.67 126.50 202.50 L 128.33 204.33 Q 128.00 208.67 127.33 209.33 Q 126.67 210.00 126.00 211.67 Q 125.33 213.33 125.00 216.67 L 124.67 220.00 Q 125.33 226.00 126.17 226.83 Q 127.00 227.67 127.17 228.33 L 127.33 229.00 Q 129.00 222.67 128.50 218.17 Q 128.00 213.67 127.33 213.00 Q 126.67 212.33 126.00 210.67 L 125.33 209.00 L 124.33 204.67 L 126.00 202.00 M 103.33 185.33 L 103.00 193.67 L 99.33 196.33 L 99.67 201.33 L 101.67 203.00 L 103.67 200.00 L 102.67 195.33 L 98.33 192.67 L 98.33 187.67 L 99.00 187.00 M 101.33 203.33 Q 100.33 228.67 99.17 230.50 Q 98.00 232.33 97.83 235.50 L 97.67 238.67 L 100.33 239.67 L 104.00 237.67 Q 102.00 234.33 101.50 231.83 Q 101.00 229.33 100.83 229.17 L 100.67 229.00 M 127.67 232.33 L 130.00 236.00 L 127.00 232.67 Q 123.00 235.33 119.00 235.67 L 115.00 236.00 L 113.33 238.00 Q 118.00 240.00 121.83 240.17 L 125.67 240.33 M 104.00 237.67 L 113.00 237.67 M 121.33 157.33 Q 114.33 159.33 110.50 158.50 Q 106.67 157.67 103.83 154.67 Q 101.00 151.67 100.33 148.50 Q 99.67 145.33 100.50 142.50 Q 101.33 139.67 103.83 137.17 Q 106.33 134.67 110.67 133.83 Q 115.00 133.00 118.17 133.83 Q 121.33 134.67 124.00 137.33 Q 126.67 140.00 127.33 143.83 Q 128.00 147.67 126.00 151.67 Q 124.00 155.67 122.83 156.50 L 121.67 157.33 M 159.00 106.67 Q 164.67 105.33 167.33 103.17 Q 170.00 101.00 171.17 98.00 Q 172.33 95.00 172.17 91.83 Q 172.00 88.67 170.00 85.83 Q 168.00 83.00 165.83 82.00 Q 163.67 81.00 160.50 80.50 Q 157.33 80.00 153.33 81.17 Q 149.33 82.33 146.83 85.50 Q 144.33 88.67 144.50 93.17 Q 144.67 97.67 146.67 100.50 Q 148.67 103.33 151.67 104.83 Q 154.67 106.33 156.67 106.50 L 158.67 106.67 M 54.67 94.67 Q 58.00 100.67 60.67 102.33 Q 63.33 104.00 67.83 104.17 Q 72.33 104.33 75.67 102.33 Q 79.00 100.33 80.50 97.67 Q 82.00 95.00 82.17 91.33 Q 82.33 87.67 80.50 84.83 Q 78.67 82.00 75.00 80.17 Q 71.33 78.33 66.00 79.17 Q 60.67 80.00 58.33 82.33 Q 56.00 84.67 55.17 87.50 Q 54.33 90.33 54.50 92.33 L 54.67 94.33\" fill=\"none\" stroke=\"#eec21f\" stroke-width=\"6.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M 148.00 79.33 L 144.33 82.33 M 104.00 198.00 Q 104.67 192.00 103.17 189.83 L 101.67 187.67 L 102.33 196.33 L 98.33 201.33 L 98.33 196.00 M 103.00 143.33 L 103.00 149.00 M 100.00 241.00 L 121.00 240.67 L 123.33 238.33 L 130.00 238.00 Q 131.00 235.33 130.17 228.83 Q 129.33 222.33 128.00 220.83 L 126.67 219.33 Q 129.67 215.33 129.67 213.50 L 129.67 211.67 L 125.33 208.67 L 126.00 215.00 Q 125.33 226.33 124.83 227.67 Q 124.33 229.00 124.33 232.33 L 124.33 235.67 Q 122.33 236.67 118.50 236.00 L 114.67 235.33 L 110.33 234.33 L 103.33 234.00 L 103.67 225.00 M 155.67 103.67 L 160.00 103.67 M 101.00 209.33 L 100.67 205.67 L 101.00 210.33 L 100.67 213.67 M 81.00 79.67 L 78.00 77.33 M 126.33 186.00 Q 126.00 188.00 126.17 189.00 L 126.33 190.00 L 125.67 197.00 L 125.67 205.33 L 125.33 206.67 M 163.33 76.67 Q 170.33 80.67 170.83 81.17 L 171.33 81.67 M 57.67 89.33 Q 57.67 93.33 59.00 95.83 Q 60.33 98.33 61.50 99.33 L 62.67 100.33 M 153.33 84.00 L 162.33 84.00 M 99.33 233.00 L 99.67 230.00 L 99.33 229.67 M 129.33 138.33 Q 124.00 132.33 123.50 132.17 L 123.00 132.00 M 114.33 235.67 Q 111.00 236.67 110.50 236.67 L 110.00 236.67 M 129.67 199.67 L 129.67 196.33 M 115.00 136.67 L 118.00 136.67\" fill=\"none\" stroke=\"#ef8f4f\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></g>"}, "lb260": {"viewBox": "0 0 225 259", "svg": "<g><path d=\"M 34.33 218.00 L 31.33 224.00 Q 30.33 227.33 30.50 230.00 L 30.67 232.67 M 187.67 217.00 L 192.67 226.67 Q 197.67 224.67 200.17 221.33 L 202.67 218.00 M 193.00 227.00 L 192.67 234.00 M 11.00 226.00 Q 18.33 232.67 19.67 236.00 L 21.00 239.33 M 213.00 226.33 Q 205.00 233.67 204.17 236.67 Q 203.33 239.67 203.33 240.00 L 203.33 240.33 M 30.00 225.33 Q 24.33 222.33 22.67 219.67 L 21.00 217.00\" fill=\"none\" stroke=\"#7cb972\" stroke-width=\"7.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M 128.67 86.00 L 137.67 86.00 M 151.00 74.00 Q 145.67 71.67 135.33 70.17 L 125.00 68.67 L 95.33 68.67 Q 75.67 71.67 73.17 73.17 L 70.67 74.67 Q 69.00 83.00 66.83 86.50 Q 64.67 90.00 64.83 92.67 L 65.00 95.33 L 66.33 102.00 Q 68.33 121.33 69.83 123.00 L 71.33 124.67 Q 79.33 135.33 84.50 138.50 Q 89.67 141.67 95.00 143.17 L 100.33 144.67 L 116.33 145.33 Q 128.67 143.33 134.67 140.33 Q 140.67 137.33 144.50 133.50 L 148.33 129.67 L 153.67 120.67 Q 154.67 118.67 155.67 107.67 L 156.67 96.67 Q 157.67 91.00 156.00 87.67 L 154.33 84.33 Q 152.00 79.67 151.83 76.83 L 151.67 74.00 L 158.67 72.33 Q 161.00 68.33 161.00 64.33 Q 161.00 60.33 159.67 57.00 Q 158.33 53.67 155.50 50.83 Q 152.67 48.00 147.67 45.67 L 142.67 43.33 Q 140.33 33.33 136.67 28.00 Q 133.00 22.67 128.67 19.00 Q 124.33 15.33 119.50 13.83 Q 114.67 12.33 109.50 12.50 Q 104.33 12.67 99.67 15.00 Q 95.00 17.33 90.67 21.67 Q 86.33 26.00 83.67 31.50 Q 81.00 37.00 80.83 39.83 L 80.67 42.67 L 110.00 40.33 L 128.33 41.33 L 142.00 43.00 M 137.00 200.00 L 126.33 200.67 Q 125.67 205.00 126.83 207.17 Q 128.00 209.33 131.67 210.67 Q 135.33 212.00 142.83 212.17 Q 150.33 212.33 159.17 210.17 L 168.00 208.00 Q 173.67 199.33 173.83 191.33 L 174.00 183.33 L 169.67 151.33 Q 164.00 130.00 161.67 126.17 Q 159.33 122.33 157.17 121.33 L 155.00 120.33 M 94.33 85.67 L 85.00 85.67 M 151.00 160.67 Q 150.00 172.33 148.00 174.33 Q 146.00 176.33 140.33 177.67 L 134.67 179.00 L 128.33 181.33 Q 126.33 185.33 126.50 187.50 L 126.67 189.67 L 136.67 190.00 M 85.00 190.00 L 94.67 189.33 L 93.33 182.00 L 88.67 179.67 Q 75.33 176.33 74.17 174.67 Q 73.00 173.00 72.33 169.33 L 71.67 165.67 M 168.00 208.33 Q 172.67 220.33 173.17 227.17 Q 173.67 234.00 172.67 237.50 Q 171.67 241.00 169.83 243.00 Q 168.00 245.00 164.67 246.17 Q 161.33 247.33 141.33 247.67 L 121.33 248.00 Q 61.00 247.67 57.33 245.83 Q 53.67 244.00 51.83 241.17 Q 50.00 238.33 49.83 231.33 Q 49.67 224.33 51.00 219.33 L 52.33 214.33 L 54.67 208.33 Q 49.67 198.33 49.50 191.17 L 49.33 184.00 L 55.00 146.67 Q 59.33 130.33 61.67 126.50 Q 64.00 122.67 65.83 122.00 L 67.67 121.33 M 85.00 200.00 L 94.67 200.33 Q 95.67 193.67 95.17 191.83 L 94.67 190.00 M 80.33 42.67 L 74.33 45.67 Q 67.00 49.67 64.67 52.67 Q 62.33 55.67 61.33 60.17 Q 60.33 64.67 61.17 67.83 L 62.00 71.00 Q 66.00 73.33 68.33 73.83 L 70.67 74.33 M 104.67 86.67 L 104.33 91.33 L 99.33 110.00 L 101.33 113.67 Q 113.00 115.00 117.50 114.17 L 122.00 113.33 Q 122.67 109.67 120.33 99.50 L 118.00 89.33 M 94.67 201.00 L 94.33 207.67 Q 90.00 210.67 85.17 211.50 L 80.33 212.33 L 66.67 211.67 L 55.00 209.00 M 93.67 121.67 Q 100.33 126.33 105.50 127.17 Q 110.67 128.00 115.67 127.33 Q 120.67 126.67 124.50 124.50 L 128.33 122.33 M 126.00 200.33 Q 124.67 193.67 125.50 191.67 L 126.33 189.67\" fill=\"none\" stroke=\"#f4f1e8\" stroke-width=\"7.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></g>"}, "lb261": {"viewBox": "0 0 146 187", "svg": "<g><path d=\"M 99.25 66.50 L 101.25 70.25 L 102.50 75.00 Q 105.50 81.00 106.75 82.12 Q 108.00 83.25 109.88 84.00 L 111.75 84.75 Q 113.25 88.00 113.38 91.38 Q 113.50 94.75 114.12 96.75 Q 114.75 98.75 116.62 100.50 L 118.50 102.25 Q 124.00 105.75 126.25 106.12 Q 128.50 106.50 129.88 106.00 Q 131.25 105.50 132.00 104.38 Q 132.75 103.25 133.88 99.75 L 135.00 96.25 L 135.75 91.00 L 135.75 82.75 L 134.00 75.00 L 131.00 68.25 L 126.00 61.25 L 119.75 55.00 Q 110.50 49.00 109.38 46.38 L 108.25 43.75 Q 110.75 41.50 114.50 40.88 L 118.25 40.25 L 131.25 37.00 L 134.50 35.50 Q 135.25 32.25 134.62 30.12 Q 134.00 28.00 131.50 26.00 L 129.00 24.00 L 122.50 20.75 L 116.00 19.25 L 108.00 18.75 Q 101.50 19.50 98.38 20.75 L 95.25 22.00 Q 90.75 24.75 89.12 25.12 Q 87.50 25.50 85.50 24.62 Q 83.50 23.75 79.75 20.25 L 76.00 16.75 L 69.25 13.00 L 60.50 10.00 L 56.50 9.25 L 49.50 8.50 L 40.75 8.50 L 38.25 9.00 L 30.00 11.25 L 23.00 15.00 Q 19.25 18.25 18.75 20.50 Q 18.25 22.75 18.88 24.25 L 19.50 25.75 L 27.25 27.50 L 38.50 29.25 L 45.75 29.25 L 46.00 25.50 L 45.75 30.25 Q 48.00 32.75 50.00 33.62 Q 52.00 34.50 53.12 36.62 L 54.25 38.75 Q 52.00 42.00 47.62 43.38 L 43.25 44.75 L 33.50 49.50 L 27.25 53.75 L 21.25 58.75 L 15.50 65.50 L 11.50 72.75 L 10.25 77.50 Q 10.25 82.75 11.00 83.62 L 11.75 84.50 Q 15.75 84.50 17.50 84.00 Q 19.25 83.50 24.38 80.38 L 29.50 77.25 L 34.25 73.50 Q 37.25 70.50 37.88 69.12 L 38.50 67.75 L 40.00 67.75 L 43.00 68.25 Q 49.25 68.25 55.50 65.75 L 61.75 63.25 L 66.75 61.25 M 54.50 39.00 L 59.75 40.00 L 64.75 40.50 L 66.25 40.75\" fill=\"none\" stroke=\"#7cb972\" stroke-width=\"8.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M 77.00 76.00 Q 71.00 79.00 68.25 83.50 L 65.50 88.00 L 62.75 94.00 Q 61.25 101.25 60.12 102.12 Q 59.00 103.00 57.88 105.62 L 56.75 108.25 L 51.25 126.50 L 49.50 133.75 Q 48.25 142.75 47.50 144.12 Q 46.75 145.50 45.88 151.12 L 45.00 156.75 L 44.00 165.25 Q 43.50 172.75 44.00 174.12 Q 44.50 175.50 45.62 176.12 Q 46.75 176.75 51.38 177.00 L 56.00 177.25 L 64.50 177.25 L 69.50 176.25 Q 70.75 173.50 70.62 168.75 L 70.50 164.00 L 70.00 155.25 L 69.75 143.50 L 70.25 131.25 L 73.00 106.00 Q 73.50 103.25 73.88 102.62 Q 74.25 102.00 76.12 93.50 L 78.00 85.00 L 78.50 77.25 L 77.25 75.75 Q 80.25 68.00 80.25 67.38 L 80.25 66.75 M 48.75 142.75 L 51.25 143.50 L 59.00 144.25 L 63.25 144.75 L 69.25 145.00 M 61.50 101.25 L 65.50 102.50 Q 72.25 103.00 72.75 103.25 L 73.25 103.50\" fill=\"none\" stroke=\"#ef8f4f\" stroke-width=\"7.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></g>"}};
+  var seq = [['lb258','top'],['lb256','bottom'],['lb257','top'],['lb259','bottom'],['lb260','top'],['lb255','bottom'],['lb261','top']];
+  var NS='http://www.w3.org/2000/svg';
+  var cam=document.getElementById('cam'); if(!cam) return;
+  var root=el('g',{'data-jeju':'1'}); cam.appendChild(root);
+  var X0=8062, X1=8662, DROP=30, ICON=108;   // 제주 오브젝트 전체 오른쪽 이동: 오브젝트 1.5개 폭(162px)
+  var xs=[]; for(var i=0;i<seq.length;i++) xs.push(X0+(X1-X0)*i/(seq.length-1));
+  var nodes=[];
+  seq.forEach(function(s,i){
+    var o=O[s[0]]; if(!o) return;
+    var vb=o.viewBox.trim().split(/\s+/).map(Number);
+    var x=xs[i], top=(s[1]==='top');
+    var lineY=(typeof FORK_PULL!=='undefined'&&FORK_PULL.lineY)?FORK_PULL.lineY(x, top?'top':'bottom'):(top?400:680);
+    var col= top?'#ef8fa9':'#6fa9d9';
+    var iconY=lineY+DROP, sc=ICON/Math.max(vb[2],vb[3]), iw=vb[2]*sc, ih=vb[3]*sc;
+    var grp=el('g',{}); grp.style.opacity='0';
+    var drop=el('path',{d:'M '+x.toFixed(1)+' '+lineY.toFixed(1)+' L '+x.toFixed(1)+' '+iconY.toFixed(1),stroke:col,'stroke-width':'3',fill:'none','stroke-linecap':'round'});
+    drop.setAttribute('stroke-dasharray',DROP); drop.setAttribute('stroke-dashoffset',DROP);
+    grp.appendChild(drop);
+    var sub=document.createElementNS(NS,'svg'); sub.setAttribute('x',(x-iw/2).toFixed(1)); sub.setAttribute('y',iconY.toFixed(1)); sub.setAttribute('width',iw.toFixed(1)); sub.setAttribute('height',ih.toFixed(1)); sub.setAttribute('viewBox',o.viewBox);
+    sub.innerHTML='<g>'+o.svg+'</g>'; sub.style.opacity='0';
+    grp.appendChild(sub);
+    root.appendChild(grp);
+    var paths=[].slice.call(sub.querySelectorAll('path')).map(function(pp){ var L=0,by=0; try{L=pp.getTotalLength(); by=pp.getBBox().y;}catch(e){} if(L>0){ pp.style.strokeDasharray=L; pp.style.strokeDashoffset=L; } return {el:pp,len:L||1,y:by}; });
+    paths.sort(function(a,b){ return a.y-b.y; });   // 위→아래 순서로 그리기 위해 Y 정렬
+    nodes.push({grp:grp,drop:drop,sub:sub,L:DROP,x:x,top:top,iw:iw,ih:ih,paths:paths});
+  });
+  window.__jejuUpdate=function(t){
+    var T2=(typeof FORK_PULL!=='undefined')?FORK_PULL.T2:null;
+    var hasLY=(typeof FORK_PULL!=='undefined'&&FORK_PULL.lineY);
+    if(T2==null){ nodes.forEach(function(n){n.grp.style.opacity='0';n.sub.style.opacity='0';n.drop.setAttribute('stroke-dashoffset',n.L);n.paths.forEach(function(pp){pp.el.style.strokeDashoffset=pp.len;});}); return; }
+    var START=T2+3.0, STEP=0.6;
+    nodes.forEach(function(n,i){
+      if(hasLY){   // 드롭선 끝(위쪽)을 실제 메인선 y에 정확히 맞춤 + 아이콘도 그만큼 매닮
+        var ly=FORK_PULL.lineY(n.x, n.top?'top':'bottom'), iy=ly+DROP;
+        n.drop.setAttribute('d','M '+n.x.toFixed(1)+' '+ly.toFixed(1)+' L '+n.x.toFixed(1)+' '+iy.toFixed(1));
+        n.sub.setAttribute('y', iy.toFixed(1)); n.sub.setAttribute('x',(n.x-n.iw/2).toFixed(1));
+      }
+      var rt=START+i*STEP, e=t-rt;
+      if(e<=0){ n.grp.style.opacity='0'; n.sub.style.opacity='0'; n.drop.setAttribute('stroke-dashoffset',n.L); n.paths.forEach(function(pp){pp.el.style.strokeDashoffset=pp.len;}); return; }
+      n.grp.style.opacity='1';
+      var DDUR=0.4; var dp=Math.min(1,e/DDUR); n.drop.setAttribute('stroke-dashoffset',(n.L*(1-dp)).toFixed(2));   // 드롭선 위→아래로 먼저 그려짐
+      n.sub.style.opacity= e>=DDUR?'1':'0';   // 아이콘은 드롭선이 끝난 뒤 등장
+      var ie=Math.max(0,Math.min(1,(e-DDUR)/0.85));   // 드롭선 끝난 지점·시점부터 아이콘 선-드로잉(위→아래)
+      var _N=n.paths.length;
+      n.paths.forEach(function(pp,pi){ var s=pi/_N, w=1/_N, pr=Math.max(0,Math.min(1,(ie-s)/w)); pp.el.style.strokeDashoffset=(pp.len*(1-pr)).toFixed(1); });   // Y정렬 순서대로 위 path부터 그림
+    });
+  };
+})();
 
 reset();
 </script>
