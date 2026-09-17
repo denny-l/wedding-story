@@ -273,7 +273,7 @@
   <audio id="bgmAudio" preload="auto" src="./bgm3.mp3?v=291a0221"></audio>
 </div>
 
-<script src="objects.js?v=1ea09319"></script>
+<script src="objects.js?v=44f3506f"></script>
 <script>
 const {COUPLE_V,HOUSE_V,OAK_V,BUSHY_V,LEAFY_V,COUPLE2_V,BIKE_V,ROUNDTREE_V,MOON_V}=window.WEDDING_SHAPES;  // 공용 objects.js 의 shape 데이터 참조
 
@@ -1049,13 +1049,12 @@ add(libNode('lb82', 5502, 540, 100, {anchor:'center', topDown:true, sw:4.6}), 55
 add(libNode('lb252', 4000, 494, 95,  {topDown:true, keepfill:true, fatten:1.2, bottomUp:true}),  4000, 'apartlife', 0.10);  // 분홍 꽃(위선 좌)
 add(libNode('lb253', 4095, 448, 30,  {topDown:true, keepfill:true, fatten:1.2, bottomUp:true}),  4095, 'apartlife', 0.14);  // 풀(위선)
 add(libNode('lb242', 4235, 414, 210, {topDown:true, keepfill:true, fatten:1.2}),                 4235, 'apartlife', 0.20);  // 여행 여아(발=위선)
-add(libNode('lb243', 4330, 412, 72,  {topDown:true, keepfill:true, fatten:1.2}),                 4330, 'apartlife', 0.30);  // 분홍 캐리어(여아 뒤)
-add(libNode('lb245', 4520, 411, 150, {topDown:true, keepfill:true, fatten:1.2}),                 4520, 'apartlife', 0.34);  // 공항 표지판(기둥=위선)
-add(libNode('lb249', 4635, 412, 58,  {topDown:true, keepfill:true, fatten:1.2}),                 4635, 'apartlife', 0.40);  // 노란 가방(위선)
+add(libNode('lb243', 4316, 402, 72,  {topDown:true, keepfill:true, fatten:1.2}),                 4316, 'apartlife', 0.30);  // 분홍 캐리어(여아 뒤)
+add(libNode('lb245', 4520, 411, 150, {topDown:true, sw:2.6}),                 4520, 'apartlife', 0.34);  // 공항 표지판(기둥=위선)
 // 하늘(구름·비행기)
-add(libNode('lb247', 4600, 194, 55,  {anchor:'center', topDown:true, keepfill:true, fatten:1.2}), 4600, 'apartlife', 0.24);  // 구름A
-add(libNode('lb246', 4790, 200, 85,  {anchor:'center', topDown:true, keepfill:true, fatten:1.2}), 4790, 'apartlife', 0.30);  // 비행기
-add(libNode('lb248', 4890, 231, 52,  {anchor:'center', topDown:true, keepfill:true, fatten:1.2}), 4890, 'apartlife', 0.36);  // 구름B
+add(libNode('lb247', 4600, 194, 55,  {anchor:'center', topDown:true, sw:2.6}), 4600, 'apartlife', 0.24);  // 구름A(단일선 stroke 교체)
+add(libNode('lb246', 4790, 200, 85,  {anchor:'center', topDown:true, sw:3.0}), 4790, 'apartlife', 0.30);  // 비행기(단일선 stroke 교체)
+add(libNode('lb248', 4890, 231, 52,  {anchor:'center', topDown:true, sw:2.6}), 4890, 'apartlife', 0.36);  // 구름B(단일선 stroke 교체)
 // 사이(별)
 add(libNode('lb250', 4300, 541, 42,  {anchor:'center', topDown:true, keepfill:true, fatten:1.2}), 4300, 'apartlife', 0.16);  // 별A(사이)
 add(libNode('lb251', 4690, 490, 42,  {anchor:'center', topDown:true, keepfill:true, fatten:1.2}), 4690, 'apartlife', 0.44);  // 별B(사이)
@@ -1102,13 +1101,14 @@ add(libNode('lb214', 6292, 403, 56, {topDown:true, bottomUp:true, keepfill:true}
 add(libNode('lb215', 6292, 514, 83, {topDown:true, bottomUp:true, keepfill:true}), 6292, 'days', 0.6); items[items.length-1].dx=-179;   // 화분(좌중)
 add(libNode('lb217', 6292, 428, 59, {topDown:true, bottomUp:true, keepfill:true}), 6292, 'days', 0.7); items[items.length-1].dx=189;    // 화초(우상)
 add(libNode('lb219', 6292, 522, 56, {topDown:true, keepfill:true}), 6292, 'days', 0.8); items[items.length-1].dx=190;    // 티슈
-add(libNode('lb208', 6292, 566, 177, {topDown:true, keepfill:true, occlude:true}), 6292, 'days', 1.0); items[items.length-1].dx=-2;   // 요리 커플(앞치마·팔 포함 전체). occlude=메인선 가림
+add(libNode('lb208', 6292, 566, 177, {topDown:true, keepfill:true, occlude:true}), 6292, 'days', 1.0); items[items.length-1].dx=-2;   // 요리 남아(분리). occlude=메인선 가림
+add(libNode('lb254', 6292, 566, 177, {topDown:true, keepfill:true, occlude:true}), 6292, 'days', 1.05); items[items.length-1].dx=-2;   // 요리 여아(분리·별도 오브젝트)
 add(libNode('lb209', 6292, 604, 70, {topDown:true, keepfill:true}), 6292, 'days', 1.2); items[items.length-1].dx=-71;    // 조리 볼(음식)
 add(libNode('lb210', 6292, 604, 51, {topDown:true, keepfill:true}), 6292, 'days', 1.3); items[items.length-1].dx=48;     // 도마+음식
 add(libNode('lb220', 6292, 640, 26, {topDown:true, keepfill:true}), 6292, 'days', 1.4); items[items.length-1].dx=-58;    // 접시
 add(libNode('lb216', 6292, 652, 86, {topDown:true, bottomUp:true, keepfill:true}), 6292, 'days', 1.5); items[items.length-1].dx=-100;   // 화분(좌하·전경)
 add(libNode('lb218', 6292, 649, 74, {topDown:true, bottomUp:true, keepfill:true}), 6292, 'days', 1.6); items[items.length-1].dx=156;    // 꽃그릇(우하·전경)
-for(var _kfi=items.length-15;_kfi<items.length;_kfi++){ items[_kfi].fwdSkip=1; }   // 요리 15요소: 수동 dx 오프셋 → fwd self-test 제외(렌더는 codeX+dx로 정확)
+for(var _kfi=items.length-16;_kfi<items.length;_kfi++){ items[_kfi].fwdSkip=1; }   // 요리 16요소(남아·여아 분리): 수동 dx 오프셋 → fwd self-test 제외(렌더는 codeX+dx로 정확)
 
 // [씬] 마음이 무거운 날에는 서로의 곁을 지켰습니다 — 계단 커플(계단 바닥=선 y540, rt≈12573)
 add(libNode('lb196', 6962, 570, 240, {topDown:true, keepfill:true, occlude:true}), 6962, 'days', 0.0);   // 계단 커플=등돌린 커플2(벡터·매끈). occlude=B(그리기 따라 선 가림)
