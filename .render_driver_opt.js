@@ -36,7 +36,7 @@ window.__render = async function(startIdx, endIdx){
       for(const ln of Ls){ ctx.fillText(ln,W/2,y); if(ln!==''){ lastY=y; lastLine=ln; } y+=lh; } ctx.restore();
       // ── 분필 조각(chalkStick) 합성: 자막 쓰는 동안 텍스트 끝에 백묵(회전 wobble) + 가루 glow ──
       try{ const cs=document.getElementById('chalkStick'); const csOp=parseFloat(getComputedStyle(cs).opacity)||0;
-        if(csOp>0.01){ ctx.save(); ctx.font='400 '+fs+'px Gaegu, sans-serif';
+        if(csOp>0.01 && lastLine!==''){ ctx.save(); ctx.font='400 '+fs+'px Gaegu, sans-serif';
           const lw=ctx.measureText(lastLine).width, sw=0.26*fs, sh=0.92*fs;
           const sx=W/2+lw/2+0.12*fs, sTop=lastY+0.06*fs, sBot=sTop+sh, cxp=sx+sw/2;
           const rm=/rotate\(([-0-9.]+)deg\)/.exec(cs.style.transform||''); const ang=rm?parseFloat(rm[1])*Math.PI/180:0;
