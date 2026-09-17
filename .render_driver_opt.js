@@ -32,7 +32,22 @@ window.__render = async function(startIdx, endIdx){
       const isMid=cap.classList.contains('mid'); const fs=Math.round(W*(isMid?0.040:0.031));
       ctx.font='400 '+fs+'px Gaegu, sans-serif'; ctx.fillStyle=getComputedStyle(cap).color||'#f2ede2'; ctx.textAlign='center'; ctx.textBaseline='top'; ctx.shadowColor='rgba(242,237,226,.4)'; ctx.shadowBlur=W*0.012;
       const Ls=txt.split('\n'), lh=fs*1.55; let y = isMid ? (Hh*0.5 - Ls.length*lh/2 + lh*0.15) : Hh*0.855;   // mid=화면 세로 중앙(인트로 타이틀), 기본=하단
-      for(const ln of Ls){ ctx.fillText(ln,W/2,y); y+=lh; } ctx.restore(); }
+      let lastY=y, lastLine='';
+      for(const ln of Ls){ ctx.fillText(ln,W/2,y); if(ln!==''){ lastY=y; lastLine=ln; } y+=lh; } ctx.restore();
+      // ── 분필 조각(chalkStick) 합성: 자막 쓰는 동안 텍스트 끝에 백묵(회전 wobble) + 가루 glow ──
+      try{ const cs=document.getElementById('chalkStick'); const csOp=parseFloat(getComputedStyle(cs).opacity)||0;
+        if(csOp>0.01){ ctx.save(); ctx.font='400 '+fs+'px Gaegu, sans-serif';
+          const lw=ctx.measureText(lastLine).width, sw=0.26*fs, sh=0.92*fs;
+          const sx=W/2+lw/2+0.12*fs, sTop=lastY+0.06*fs, sBot=sTop+sh, cxp=sx+sw/2;
+          const rm=/rotate\(([-0-9.]+)deg\)/.exec(cs.style.transform||''); const ang=rm?parseFloat(rm[1])*Math.PI/180:0;
+          ctx.globalAlpha=Math.min(1,op*csOp);
+          ctx.translate(cxp,sBot); ctx.rotate(ang); ctx.translate(-cxp,-sBot);
+          const g=ctx.createLinearGradient(sx,sTop,sx+sw,sBot); g.addColorStop(0,'#fffdf5'); g.addColorStop(.48,'#f0e9da'); g.addColorStop(1,'#cec5b0');
+          ctx.shadowColor='rgba(255,253,245,.45)'; ctx.shadowBlur=12; ctx.fillStyle=g;
+          ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(sx,sTop,sw,sh,[sw*0.22,sw*0.22,sw*0.4,sw*0.4]); else ctx.rect(sx,sTop,sw,sh); ctx.fill();
+          ctx.shadowBlur=6; ctx.fillStyle='rgba(255,253,245,.5)'; ctx.beginPath(); ctx.arc(cxp,sBot+0.1*fs,0.17*fs,0,7); ctx.fill();
+          ctx.restore(); }
+      }catch(e){} }
     const blob=await blobOf();
     await fetch('/?name=f_'+String(i).padStart(5,'0')+'.jpg',{method:'POST',body:blob});   // raw binary(=base64 인코딩 생략)
     window.__done=i+1;
