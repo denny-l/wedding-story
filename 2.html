@@ -273,7 +273,7 @@
   <audio id="bgmAudio" preload="auto" src="./bgm2.mp3?v=7ca907fb"></audio>
 </div>
 
-<script src="objects.js?v=e2bd4be1"></script>
+<script src="objects.js?v=ecce4abf"></script>
 <script>
 const {COUPLE_V,HOUSE_V,OAK_V,BUSHY_V,LEAFY_V,COUPLE2_V,BIKE_V,ROUNDTREE_V,MOON_V}=window.WEDDING_SHAPES;  // 공용 objects.js 의 shape 데이터 참조
 
@@ -754,6 +754,7 @@ function addAt(node,t,dur,pulse){
 //  x,y = 배치 기준점(기본 bottom-center; opt.anchor==='center' 면 중심). size = 화면 높이(scene 단위). opt.sw = 실효 선굵기.
 // [메인선 가림 B] convex hull board-backing + 좌→우 clip wipe (그리기 진행도 r 연동). OCC_N=클립 id 카운터.
 let OCC_N=0;
+window.__PENLINES={"lb208": {"w": 37.2, "lines": ["M 82.2 206.2 L 87.8 209.8 L 95.5 221.2 L 114.8 240.2 L 127.2 248.0 L 144.8 255.0 L 152.2 258.0 L 159.2 267.0 L 198.8 306.5", "M 357.0 84.0 L 355.2 70.8 L 351.2 64.8 L 339.8 53.8 L 330.2 48.5 L 320.5 43.2 L 318.5 40.2", "M 328.0 15.2 L 310.2 18.2 L 304.0 19.5 L 290.2 20.8 L 272.8 19.2 L 242.8 13.8 L 226.8 11.8 L 206.5 11.8 L 199.8 13.0 L 181.5 17.5 L 163.2 25.8 L 147.5 36.2 L 139.2 42.2 L 134.8 43.0 L 130.2 41.2 L 122.8 31.8 L 117.0 29.8 L 112.0 32.2 L 109.5 39.2 L 107.8 51.5 L 106.0 57.5 L 99.8 60.2 L 84.2 64.5 L 72.2 70.8 L 66.8 76.0 L 63.0 87.2", "M 245.0 213.8 L 263.2 209.2 L 277.0 199.8 L 283.8 193.2", "M 163.5 441.5 L 173.0 411.5", "M 258.5 132.5 L 257.8 135.5 L 255.8 140.5 L 251.8 155.5 L 252.8 158.5 L 284.8 190.5", "M 356.8 99.5 L 355.5 112.0 L 352.8 116.8 L 342.5 126.8 L 328.0 129.8 L 324.0 129.0 L 319.0 126.5", "M 198.8 306.5 L 212.5 292.0 L 213.2 240.5 L 216.8 235.0 L 221.0 229.8", "M 198.8 306.5 L 198.2 319.0 L 182.5 340.0 L 171.5 361.2 L 171.5 374.8 L 173.0 393.8 L 173.0 411.0", "M 173.2 411.2 L 195.2 390.0 L 222.0 389.0 L 232.0 386.8 L 249.5 388.2 L 265.2 390.8 L 288.8 368.0 L 296.5 369.8 L 310.5 374.0", "M 163.5 456.8 L 163.5 441.8", "M 71.0 394.2 L 89.2 390.8 L 98.8 391.5 L 115.0 393.2 L 163.2 441.5", "M 163.2 457.0 L 100.0 519.8 L 89.2 523.0 L 55.5 542.2 L 41.5 543.5 L 22.2 549.5 L 13.2 559.0 L 15.5 575.2 L 24.5 597.2 L 36.0 615.2 L 50.2 631.0 L 64.2 642.0 L 73.0 645.8 L 77.5 646.8", "M 63.0 87.5 L 65.2 90.5", "M 63.0 150.8 L 51.8 150.2 L 48.5 148.2 L 47.8 144.8 L 49.0 133.5 L 53.5 119.0 L 61.2 103.8 L 65.2 90.8", "M 284.8 190.5 L 298.5 176.0 L 306.2 159.2 L 315.0 137.2 L 318.8 126.5", "M 328.2 15.5 L 327.2 23.0 L 325.0 29.2 L 320.8 35.2 L 318.5 40.0", "M 209.0 148.2 L 205.2 156.8 L 202.0 170.2 L 208.2 177.2 L 244.8 213.8", "M 82.0 206.2 L 74.0 205.8 L 69.0 203.2 L 66.2 196.2 L 64.0 184.2 L 63.5 169.2 L 64.0 152.2 L 63.2 150.8", "M 221.2 229.5 L 230.0 228.2 L 235.5 223.8 L 239.5 217.8 L 244.8 214.0", "M 246.2 646.0 L 256.0 643.8 L 271.2 631.2 L 287.2 613.8 L 299.2 595.2 L 305.5 582.8 L 309.5 571.5 L 310.8 559.8 L 300.5 549.5 L 279.5 543.2 L 254.0 542.5 L 238.8 530.5 L 230.0 523.8 L 163.5 457.0"]}, "lb254": {"w": 43.0, "lines": ["M 451.5 587.5 L 454.0 583.0 L 455.2 573.5 L 455.2 571.0", "M 587.5 285.2 L 627.8 244.5 L 626.2 220.5 L 625.8 214.0", "M 615.2 405.0 L 597.0 386.0 L 592.2 377.8 L 591.8 311.2 L 587.0 303.8 L 581.8 295.0 L 579.2 288.5", "M 615.2 405.0 L 663.5 356.2 L 670.5 345.2 L 677.0 336.8 L 680.5 328.5 L 680.2 328.0", "M 615.2 405.0 L 614.0 409.8 L 611.0 416.8 L 611.2 421.2 L 614.8 425.5 L 616.2 428.2 L 623.2 435.2", "M 757.2 583.8 L 740.2 584.5 L 736.2 582.0 L 717.0 569.2 L 702.0 559.2 L 696.5 553.2 L 693.2 552.0", "M 561.5 493.2 L 544.5 509.5 L 523.5 518.5 L 506.0 519.8 L 490.8 519.8", "M 616.2 470.2 L 572.2 488.5 L 561.8 493.2", "M 455.2 571.0 L 444.2 560.8 L 434.0 560.8 L 427.2 562.5 L 419.8 569.8 L 385.2 617.8 L 380.0 619.8", "M 455.2 571.0 L 459.2 565.8 L 459.8 552.8 L 482.2 528.2 L 490.8 519.8", "M 402.0 495.5 L 406.2 498.2 L 450.5 499.2 L 459.8 499.8 L 484.8 513.8 L 490.8 519.8", "M 710.8 357.5 L 715.0 361.0 L 722.0 361.8 L 731.2 360.8 L 741.2 357.0 L 746.0 353.2 L 747.8 349.8", "M 648.8 489.8 L 639.8 479.0", "M 616.5 470.0 L 617.2 451.5 L 623.2 435.2", "M 554.8 138.8 L 544.2 151.2 L 536.8 164.5 L 527.2 197.0 L 523.0 214.5 L 520.2 217.5", "M 520.2 217.5 L 498.0 195.8 L 488.2 192.8 L 483.5 188.2 L 482.0 180.5 L 484.2 169.0 L 490.0 156.0 L 498.8 144.0 L 513.2 130.0 L 530.0 118.8 L 550.5 109.0 L 565.8 104.2 L 579.5 101.5 L 591.5 100.0 L 601.5 99.0 L 626.0 99.2 L 650.8 102.8 L 670.0 108.2 L 681.8 112.5 L 698.5 121.2 L 712.0 131.0 L 729.2 148.0 L 739.0 162.8 L 746.2 181.2 L 749.2 192.2 L 752.2 209.0 L 754.5 225.2 L 760.2 301.5 L 761.0 308.0", "M 520.2 217.5 L 521.2 232.2 L 528.0 250.2 L 533.8 262.2 L 535.2 263.8", "M 494.2 436.0 L 503.8 435.2 L 561.5 493.0", "M 693.0 551.8 L 692.5 534.8 L 682.8 524.0 L 648.8 490.0", "M 543.0 266.5 L 535.5 264.0", "M 616.8 470.2 L 639.8 479.0", "M 639.8 479.0 L 663.5 455.8 L 672.2 454.8 L 677.8 452.5 L 681.0 450.5 L 686.0 447.0 L 691.8 442.0 L 698.2 442.5 L 727.8 455.5 L 740.0 460.5 L 744.0 462.0", "M 710.5 357.5 L 698.5 360.2 L 623.2 435.2", "M 579.2 288.2 L 587.2 285.5", "M 587.5 285.5 L 593.5 288.0 L 599.0 289.8 L 605.5 292.8 L 624.5 291.2 L 636.5 289.2 L 648.5 288.2", "M 543.2 266.8 L 546.0 272.5 L 554.0 278.5 L 570.5 286.8 L 579.0 288.2", "M 543.2 266.2 L 585.0 224.0 L 585.8 213.5 L 587.2 195.2 L 587.8 190.5", "M 635.5 618.2 L 661.2 581.0 L 669.0 576.0 L 693.0 552.0", "M 648.5 490.0 L 608.5 530.5 L 605.8 539.5 L 604.2 553.0 L 603.8 557.5"]}};
 function convexHull(pts){
   if(pts.length<3) return pts.slice();
   pts=pts.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]);
@@ -790,6 +791,10 @@ function libNode(id,x,y,size,opt){
           p.setAttribute('stroke',_fl); p.style.stroke=_fl; p.setAttribute('stroke-width',_fw); p.style.strokeWidth=_fw;
           p.setAttribute('stroke-linejoin','round'); p.setAttribute('stroke-linecap','round'); }
       }
+      if(opt.forceFill){   // [forceFill] fill:none 인 윤곽 path 를 제 stroke색으로 채워 solid화 → 이중선 틈 메움(단일선처럼)
+        var _cf=(/fill:\s*([^;"]+)/.exec(p.getAttribute('style')||'')||[])[1]; _cf=_cf?_cf.trim():p.getAttribute('fill');
+        if(!_cf || _cf==='none'){ var _sc=p.getAttribute('stroke')|| (opt.color||'currentColor'); p.setAttribute('fill',_sc); p.style.fill=_sc; }
+      }
       return;   // 원본 fill 유지(멀티컬러 baked). 위에서 두께만 보강.
     }
     var stStyle=(/stroke:\s*([^;"]+)/.exec(p.getAttribute('style')||'')||[])[1];
@@ -810,6 +815,12 @@ function libNode(id,x,y,size,opt){
     else { p.setAttribute('fill','none'); p.style.fill='none'; }
   });
   outer.appendChild(inner);
+  // [handDraw] 손글씨 기법: 원본(채움) 그대로 두고, 오브젝트 중심선(skeleton)을 두꺼운 흰 stroke 마스크로 dashoffset 애니 → 원본이 펜(중심선) 따라 드러남(내부까지 채워짐, 단일선처럼, 이중선 없음)
+  if(opt.handDraw && window.__PENLINES && window.__PENLINES[id]){
+    var _pd=window.__PENLINES[id], _mid='hd'+(OCC_N++), _mk=el('mask',{id:_mid,maskUnits:'userSpaceOnUse'}), _mw=(_pd.w||40)*1.3, _plist=[];
+    _pd.lines.forEach(function(d){ var pm=el('path',{d:d,fill:'none',stroke:'#fff','stroke-width':String(_mw),'stroke-linecap':'round','stroke-linejoin':'round'}); _mk.appendChild(pm); _plist.push(pm); });
+    inner.appendChild(_mk); inner.setAttribute('mask','url(#'+_mid+')'); outer._penMask=_plist;
+  }
   // [가림 B] opt.occlude: 오브젝트 실루엣(convex hull)을 board색으로 뒤에 깔고, 좌→우 clip wipe 를 그리기 진행도에 연동(프레임 루프가 rect.width 갱신).
   if(opt.occlude){
     var occPts=[];
@@ -834,6 +845,7 @@ function libNode(id,x,y,size,opt){
       inner.insertBefore(backing, inner.firstChild);   // 오브젝트 획 뒤(먼저 페인트) = 선은 가리고 오브젝트는 그 위
       inner.insertBefore(clip, inner.firstChild);
       outer._occ={rect:crect, vert:vert, fullW:fullW, fullH:fullH};
+      if(opt.wipeDraw){ inner.setAttribute('clip-path','url(#'+cid+')'); }   // [wipeDraw] 본체도 같은 wipe 클립 → solid 채움이 위→아래로 드러남(단일선처럼, 이중선 숨김)
     }
   }
   return outer;
@@ -1016,10 +1028,11 @@ add(libNode('lb129', 5236, 220, 188, {anchor:'center', topDown:true, sw:2.4, kee
 window.HANDOVER={umbOpenIt:_hoUmbO, boyDown:_hoBoyDown, boyReach:_hoBoy, X:6854, startX:6720, startY:530, endX:6854, endY:268, T0:null};   // [건네기] 닫힌우산이 남자손(start)→여자위(end) 포물선→열림. boyDown=팔내림/boyReach=팔뻗음 스왑
 add(libNode('lb132', 5282, 460, 48, {anchor:'center', topDown:true, sw:2.4, keepfill:true}), 5282, 'comfort', 0.45); var _hoPud=items[items.length-1];   // 물웅덩이(여자 발밑). 씬 +30 하강
 add(libNode('lb131', 5282, 435, 175, {topDown:true, sw:2.4, keepfill:true}), 5282, 'comfort', 0.5); var _hoGirl=items[items.length-1];   // 웅크린 여자. 씬 +30 하강
-// [실 수렴 동반하강] 우산·물웅덩이·여자 = 위선(x6900) 추종 → 실 수렴으로 위 메인선 내려오면 함께 하강
-_hoUmbO.follow='top'; _hoUmbO.followX=6900; _hoPud.follow='top'; _hoPud.followX=6900; _hoGirl.follow='top'; _hoGirl.followX=6900;
-add(libNode('lb106', 3760, 540, 242, {topDown:true, sw:4.0}), 3760, 'comfort', 0.3); items[items.length-1].node.setAttribute('data-selfpivot','1'); var _shCoupleIt=items[items.length-1];   // [감전개그] 카페 커플 — 갈라짐 지점(최종x5378), 발=선540. +15%: 210→242
-add(libNode('lb128', 3760, 540, 242, {topDown:true, sw:2.0, fill:true, color:'var(--chalk)'}), 3760, 'comfort', 0.3); var _shSkelIt=items[items.length-1]; _shSkelIt.shockSkel=1;   // [감전개그] 해골 커플(lb128) — 흰색(chalk), 커플 위 겹침, 감전때 번쩍. +15%: 210→242(커플과 동일)
+add(libNode('lb262', 5522, 238, 92, {anchor:'center', topDown:true, sw:2.4, keepfill:true}), 5522, 'comfort', 0.95); var _hoPalette=items[items.length-1];   // 팔레트 — 여자아이 오른쪽 위(오른쪽+위 100%씩 이동)
+// [실 수렴 동반하강] 우산·물웅덩이·여자·팔레트 = 위선(x6900) 추종 → 실 수렴으로 위 메인선 내려오면 함께 하강
+_hoUmbO.follow='top'; _hoUmbO.followX=6900; _hoPud.follow='top'; _hoPud.followX=6900; _hoGirl.follow='top'; _hoGirl.followX=6900; _hoPalette.follow='top'; _hoPalette.followX=6900;
+add(libNode('lb106', 3760, 540, 253, {topDown:true, sw:4.0}), 3760, 'comfort', 0.3); items[items.length-1].node.setAttribute('data-selfpivot','1'); var _shCoupleIt=items[items.length-1];   // [감전개그] 카페 커플 — 갈라짐 지점(최종x5378), 발=선540. +15%: 210→242, +10%: 242→266, -5%: 266→253
+add(libNode('lb128', 3760, 540, 253, {topDown:true, sw:2.0, fill:true, color:'var(--chalk)'}), 3760, 'comfort', 0.3); var _shSkelIt=items[items.length-1]; _shSkelIt.shockSkel=1;   // [감전개그] 해골 커플(lb128) — 흰색(chalk), 커플 위 겹침, 감전때 번쩍. +15%: 210→242, +10%: 242→266, -5%: 266→253(커플과 동일)
 window.SHOCK={coupleIt:_shCoupleIt, skelIt:_shSkelIt, X:5378, T0:null};
 // 비(물방울) — 우산 위·양옆으로 흩뿌려 내림
 // 비(물방울) — 우산 위·양옆 gap. 실 수렴 때 위선(x6900) 따라 우산·여자와 함께 하강.
@@ -1092,22 +1105,22 @@ add(libNode('lb195', 6621, 574, 304, {topDown:true, keepfill:true, occlude:true}
 
 // [씬] 특별하지 않는 날들이 조금씩 특별해졌습니다 — 요리 씬. 조리대(식탁) 라인=메인선(평탄화, kitchenFlat). 이미지 상대배치(스케일 0.5)
 // 전 오브젝트 동일 codeX(6292, 커플 기준) + it.dx 로 이미지 상대 render 오프셋(비균일 매핑 무관, 원본 배치 정확 재현). 스케일 0.4
-add(libNode('lb221', 6292, 580, 64, {topDown:true, keepfill:true}), 6292, 'days', 0.0); items[items.length-1].dx=-174;   // 조리대(좌)
-add(libNode('lb222', 6292, 570, 55, {topDown:true, keepfill:true}), 6292, 'days', 0.1); items[items.length-1].dx=178;    // 조리대(우)
-add(libNode('lb211', 6292, 393, 66, {topDown:true, keepfill:true}), 6292, 'days', 0.2); items[items.length-1].dx=43;     // 뒤집개(걸이)
-add(libNode('lb212', 6292, 392, 66, {topDown:true, keepfill:true}), 6292, 'days', 0.3); items[items.length-1].dx=86;     // 국자(걸이)
-add(libNode('lb213', 6292, 395, 71, {topDown:true, keepfill:true}), 6292, 'days', 0.4); items[items.length-1].dx=131;    // 팬(걸이)
-add(libNode('lb214', 6292, 403, 56, {topDown:true, bottomUp:true, keepfill:true}), 6292, 'days', 0.5); items[items.length-1].dx=-179;   // 화분(좌상)
-add(libNode('lb215', 6292, 514, 83, {topDown:true, bottomUp:true, keepfill:true}), 6292, 'days', 0.6); items[items.length-1].dx=-179;   // 화분(좌중)
-add(libNode('lb217', 6292, 428, 59, {topDown:true, bottomUp:true, keepfill:true}), 6292, 'days', 0.7); items[items.length-1].dx=189;    // 화초(우상)
-add(libNode('lb219', 6292, 522, 56, {topDown:true, keepfill:true}), 6292, 'days', 0.8); items[items.length-1].dx=190;    // 티슈
-add(libNode('lb208', 6292, 566, 177, {topDown:true, keepfill:true, occlude:true}), 6292, 'days', 1.0); items[items.length-1].dx=-2;   // 요리 남아(분리). occlude=메인선 가림
-add(libNode('lb254', 6292, 566, 177, {topDown:true, keepfill:true, occlude:true}), 6292, 'days', 1.05); items[items.length-1].dx=-2;   // 요리 여아(분리·별도 오브젝트)
-add(libNode('lb209', 6292, 604, 70, {topDown:true, keepfill:true}), 6292, 'days', 1.2); items[items.length-1].dx=-71;    // 조리 볼(음식)
-add(libNode('lb210', 6292, 604, 51, {topDown:true, keepfill:true}), 6292, 'days', 1.3); items[items.length-1].dx=48;     // 도마+음식
-add(libNode('lb220', 6292, 640, 26, {topDown:true, keepfill:true}), 6292, 'days', 1.4); items[items.length-1].dx=-58;    // 접시
-add(libNode('lb216', 6292, 652, 86, {topDown:true, bottomUp:true, keepfill:true}), 6292, 'days', 1.5); items[items.length-1].dx=-100;   // 화분(좌하·전경)
-add(libNode('lb218', 6292, 649, 74, {topDown:true, bottomUp:true, keepfill:true}), 6292, 'days', 1.6); items[items.length-1].dx=156;    // 꽃그릇(우하·전경)
+add(libNode('lb221', 6292, 580, 70, {topDown:true, keepfill:true}), 6292, 'days', 0.0); items[items.length-1].dx=-192;   // 조리대(좌)
+add(libNode('lb222', 6292, 570, 61, {topDown:true, keepfill:true}), 6292, 'days', 0.1); items[items.length-1].dx=196;    // 조리대(우)
+add(libNode('lb211', 6292, 393, 72, {topDown:true, keepfill:true}), 6292, 'days', 0.2); items[items.length-1].dx=47;     // 뒤집개(걸이)
+add(libNode('lb212', 6292, 392, 72, {topDown:true, keepfill:true}), 6292, 'days', 0.3); items[items.length-1].dx=94;     // 국자(걸이)
+add(libNode('lb213', 6292, 395, 79, {topDown:true, keepfill:true}), 6292, 'days', 0.4); items[items.length-1].dx=145;    // 팬(걸이)
+add(libNode('lb214', 6292, 403, 62, {topDown:true, bottomUp:true, keepfill:true}), 6292, 'days', 0.5); items[items.length-1].dx=-197;   // 화분(좌상)
+add(libNode('lb215', 6292, 514, 91, {topDown:true, bottomUp:true, keepfill:true}), 6292, 'days', 0.6); items[items.length-1].dx=-197;   // 화분(좌중)
+add(libNode('lb217', 6292, 428, 65, {topDown:true, bottomUp:true, keepfill:true}), 6292, 'days', 0.7); items[items.length-1].dx=208;    // 화초(우상)
+add(libNode('lb219', 6292, 522, 62, {topDown:true, keepfill:true}), 6292, 'days', 0.8); items[items.length-1].dx=210;    // 티슈
+add(libNode('lb208', 6292, 566, 195, {topDown:true, keepfill:true, occlude:true}), 6292, 'days', 1.0); items[items.length-1].dx=-2;   // 요리 남아(분리). occlude=메인선 가림
+add(libNode('lb254', 6292, 566, 195, {topDown:true, keepfill:true, occlude:true}), 6292, 'days', 1.05); items[items.length-1].dx=-2;   // 요리 여아(분리·별도 오브젝트)
+add(libNode('lb209', 6292, 604, 78, {topDown:true, keepfill:true}), 6292, 'days', 1.2); items[items.length-1].dx=-79;    // 조리 볼(음식)
+add(libNode('lb210', 6292, 604, 57, {topDown:true, keepfill:true}), 6292, 'days', 1.3); items[items.length-1].dx=52;     // 도마+음식
+add(libNode('lb220', 6292, 640, 28, {topDown:true, keepfill:true}), 6292, 'days', 1.4); items[items.length-1].dx=-64;    // 접시
+add(libNode('lb216', 6292, 652, 94, {topDown:true, bottomUp:true, keepfill:true}), 6292, 'days', 1.5); items[items.length-1].dx=-110;   // 화분(좌하·전경)
+add(libNode('lb218', 6292, 649, 82, {topDown:true, bottomUp:true, keepfill:true}), 6292, 'days', 1.6); items[items.length-1].dx=172;    // 꽃그릇(우하·전경)
 for(var _kfi=items.length-16;_kfi<items.length;_kfi++){ items[_kfi].fwdSkip=1; }   // 요리 16요소(남아·여아 분리): 수동 dx 오프셋 → fwd self-test 제외(렌더는 codeX+dx로 정확)
 
 // [씬] 마음이 무거운 날에는 서로의 곁을 지켰습니다 — 계단 커플(계단 바닥=선 y540, rt≈12573)
@@ -1282,6 +1295,12 @@ function prep(){
         _segs.sort((a,b)=> rk(a)-rk(b));
       } else { const _bu=!!it.node.getAttribute('data-bottomup'); _segs.sort((a,b)=> _td ? (_bu ? (b.y-a.y) : (a.y-b.y)) : (a.x-b.x)); }   // 위→아래(기본) / 아래→위(bottomUp) / 왼→오
       it.segs=_segs; it.segTotal=_segs.reduce((s,x)=>s+x.len,0)||1;
+      if(it.penReveal){   // [penReveal] 각 서브패스를 '채운 흰 도형'으로 마스크에 넣고, 그 획의 펜 진행도(sr)에 맞춰 노출 → 펜이 그리는 부위가 순서대로 채워짐(내부까지, flat wipe 아님)
+        const _mid='pm'+(OCC_N++); const _mk=el('mask',{id:_mid,maskUnits:'userSpaceOnUse'});
+        _segs.forEach(s=>{ const pm=el('path',{d:s.el.getAttribute('d'),fill:'#fff',stroke:'none'}); pm.setAttribute('fill-opacity','0'); _mk.appendChild(pm); s.mask=pm; });
+        (it.node.querySelector('g')||it.node).appendChild(_mk);
+        (it.node.querySelector('g')||it.node).setAttribute('mask','url(#'+_mid+')');
+      }
     }
     it.solo = (it.grp==='young') ? storyTimeAtX(it.ax) : tAtX(it.ax);   // 선이 그 x(ax)에 닿는 시각 (유년=프리롤 fork 좌표라 storyTimeAtX)
     if(it.grp==='today' || (it.node.getAttribute && it.node.getAttribute('data-selfpivot'))){
@@ -1820,9 +1839,9 @@ paths.forEach(p=>{
   const NS='http://www.w3.org/2000/svg';
   const r=document.createElementNS(NS,'path');
   r.setAttribute('d','M 2435.0 540.0 L 2527.0 518.0 L 2543.0 540.0 L 2555.0 558.0 L 2569.0 398.0 L 2583.0 652.0 L 2597.0 540.0 L 2611.0 480.0 L 2625.0 540.0 L 2690.0 540.0 C 2710.0 556.0 2732.0 578.0 2735.0 595.0 C 2738.0 578.0 2760.0 556.0 2780.0 540.0');
-  r.setAttribute('stroke','var(--ember)'); r.setAttribute('stroke-width','10'); r.setAttribute('stroke-opacity','0.92');
+  r.setAttribute('stroke','var(--ember)'); r.setAttribute('stroke-width','13'); r.setAttribute('stroke-opacity','0.92');   // 금색(9)보다 살짝 굵게 → 스파이크 전 구간 빨강 테두리(2색), 과하지 않게
   r.setAttribute('fill','none'); r.setAttribute('stroke-linecap','round'); r.setAttribute('stroke-linejoin','round');
-  r.setAttribute('transform','translate(0,0)');    // 금색과 정렬(진입부 어긋남 방지) — 빨강이 금색 뒤에서 살짝 테두리로
+  r.setAttribute('transform','translate(0,7)');    // [초기 2색 복원] 금색 아래로 살짝 어긋나게 → 심박 구간이 노랑+빨강 두 색 나란히(하트 TOP_RED과 동일 offset)
   const p1el=document.getElementById('p1');
   p1el.parentNode.insertBefore(r, p1el);           // 금색 뒤층
   SPK_RED_LEN=r.getTotalLength();
@@ -2778,8 +2797,21 @@ function frame(ts){
     }
     const dxt = (it.dx||fdy) ? ('translate('+(it.dx||0)+' '+fdy.toFixed(1)+') ') : '';   // [insertGap] x오프셋 + [follow] y오프셋 — 모든 transform 앞
     // [가림 B] board backing clip wipe = 그리기 진행도 r (수직=위→아래 / 수평=좌→우). r<=0:선 보임, r>=1:선 가림.
-    if(it.node._occ){ const _o=it.node._occ, _f=(r<=0)?0:((r>=1)?1:r);
+    if(it.node._occ){ const _o=it.node._occ, _f=(r<=0)?0:((it.penReveal||it.handDraw||r>=1)?1:r);   // penReveal/handDraw: 백킹 full → 마스크가 노출 제어(flat wipe 대신 펜 따라)
       if(_o.vert) _o.rect.setAttribute('height',(_o.fullH*_f).toFixed(1)); else _o.rect.setAttribute('width',(_o.fullW*_f).toFixed(1)); }
+    if(it.handDraw && it.node._penMask){   // [handDraw] 중심선 마스크를 위→아래 순차 dashoffset → 원본(채움 solid)이 펜 따라 드러남
+      (it.dx||fdy) ? it.node.setAttribute('transform','translate('+(it.dx||0)+' '+fdy.toFixed(1)+')') : it.node.removeAttribute('transform');
+      if(r<=0){ if(it._state!==0){ it.node.setAttribute('opacity','0'); it._state=0; if(it._pm) it._pm.forEach(function(m){ m.el.style.strokeDashoffset=m.len; }); } return; }
+      it.node.setAttribute('opacity','1');
+      if(!it._pmInit){ it._pmInit=1;
+        it._pm=it.node._penMask.map(function(pe){ var L=1; try{L=pe.getTotalLength();}catch(e){} var bb={y:0}; try{bb=pe.getBBox();}catch(e){} pe.style.strokeDasharray=L; pe.style.strokeDashoffset=L; return {el:pe,len:Math.max(L,1),y:bb.y}; });
+        it._pm.sort(function(a,b){ return a.y-b.y; }); it._pmTot=it._pm.reduce(function(s,x){return s+x.len;},0)||1;
+        it.shapes.forEach(function(sh){ if(sh.filled) sh.el.setAttribute('fill-opacity','1'); });   // 채움 solid(마스크가 노출 제어)
+      }
+      var _a=0; it._pm.forEach(function(m){ var sg=m.len/it._pmTot; var sr=(r-_a)/sg; sr=sr<0?0:(sr>1?1:sr); _a+=sg; m.el.style.strokeDashoffset=(m.len*(1-sr)).toFixed(1); });
+      it._state = r>=1?2:1;
+      return;
+    }
     if(it.vineSuck){   // 커스텀: 멀리서 밑둥으로 왔다가 쪽 빨려들어감(들어간 먼 끝부터 사라짐)
       const vine=it.node._vine, L=vine._len||(vine._len=vine.getTotalLength());
       if(r<=0){ if(it._state!==0){ it.node.setAttribute('opacity','0'); it._state=0; } return; }
@@ -2808,8 +2840,8 @@ function frame(ts){
     if(it.dirDraw){
       if(r<=0){
         if(it._state!==0){ it.node.setAttribute('opacity','0'); it._state=0;
-          it.segs.forEach(s=>{ s.el.style.strokeDashoffset=s.len; s.el.style.visibility='hidden'; });
-          it.shapes.forEach(sh=>{ if(sh.filled) sh.el.setAttribute('fill-opacity','0'); });
+          it.segs.forEach(s=>{ s.el.style.strokeDashoffset=s.len; s.el.style.visibility='hidden'; if(s.mask) s.mask.setAttribute('fill-opacity','0'); });
+          it.shapes.forEach(sh=>{ if(sh.filled) sh.el.setAttribute('fill-opacity', it.penReveal?'1':'0'); });   // penReveal=채움 항상 solid, 마스크가 노출 제어
         }
         return;
       }
@@ -2817,10 +2849,10 @@ function frame(ts){
       // 획: 왼→오 순으로 순차 그리기(일정 펜속도)
       let acc=0;
       it.segs.forEach(s=>{ const seg=s.len/it.segTotal; let sr=(r-acc)/seg; sr=sr<0?0:(sr>1?1:sr); acc+=seg;
-        s.el.style.strokeDashoffset=(s.len*(1-sr)).toFixed(1); s.el.style.visibility=sr>0.005?'visible':'hidden'; });
-      // 색: 외곽선 진행을 살짝 뒤따라 채워짐
-      const fo=Math.min(1,Math.max(0,(r-0.30)/0.70)); it.shapes.forEach(sh=>{ if(sh.filled) sh.el.setAttribute('fill-opacity',(fo*fo).toFixed(3)); });
-      if(r>=1){ it.segs.forEach(s=>{ s.el.style.strokeDashoffset='0'; s.el.style.visibility='visible'; }); it.shapes.forEach(sh=>{ if(sh.filled) sh.el.setAttribute('fill-opacity','1'); }); it._state=2; }
+        const _off=(s.len*(1-sr)).toFixed(1); s.el.style.strokeDashoffset=_off; s.el.style.visibility=sr>0.005?'visible':'hidden'; if(s.mask) s.mask.setAttribute('fill-opacity',sr.toFixed(3)); });   // penReveal: 마스크 획도 펜과 동기 → 채움이 펜 따라 노출
+      // 색: penReveal/wipeDraw=채움 항상 solid(1)(penReveal은 마스크가, wipeDraw는 클립이 노출 제어). fillLead=채움이 펜 바짝 추종. 기본=외곽선 뒤따라.
+      const _solid=it.penReveal||it.wipeDraw; const fo=_solid?1:(it.fillLead?Math.min(1,Math.max(0,r/0.5)):Math.min(1,Math.max(0,(r-0.30)/0.70))); it.shapes.forEach(sh=>{ if(sh.filled) sh.el.setAttribute('fill-opacity',(_solid?1:(it.fillLead?fo:fo*fo)).toFixed(3)); });
+      if(r>=1){ it.segs.forEach(s=>{ s.el.style.strokeDashoffset='0'; s.el.style.visibility='visible'; if(s.mask) s.mask.setAttribute('fill-opacity','1'); }); it.shapes.forEach(sh=>{ if(sh.filled) sh.el.setAttribute('fill-opacity','1'); }); it._state=2; }
       else it._state=1;
       return;
     }
@@ -2860,7 +2892,11 @@ function frame(ts){
     it.node.setAttribute('transform',
       `${dxt}translate(${it.ax2},${it.ay2}) scale(${sc.toFixed(4)}) translate(${-it.ax2},${-it.ay2})`);
 
-    it.node.setAttribute('opacity', (it.fadeIn?Math.max(0,Math.min(1,r)):Math.min(1,.3+r*2.6)).toFixed(3));   // fadeIn: 불투명도 0→1 선형 페이드
+    it.node.setAttribute('opacity', it.wipeDraw?'1':(it.fadeIn?Math.max(0,Math.min(1,r)):Math.min(1,.3+r*2.6)).toFixed(3));   // wipeDraw=클립이 reveal하므로 불투명 1. fadeIn: 0→1 선형
+    if(it.wipeDraw){   // [wipeDraw] 본체는 처음부터 solid(채움·선 완성) — 위→아래 클립(_occ)이 진행도대로 드러냄 → 단일선처럼, 이중선 없음
+      if(!it._wipeSolid){ it._wipeSolid=1; it.shapes.forEach(function(sh){ if(sh.draws){ sh.el.style.strokeDashoffset='0'; sh.el.style.visibility='visible'; } if(sh.filled) sh.el.setAttribute('fill-opacity','1'); }); }
+      it._state = r>=1?2:1;
+    } else {
     let acc=0;
     it.shapes.forEach(sh=>{
       const seg=sh.len/it.total;
@@ -2868,8 +2904,9 @@ function frame(ts){
       sr=Math.max(0,Math.min(1,sr));
       acc+=seg;
       if(sh.draws){ sh.el.style.strokeDashoffset=(sh.len*(1-sr)).toFixed(2); sh.el.style.visibility=sr>0.02?'visible':'hidden'; }
-      if(sh.filled){ const fo=it.outlineFirst?Math.pow(Math.max(0,(sr-0.55)/0.45),2):sr*sr; sh.el.setAttribute('fill-opacity',fo.toFixed(3)); }
+      if(sh.filled){ const fo=it.outlineFirst?Math.pow(Math.max(0,(sr-0.55)/0.45),2):(it.fillLead?Math.min(1,Math.max(0,sr*4.0)):sr*sr); sh.el.setAttribute('fill-opacity',fo.toFixed(3)); }   // fillLead: 채움이 스트로크와 함께 차올라 초반 이중선 숨김
     });
+    }
   });
 
   // [잎 시차 페이드] staggerFade 오브젝트: 클럼프별 랜덤 위상으로 하나씩 페이드-인(한꺼번에 X)
@@ -2994,7 +3031,7 @@ function reset(){
   lineClipRect.setAttribute('width','0');   // 그레인 전부 숨김
   const lg=document.getElementById('lineG'); if(lg) lg.style.opacity='0';   // 재생 전엔 선 자체를 감춤
   items.forEach(it=>{
-    it._state=undefined;
+    it._state=undefined; it._wipeSolid=0; it._pmInit=0;
     it.node.setAttribute('opacity','0');
     it.node.removeAttribute('transform');
     if(it.shapes) it.shapes.forEach(sh=>{
@@ -3103,29 +3140,39 @@ try{ _fwdSelfTest(); }catch(e){ console.error('[fwd self-test] 예외', e); }   
     sub.innerHTML='<g>'+o.svg+'</g>'; sub.style.opacity='0';
     grp.appendChild(sub);
     root.appendChild(grp);
+    // 각 path를 서브패스(M 단위)로 쪼개 개별 획으로 분리 → 펜이 건너뛰지 않고 획 하나씩 자연스럽게
+    [].slice.call(sub.querySelectorAll('path')).forEach(function(pp){
+      var d=pp.getAttribute('d')||''; var subs=d.match(/[Mm][^Mm]*/g);
+      if(!subs||subs.length<=1) return;
+      subs.forEach(function(sd,k){ if(k===0){ pp.setAttribute('d',sd.trim()); return; } var np=pp.cloneNode(false); np.setAttribute('d',sd.trim()); pp.parentNode.insertBefore(np,pp.nextSibling); });
+    });
     var paths=[].slice.call(sub.querySelectorAll('path')).map(function(pp){ var L=0,by=0; try{L=pp.getTotalLength(); by=pp.getBBox().y;}catch(e){} if(L>0){ pp.style.strokeDasharray=L; pp.style.strokeDashoffset=L; } return {el:pp,len:L||1,y:by}; });
-    paths.sort(function(a,b){ return a.y-b.y; });   // 위→아래 순서로 그리기 위해 Y 정렬
+    paths.sort(function(a,b){ return a.y-b.y; });   // 위→아래 순서로 획 하나씩 그림
+    var _TL=0; paths.forEach(function(p){_TL+=p.len;}); if(_TL<=0)_TL=1;   // 길이비례 시간배분(일정속도)
+    var _acc=0; paths.forEach(function(p){ p.cs=_acc/_TL; p.cw=Math.max(1e-4,p.len/_TL); _acc+=p.len; });
     nodes.push({grp:grp,drop:drop,sub:sub,L:DROP,x:x,top:top,iw:iw,ih:ih,paths:paths});
   });
   window.__jejuUpdate=function(t){
     var T2=(typeof FORK_PULL!=='undefined')?FORK_PULL.T2:null;
     var hasLY=(typeof FORK_PULL!=='undefined'&&FORK_PULL.lineY);
-    if(T2==null){ nodes.forEach(function(n){n.grp.style.opacity='0';n.sub.style.opacity='0';n.drop.setAttribute('stroke-dashoffset',n.L);n.paths.forEach(function(pp){pp.el.style.strokeDashoffset=pp.len;});}); return; }
+    if(T2==null){ nodes.forEach(function(n){ if(n._st!==-1){ n._st=-1; n.grp.style.opacity='0';n.sub.style.opacity='0';n.drop.setAttribute('stroke-dashoffset',n.L);n.paths.forEach(function(pp){pp.el.style.strokeDashoffset=pp.len;}); } }); return; }
     var START=T2+3.0, STEP=0.6;
     nodes.forEach(function(n,i){
-      if(hasLY){   // 드롭선 끝(위쪽)을 실제 메인선 y에 정확히 맞춤 + 아이콘도 그만큼 매닮
-        var ly=FORK_PULL.lineY(n.x, n.top?'top':'bottom'), iy=ly+DROP;
-        n.drop.setAttribute('d','M '+n.x.toFixed(1)+' '+ly.toFixed(1)+' L '+n.x.toFixed(1)+' '+iy.toFixed(1));
-        n.sub.setAttribute('y', iy.toFixed(1)); n.sub.setAttribute('x',(n.x-n.iw/2).toFixed(1));
-      }
       var rt=START+i*STEP, e=t-rt;
-      if(e<=0){ n.grp.style.opacity='0'; n.sub.style.opacity='0'; n.drop.setAttribute('stroke-dashoffset',n.L); n.paths.forEach(function(pp){pp.el.style.strokeDashoffset=pp.len;}); return; }
-      n.grp.style.opacity='1';
-      var DDUR=0.4; var dp=Math.min(1,e/DDUR); n.drop.setAttribute('stroke-dashoffset',(n.L*(1-dp)).toFixed(2));   // 드롭선 위→아래로 먼저 그려짐
-      n.sub.style.opacity= e>=DDUR?'1':'0';   // 아이콘은 드롭선이 끝난 뒤 등장
-      var ie=Math.max(0,Math.min(1,(e-DDUR)/0.85));   // 드롭선 끝난 지점·시점부터 아이콘 선-드로잉(위→아래)
-      var _N=n.paths.length;
-      n.paths.forEach(function(pp,pi){ var s=pi/_N, w=1/_N, pr=Math.max(0,Math.min(1,(ie-s)/w)); pp.el.style.strokeDashoffset=(pp.len*(1-pr)).toFixed(1); });   // Y정렬 순서대로 위 path부터 그림
+      if(e<=0){ if(n._st!==0){ n._st=0; n.grp.style.opacity='0'; n.sub.style.opacity='0'; n.drop.setAttribute('stroke-dashoffset',n.L); n._doff=n.L; n.paths.forEach(function(pp){pp.el.style.strokeDashoffset=pp.len;}); } return; }   // 아직 안 나온 노드는 재작성 안 함(변경 감지)
+      if(hasLY){   // 드롭선 끝(위쪽)을 실제 메인선 y에 맞춤 — 값이 바뀔 때만 씀(정착 후 중첩 SVG 재작성 중단)
+        var ly=FORK_PULL.lineY(n.x, n.top?'top':'bottom');
+        if(ly!==n._ly){ n._ly=ly; var iy=ly+DROP;
+          n.drop.setAttribute('d','M '+n.x.toFixed(1)+' '+ly.toFixed(1)+' L '+n.x.toFixed(1)+' '+iy.toFixed(1));
+          n.sub.setAttribute('y', iy.toFixed(1)); n.sub.setAttribute('x',(n.x-n.iw/2).toFixed(1)); }
+      }
+      if(n._st!==1){ n._st=1; n.grp.style.opacity='1'; }
+      var DDUR=0.45; var dp=Math.min(1,e/DDUR); var doff=+(n.L*(1-dp)).toFixed(2);
+      if(doff!==n._doff){ n._doff=doff; n.drop.setAttribute('stroke-dashoffset',doff); }   // 드롭선: 값 변할 때만
+      var subop= e>=DDUR?'1':'0'; if(subop!==n._subop){ n._subop=subop; n.sub.style.opacity=subop; }
+      var ie=Math.max(0,Math.min(1,(e-DDUR)/1.0));   // 아이콘 그리기 1.0초
+      if(ie!==n._ie){ n._ie=ie;   // 아이콘 선-드로잉: 진행도 변할 때만(다 그린 뒤 스킵). 길이비례 배분 → 일정 속도
+        n.paths.forEach(function(pp){ var pr=Math.max(0,Math.min(1,(ie-pp.cs)/pp.cw)); var v=(pp.len*(1-pr)).toFixed(1); if(v!==pp._v){ pp._v=v; pp.el.style.strokeDashoffset=v; } }); }
     });
   };
 })();
