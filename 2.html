@@ -306,6 +306,7 @@ function unlockAudio(){
   if(p&&p.then){ p.then(()=>{ chalkAudio.pause(); chalkAudio.currentTime=0; }).catch(()=>{}); }
   // 배경 피아노 — 잠금만 해제하고 일단 멈춤. 실제 재생은 프레임 루프가 BGM_START(별 등장)부터 시작.
   bgmAudio.muted=false;
+  bgmAudio.loop=true;                    // BGM 루프 — 곡이 타임라인보다 짧아도 finale까지 채움
   bgmAudio.volume=0.55;                  // 분필소리보다 작게(배경)
   bgmAudio.currentTime=0;
   const pb=bgmAudio.play(); if(pb&&pb.then){ pb.then(()=>{ bgmAudio.pause(); bgmAudio.currentTime=0; }).catch(()=>{}); }
@@ -3140,7 +3141,7 @@ function frame(ts){
   // BGM — 인트로 자막이 끝나고 별이 등장하는 시점(BGM_START)부터 재생. 그 전엔 무음.
   if(audioReady && bgmAudio){
     if(t>=BGM_START){
-      if(bgmAudio.paused){ try{ bgmAudio.currentTime=Math.max(0,t-BGM_START); }catch(e){} bgmAudio.muted=false; const _pb=bgmAudio.play(); if(_pb&&_pb.catch)_pb.catch(()=>{}); }
+      if(bgmAudio.paused){ try{ var _d=bgmAudio.duration||DURATION; bgmAudio.currentTime=Math.max(0,(t-BGM_START)%_d); }catch(e){} bgmAudio.muted=false; const _pb=bgmAudio.play(); if(_pb&&_pb.catch)_pb.catch(()=>{}); }
     }else{
       if(!bgmAudio.paused) bgmAudio.pause();
     }
@@ -3232,7 +3233,7 @@ function seekTo(t){
   if(!wasRunning) unlockAudio();                    // 정지 상태 클릭 → 사용자 제스처 안에서 오디오 시작
   start = performance.now() - t*1000;               // 프레임 시계를 t 로 이동(프레임 루프가 그 t를 렌더)
   if(bgmAudio){ try{
-    if(t>=BGM_START){ bgmAudio.currentTime=Math.min(Math.max(0,t-BGM_START), bgmAudio.duration||DURATION); }   // BGM은 별 등장(BGM_START) 기준으로 오프셋
+    if(t>=BGM_START){ var _bd=bgmAudio.duration||DURATION; bgmAudio.currentTime=Math.max(0,(t-BGM_START)%_bd); }   // BGM은 BGM_START 기준 오프셋 + 루프(곡 길이로 모듈로)
     else { bgmAudio.pause(); bgmAudio.currentTime=0; }
   }catch(e){} }
   document.getElementById('ui').classList.add('hide');
