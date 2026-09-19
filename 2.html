@@ -281,7 +281,7 @@ const NS='http://www.w3.org/2000/svg';
 // ★ 분필(chalkSoft) 필터 on/off. 기본 ON. URL ?chalk=off 로 끄면 진단용(필터가 아이폰 끊김 원인인지 즉시 확인).
 const CHALK_ON = !/[?&]chalk=off\b/.test(location.search);
 document.documentElement.setAttribute('data-chalk', CHALK_ON ? 'on' : 'off');
-const CPS=0.145;  // 글자 하나 쓰는 데 걸리는 초. 키우면 더 천천히 써짐
+const CPS=0.174;  // 글자 하나 쓰는 데 걸리는 초. 키우면 더 천천히 써짐 (0.145->0.174: 자막 쓰기 20% 느리게)
 const OS=1.5;   // 오브젝트 크기 배율
 const deco=document.getElementById('deco');
 const endStars=document.getElementById('endStars');
@@ -968,12 +968,12 @@ add(libNode('lb239', 4168, 590, 98, {topDown:true, keepfill:true, fatten:1.0, bo
 add(libNode('lb239', 4203, 591, 96, {topDown:true, keepfill:true, fatten:1.0, bottomUp:true}), 4203, 'dream', 0.25);   // 우 데이지3
 
 // [씬] 별거 아닌 하루도 함께라서 참 좋았습니다 (3씬-3) — 자전거 커플(라이더 2명). 선 위(x4524,y585). grp='dream'로 두어 insertGap 시프트 제외.
-add(libNode('lb236', 4654, 578, 300, {topDown:true, keepfill:true, fatten:1.2, rot:-5.2}), 4654, 'dream', 0.3);   // 자전거 커플(lb236 신규·채움기반). rot:-5.2(선 기울기와 평행)+y578: 앞·뒷바퀴 모두 선에 얹힘
-// 자전거 씬 배경 장식(보여준 이미지 배치대로): 음표(위)·꽃(좌우 지면)
-add(libNode('lb86', 4494, 300, 52, {fill:true, anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}), 4494, 'dream', 0.4);   // 왼쪽 위 연음표 (가로 50%=26 왼쪽 이동: 4520->4494)
-add(libNode('lb85', 4585, 238, 46, {fill:true, anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}), 4585, 'dream', 0.45);  // 왼쪽 위 8분음표
-add(libNode('lb86', 4800, 252, 54, {fill:true, anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}), 4800, 'dream', 0.5);   // 오른쪽 위 연음표
-add(libNode('lb55', 4872, 330, 40, {fill:true, anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}), 4872, 'dream', 0.55);  // 오른쪽 작은 음표
+add(libNode('lb236', 4654, 578, 300, {topDown:true, keepfill:true, fatten:1.2, rot:-5.2}), 4654, 'dream', 0.3); window.__bikeIt=items[items.length-1];   // 자전거 커플(lb236 신규·채움기반). rot:-5.2(선 기울기와 평행)+y578: 앞·뒷바퀴 모두 선에 얹힘
+// 자전거 씬 배경 장식(보여준 이미지 배치대로): 음표(위)·꽃(좌우 지면). startAfterBike=자전거 다 그려진 뒤 4개 순차 등장(따로 놀지 않게)
+add(libNode('lb86', 4494, 300, 52, {fill:true, anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}), 4494, 'dream', 0.4); items[items.length-1].startAfterBike=0;   // 왼쪽 위 연음표 (가로 50%=26 왼쪽 이동: 4520->4494)
+add(libNode('lb85', 4585, 238, 46, {fill:true, anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}), 4585, 'dream', 0.45); items[items.length-1].startAfterBike=1;  // 왼쪽 위 8분음표
+add(libNode('lb86', 4800, 252, 54, {fill:true, anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}), 4800, 'dream', 0.5); items[items.length-1].startAfterBike=2;   // 오른쪽 위 연음표
+add(libNode('lb55', 4872, 330, 40, {fill:true, anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}), 4872, 'dream', 0.55); items[items.length-1].startAfterBike=3;  // 오른쪽 작은 음표
 add(libNode('lb30', 4420, 648, 64, {topDown:true, sw:3.8, color:'var(--rose)', bottomUp:true}),  4420, 'dream', 0.5);   // 왼쪽 꽃(분홍, 큰)
 add(libNode('lb30', 4482, 688, 48, {topDown:true, sw:3.8, color:'var(--gold)', bottomUp:true}),  4482, 'dream', 0.55);  // 왼쪽 작은 꽃(노랑)
 add(libNode('lb30', 4888, 652, 60, {topDown:true, sw:3.8, color:'var(--rose)', bottomUp:true}),  4888, 'dream', 0.6);   // 오른쪽 꽃(분홍)
@@ -989,9 +989,9 @@ items[items.length-1].subkey='byeol';   // 자막 "별거 아닌 하루도" 앵�
 // [벚나무 숲] 좁은 간격 구간 윗선(여자쪽)에 큰 벚나무(lb143)+작은 벚나무(lb144)를 레퍼런스처럼 나란히. codeX=renderX-1876. 바닥-앵커라 y=윗선.
 // [벚나무 = 줄기 먼저 → 벚꽃 나중에 하나씩] 줄기(lb142)는 정적(keepfill)으로 먼저, 벚꽃(lb145/146)은 lag 늦춰 topDown stroke-draw(꽃잎 순차).
 add(libNode('lb142', 6764, 464, 329, {topDown:true, keepfill:true, bottomUp:true}), 6764, 'season', 0.30);   // 큰 나무 줄기 renderX≈8640, 아래→위
-add(libNode('lb145', 6764, 464, 329, {topDown:true, sw:2.4, randDraw:true}), 6764, 'season', 1.25);   // 큰 벚꽃 — 선(stroke), 랜덤 순서로 하나씩 그려짐
+add(libNode('lb145', 6764, 464, 329, {topDown:true, sw:2.4, randDraw:true}), 6764, 'season', 1.25); var _cherryBig=items[items.length-1];   // 큰 벚꽃 — 선(stroke), 랜덤 순서로 하나씩 그려짐
 add(libNode('lb142', 6894, 468, 210, {topDown:true, keepfill:true, bottomUp:true}), 6894, 'season', 0.42);   // 작은 나무 줄기 renderX≈8770, 아래→위
-add(libNode('lb146', 6894, 468, 210, {topDown:true, sw:2.4, randDraw:true}), 6894, 'season', 1.40);   // 작은 벚꽃 — 선(stroke), 랜덤 순서로 그려짐
+add(libNode('lb146', 6894, 468, 210, {topDown:true, sw:2.4, randDraw:true}), 6894, 'season', 1.40); var _cherrySmall=items[items.length-1]; window.__cherryFin=function(){return Math.max((_cherryBig.t||0)+(_cherryBig.dur||0),(_cherrySmall.t||0)+(_cherrySmall.dur||0));};   // 작은 벚꽃 — 선(stroke). __cherryFin=두 벚나무 다 그려진 시각(벚꽃잎 파티클 앵커, SPEED 변해도 자동 추종)
 // [벚꽃잎 쌓임] 벚나무 밑동에 꽃잎이 하나씩 착지하며 쌓이는 애니메이션 → animatePetalPile(t) (cam 월드좌표, render 8640/8770 밑).
 // [여름나무 = 아랫라인, 벚꽃나무(윗선) 다음] 아래선(남자쪽)에 여름나무(lb148). keepfill 정적. follow='bottom' 로 아래선 추종.
 // [여름나무 자리 = 선으로 그린 나무줄기(lb151)만] 잎 없이 줄기만, 선-드로잉. 같은 사이즈 329·같은 위치.
@@ -1001,7 +1001,7 @@ add(libNode('lb150', 7344, 851, 329, {topDown:true, keepfill:true, stretchY:1.15
 // [가을나무 줄기 = 윗선, 여름나무 다음 씬] 여름(renderX 9250) 다음 자리 renderX 9800(codeX 7811)에 배치 → 여름보다 ~4s 늦게 오른쪽에 등장. follow='top' 윗선 추종, 정적 채움.
 add(libNode('lb154', 7811, 464, 380, {topDown:true, keepfill:true, bottomUp:true}), 7811, 'season', 0.6); var _autumnTrunk=items[items.length-1]; _autumnTrunk.follow='top'; _autumnTrunk.followX=9800;   // 가을 줄기 윗선(여름 다음) = 선-드로잉, 아래→위(밑동→가지끝)
 // [가을나무 잎 = 윗선] 가을 줄기(lb154) 위에 단풍잎 레이어(lb155)를 정확히 겹침(같은 codeX 7811·y 464·size 380·followX 9800). 잎·낙엽·풀도 선-드로잉(페이드 아님).
-add(libNode('lb155', 7811, 464, 380, {topDown:true, keepfill:true, bottomUp:true}), 7811, 'season', 1.0); var _autumnLeaves=items[items.length-1]; _autumnLeaves.follow='top'; _autumnLeaves.followX=9800; _autumnLeaves.nobounce=true; _autumnLeaves.leafSeqWanted=true;   // 선-드로잉, 잎별 순차(밑동→위, 잎마다 외곽선→채움)
+add(libNode('lb155', 7811, 464, 380, {topDown:true, keepfill:true, bottomUp:true}), 7811, 'season', 1.0); var _autumnLeaves=items[items.length-1]; _autumnLeaves.follow='top'; _autumnLeaves.followX=9800; _autumnLeaves.nobounce=true; _autumnLeaves.leafSeqWanted=true; window.__autumnFin=function(){return (_autumnLeaves.t||0)+(_autumnLeaves.dur||0);};   // 선-드로잉, 잎별 순차. __autumnFin=가을잎 다 그려진 시각(낙엽 파티클 앵커, SPEED 자동 추종)
 (function(){ var _sg=Array.prototype.slice.call(_summerLeaves.node.querySelectorAll('g')).find(function(g){return /scale\(0\.5\)/.test(g.getAttribute('transform')||'');}); var cl=_sg?Array.prototype.slice.call(_sg.querySelectorAll(':scope > g')):[]; _summerLeaves._clumps=cl.map(function(g,i){ var h=Math.sin(i*127.1+i*i*0.37)*43758.5453; h=h-Math.floor(h); g.style.opacity='0'; return {el:g, phase:h*2.6}; }); _summerLeaves.staggerFade=true; })();   // 잎 제거·추가는 소스(lb150)에 반영됨 → 런타임은 시차 페이드만
 // [겨울나무 = 아랫선, 가을나무 다음 씬] 계절 마무리: 헐벗은 겨울나무(lb165). render 10350(codeX 8100), follow='bottom'(아랫선, 여름 다음 자리). 선-드로잉 아래→위, 아이시 블루(baked).
 add(libNode('lb165', 8100, 843, 360, {topDown:true, keepfill:true, bottomUp:true}), 8100, 'season', 0.6); var _winterTree=items[items.length-1]; _winterTree.follow='bottom'; _winterTree.followX=10350;   // 겨울나무 아랫선. y 941→843: 밑동을 여름나무 밑동 높이(840=하강선)에 맞춤
@@ -1103,7 +1103,7 @@ add(libNode('lb45', 4780, 590, 105, {anchor:'center', topDown:true, sw:4.2, colo
 //   씬: 돌고돌아 재회 · 더 단단해진 · 함께 걷습니다 · 특별한 하루(자전거) · 앞으로의 날(집·나무) · 오늘부터(하트 터짐)
 //   grp: reunite / stronger / together / days / home / today
 // [씬] 돌고 돌아, 운명처럼 다시 만났습니다 — 손 흔드는 남자(왼) + 차 탄 여자(오른, 재회)
-add(libNode('lb192', 5016, 580, 230, {topDown:true, keepfill:true, occlude:true}), 5016, 'reunite', 0.3); items[items.length-1].subkey='reunite'; window.__reuniteBoy=items[items.length-1];   // 손 흔드는 남아3(벡터·매끈, 바지흰색). occlude=메인선 가림
+add(libNode('lb192', 5016, 580, 230, {topDown:true, keepfill:true, occlude:true}), 5016, 'reunite', 0.3); items[items.length-1].subkey='reunite'; window.__reuniteBoy=items[items.length-1]; window.__reuniteBoy.startAtReunionSub=true;   // 손 흔드는 남아3. occlude=메인선 가림. startAtReunionSub=등장(그려지기)을 "그러던 어느 날" 자막 시점에 시작
 add(libNode('lb193', 5274, 424, 279, {topDown:true, keepfill:true}), 5274, 'reunite', 0.5); window.__carIt=items[items.length-1];   // 차 탄 여아3(벡터·매끈) — 하트 위치. 슬라이드-인(왼쪽위→현재) 애니 대상
 
 // [씬] 조금 달라진 모습으로, 여전히 익숙한 사람으로 — 벤치 커플(선 위, 렌더 x≈9682, 선 y540, 등장 71.4s)
@@ -1128,22 +1128,22 @@ add(libNode('lb195', 6621, 574, 304, {topDown:true, keepfill:true, occlude:true}
 
 // [씬] 특별하지 않는 날들이 조금씩 특별해졌습니다 — 요리 씬. 조리대(식탁) 라인=메인선(평탄화, kitchenFlat). 이미지 상대배치(스케일 0.5)
 // 전 오브젝트 동일 codeX(6292, 커플 기준) + it.dx 로 이미지 상대 render 오프셋(비균일 매핑 무관, 원본 배치 정확 재현). 스케일 0.4
-add(libNode('lb221', 6292, 580, 70, {topDown:true, keepfill:true}), 6292, 'days', 0.0); items[items.length-1].dx=-192;   // 조리대(좌)
-add(libNode('lb222', 6292, 570, 61, {topDown:true, keepfill:true}), 6292, 'days', 0.1); items[items.length-1].dx=196;    // 조리대(우)
-add(libNode('lb211', 6292, 393, 72, {topDown:true, keepfill:true}), 6292, 'days', 0.2); items[items.length-1].dx=47;     // 뒤집개(걸이)
-add(libNode('lb212', 6292, 392, 72, {topDown:true, keepfill:true}), 6292, 'days', 0.3); items[items.length-1].dx=94;     // 국자(걸이)
-add(libNode('lb213', 6292, 395, 79, {topDown:true, keepfill:true}), 6292, 'days', 0.4); items[items.length-1].dx=145;    // 팬(걸이)
-add(libNode('lb214', 6292, 403, 62, {topDown:true, bottomUp:true, keepfill:true}), 6292, 'days', 0.5); items[items.length-1].dx=-197;   // 화분(좌상)
-add(libNode('lb215', 6292, 514, 91, {topDown:true, bottomUp:true, keepfill:true}), 6292, 'days', 0.6); items[items.length-1].dx=-197;   // 화분(좌중)
-add(libNode('lb217', 6292, 428, 65, {topDown:true, bottomUp:true, keepfill:true}), 6292, 'days', 0.7); items[items.length-1].dx=208;    // 화초(우상)
-add(libNode('lb219', 6292, 522, 62, {topDown:true, keepfill:true}), 6292, 'days', 0.8); items[items.length-1].dx=210;    // 티슈
-add(libNode('lb208', 6292, 566, 195, {topDown:true, keepfill:true, occlude:true}), 6292, 'days', 1.0); items[items.length-1].dx=-2;   // 요리 남아(분리). occlude=메인선 가림
-add(libNode('lb254', 6292, 566, 195, {topDown:true, keepfill:true, occlude:true}), 6292, 'days', 1.05); items[items.length-1].dx=-2;   // 요리 여아(분리·별도 오브젝트)
-add(libNode('lb209', 6292, 604, 78, {topDown:true, keepfill:true}), 6292, 'days', 1.2); items[items.length-1].dx=-79;    // 조리 볼(음식)
-add(libNode('lb210', 6292, 604, 57, {topDown:true, keepfill:true}), 6292, 'days', 1.3); items[items.length-1].dx=52;     // 도마+음식
-add(libNode('lb220', 6292, 640, 28, {topDown:true, keepfill:true}), 6292, 'days', 1.4); items[items.length-1].dx=-64;    // 접시
-add(libNode('lb216', 6292, 652, 94, {topDown:true, bottomUp:true, keepfill:true}), 6292, 'days', 1.5); items[items.length-1].dx=-110;   // 화분(좌하·전경)
-add(libNode('lb218', 6292, 649, 82, {topDown:true, bottomUp:true, keepfill:true}), 6292, 'days', 1.6); items[items.length-1].dx=172;    // 꽃그릇(우하·전경)
+add(libNode('lb221', 6292, 580, 70, {sw:3.2, topDown:true, keepfill:true}), 6292, 'days', 0.0); items[items.length-1].dx=-192;   // 조리대(좌)
+add(libNode('lb222', 6292, 570, 61, {sw:3.2, topDown:true, keepfill:true}), 6292, 'days', 0.1); items[items.length-1].dx=196;    // 조리대(우)
+add(libNode('lb211', 6292, 393, 72, {sw:3.2, topDown:true, keepfill:true}), 6292, 'days', 0.2); items[items.length-1].dx=47;     // 뒤집개(걸이)
+add(libNode('lb212', 6292, 392, 72, {sw:3.2, topDown:true, keepfill:true}), 6292, 'days', 0.3); items[items.length-1].dx=94;     // 국자(걸이)
+add(libNode('lb213', 6292, 395, 79, {sw:3.2, topDown:true, keepfill:true}), 6292, 'days', 0.4); items[items.length-1].dx=145;    // 팬(걸이)
+add(libNode('lb214', 6292, 403, 62, {sw:3.2, topDown:true, bottomUp:true, keepfill:true}), 6292, 'days', 0.5); items[items.length-1].dx=-197;   // 화분(좌상)
+add(libNode('lb215', 6292, 514, 91, {sw:3.2, topDown:true, bottomUp:true, keepfill:true}), 6292, 'days', 0.6); items[items.length-1].dx=-197;   // 화분(좌중)
+add(libNode('lb217', 6292, 428, 65, {sw:3.2, topDown:true, bottomUp:true, keepfill:true}), 6292, 'days', 0.7); items[items.length-1].dx=208;    // 화초(우상)
+add(libNode('lb219', 6292, 522, 62, {sw:3.2, topDown:true, keepfill:true}), 6292, 'days', 0.8); items[items.length-1].dx=210;    // 티슈
+add(libNode('lb208', 6292, 566, 195, {sw:3.2, topDown:true, keepfill:true, occlude:true}), 6292, 'days', 1.0); items[items.length-1].dx=-2;   // 요리 남아(분리). occlude=메인선 가림
+add(libNode('lb254', 6292, 566, 195, {sw:3.2, topDown:true, keepfill:true, occlude:true}), 6292, 'days', 1.05); items[items.length-1].dx=-2;   // 요리 여아(분리·별도 오브젝트)
+add(libNode('lb209', 6292, 604, 78, {sw:3.2, topDown:true, keepfill:true}), 6292, 'days', 1.2); items[items.length-1].dx=-79;    // 조리 볼(음식)
+add(libNode('lb210', 6292, 604, 57, {sw:3.2, topDown:true, keepfill:true}), 6292, 'days', 1.3); items[items.length-1].dx=52;     // 도마+음식
+add(libNode('lb220', 6292, 640, 28, {sw:3.2, topDown:true, keepfill:true}), 6292, 'days', 1.4); items[items.length-1].dx=-64;    // 접시
+add(libNode('lb216', 6292, 652, 94, {sw:3.2, topDown:true, bottomUp:true, keepfill:true}), 6292, 'days', 1.5); items[items.length-1].dx=-110;   // 화분(좌하·전경)
+add(libNode('lb218', 6292, 649, 82, {sw:3.2, topDown:true, bottomUp:true, keepfill:true}), 6292, 'days', 1.6); items[items.length-1].dx=172;    // 꽃그릇(우하·전경)
 for(var _kfi=items.length-16;_kfi<items.length;_kfi++){ items[_kfi].fwdSkip=1; }   // 요리 16요소(남아·여아 분리): 수동 dx 오프셋 → fwd self-test 제외(렌더는 codeX+dx로 정확)
 
 // [씬] 마음이 무거운 날에는 서로의 곁을 지켰습니다 — 계단 커플(계단 바닥=선 y540, rt≈12573)
@@ -1353,6 +1353,13 @@ function prep(){
     if(it.fixedT!==undefined || !it.grp) return;
     const key=it.grp+'|'+Math.round(it.ax/40);
     if(seen[key]===undefined) seen[key]=0; else { seen[key]++; it.t += seen[key]*STAG; }
+  });
+  // [남아 등장=자막 동기] 선-드로잉 모드(topDown)는 그대로 두고 시작 시각(it.t)만 "그러던 어느 날" 자막 시점으로 덮어씀
+  // [자전거 음표] 자전거(lb236) 다 그려진 직후, 음표 4개를 0.18초 간격으로 순차 등장(각자 따로 놀지 않게)
+  var _bk=window.__bikeIt, _bikeFin=(_bk&&_bk.t!=null)?(_bk.t+(_bk.dur||0)):null;
+  items.forEach(it=>{
+    if(it.startAtReunionSub && typeof storyTimeAtX==='function' && typeof REUNION_X!=='undefined'){ it.t = storyTimeAtX(REUNION_X); }
+    if(it.startAfterBike!=null && _bikeFin!=null){ it.t = _bikeFin + 0.1 + it.startAfterBike*0.18; }
   });
 }
 
@@ -1955,7 +1962,8 @@ SPK_A0=lenAtX(paths[0], X_SPK0);   // 스파이크 진입(실 호길이)
 SPK_A1=lenAtX(paths[0], X_SPK1);   // 하트 직후(실 호길이) — 하트 최대 x<X_SPK1 이라 단일 교차
 const SPK_ARC=SPK_A1-SPK_A0, SPK_FLAT=X_SPK1-X_SPK0, SPK_EXTRA=SPK_ARC-SPK_FLAT;   // 실 호길이 vs 평탄 등가 폭, 여분
 L_END=LEN_P1+LEN_FORK+lenAtX(paths[3], LINE_END_X);   // p2 선끝(화살표 x)까지의 실제 호길이 — stretch해도 화살표에서 정확히 끝남(지나침 방지)
-SPEED=(LEN_TOTAL-P2_STRETCH_DELTA-SPK_EXTRA)/85;   // 등속. 나눗수 79->85 (카메라 약간 느리게, SPEED≈129 단위/초). 늘인 델타 빼 원래 길이 기준
+const SPEED_DIV=106.25, SPEED_DIV_BASE=85;   // 나눗수 85(기준)->106.25 = 전체 20% 느리게(SPEED≈129→103). BASE=자막 off 가 튜닝된 기준 나눗수(SUB_OFF_SCALE 에서 사용)
+SPEED=(LEN_TOTAL-P2_STRETCH_DELTA-SPK_EXTRA)/SPEED_DIV;   // 등속. 늘인 델타 빼 원래 길이 기준. 위치앵커 자막·오브젝트는 storyTimeAtX 종속이라 자동으로 함께 밀림
 // 오프닝을 메인과 같은 SPEED로 그리려면 그만큼 시간이 필요 → 메인 시작(LINE_T0)을 뒤로 미룬다.
 LINE_T0 = OPEN_STARTT + OPEN_TOTAL/SPEED;   // 별 뜬 뒤 오프닝을 등속으로 다 그린 시각 = 메인 시작
 OPEN_T1 = LINE_T0;                          // 오프닝 종료 = 메인 시작
@@ -2113,37 +2121,38 @@ function anchorInfo(s){
 const SUBS=[
   {t:1.0,  dur:10.5, text:'우리의 이야기는,\n아주 작은 순간에서 시작되었습니다.', color:'var(--gold)', mid:true, seq:true, cps:0.21, pause:1.0},   // [인트로 타이틀] 맨앞 인트로 씬, 1초후 화면 중앙 노란색. 줄 단위 느린 쓰기(cps)+줄 사이 텀(pause)
   {t:11.4,  dur:3.0, text:'아주 작은 별 하나.'},                                  // 프리롤 별(고정, +11s)
-  {t:14.8,  dur:2.9, text:'별에서 한 줄이 시작되고,'},                             // 프리롤 선 탄생(고정, +11s)
-  {at:'x', x:1051, off:0,    dur:4.6, text:'어린 날의 꿈을 안고\n조금씩 자라왔습니다.'},  // 소년(유년 남아 걷기 x1051)
-  {at:'x', x:1690, off:1.1,  dur:4.6, text:'서로 다른 길 위에서\n서로를 모르고 지나쳤지만,'}, // 소녀(유년 여아 걷기 x1690)
-  {sub:'meet',     off:0.9,  dur:4.2, text:'스무 살,\n우리의 시간이 처음 만났습니다.'},
-  {sub:'shy',       off:-0.3, dur:3.4, text:'아직은 서툴고\n설레기만 했던 우리.'},          // 3씬-1 (뒷모습 커플+밤하늘)
-  {sub:'dream',     off:0.1,  dur:3.6, text:'함께 웃고,\n함께 꿈꾸던 날들.'},               // 3씬-2 (커플 등장)
-  {sub:'byeol',     off:-1.3, dur:3.6, text:'별것 아닌 하루도\n함께라서 참 좋았습니다.'},   // 3씬-3 (자전거 커플 앵커) 자막 앞으로 -0.8->-1.3 (추가 0.5초)
-  {at:'x', x:5378, off:0, dur:4.2, text:'그러다 우리의 시간은\n잠시 갈라졌습니다.'},                       // 헤어짐1
-  {at:'x', x:6109, off:0, dur:5.2, text:'서로 다른 곳에서\n각자의 하루를 살아갔습니다.'},                        // 헤어짐2 (원래 2-1·2-2 두 자막 통합 — 그 구간 전체 동안 한 줄)
-  {at:'x', x:6840, off:0, dur:3.6, text:'때로는 서로의 위로가 되어주며,'},                                            // 헤어짐3
-  {at:'x', x:7829, off:0, dur:4.0, text:'보이지 않는 인연의 끈을\n놓지 않은 채.'},                             // 헤어짐4
-  {at:'x', x:8947, off:3.0, dur:3.8, text:'많은 계절이\n흘렀습니다.'},                                    // 헤어짐5 (자막 +3초 뒤로)
+  {t:14.8,  dur:5.0, text:'별에서 한 줄이 시작되고,'},                             // 프리롤 선 탄생(고정, +11s)
+  {at:'x', x:1051, off:0,    dur:5.0, text:'어린 날의 꿈을 안고\n조금씩 자라왔습니다.'},  // 소년(유년 남아 걷기 x1051)
+  {at:'x', x:1690, off:1.1,  dur:5.0, text:'서로 다른 길 위에서\n서로를 모르고 지나쳤지만,'}, // 소녀(유년 여아 걷기 x1690)
+  {sub:'meet',     off:0.9,  dur:5.0, text:'스무 살,\n우리의 시간이 처음 만났습니다.'},
+  {sub:'shy',       off:-0.3, dur:5.0, text:'아직은 서툴고\n설레기만 했던 우리.'},          // 3씬-1 (뒷모습 커플+밤하늘)
+  {sub:'dream',     off:0.1,  dur:5.0, text:'함께 웃고,\n함께 꿈꾸던 날들.'},               // 3씬-2 (커플 등장)
+  {sub:'byeol',     off:-1.3, dur:5.0, text:'별것 아닌 하루도\n함께라서 참 좋았습니다.'},   // 3씬-3 (자전거 커플 앵커) 자막 앞으로 -0.8->-1.3 (추가 0.5초)
+  {at:'x', x:5378, off:0.8, dur:5.0, text:'그러다 우리의 시간은\n잠시 갈라졌습니다.'},                       // 헤어짐1 (off 0.8×1.25=실제 1초 뒤 등장)
+  {at:'x', x:6109, off:0, dur:5.0, text:'서로 다른 곳에서\n각자의 하루를 살아갔습니다.'},                        // 헤어짐2 (원래 2-1·2-2 두 자막 통합 — 그 구간 전체 동안 한 줄)
+  {at:'x', x:6840, off:0, dur:5.0, text:'때로는 서로의 위로가 되어주며,'},                                            // 헤어짐3
+  {at:'x', x:7829, off:0, dur:5.0, text:'보이지 않는 인연의 끈을\n놓지 않은 채.'},                             // 헤어짐4
+  {at:'x', x:8947, off:3.0, dur:15.0, writeDur:3.0, dropLines:1, text:'많은 계절이 흘렀습니다.'},                                    // 헤어짐5 (자막 +3초 뒤로, 한 줄·지속 15초·쓰기 3초·한 줄 아래)
   // [함께2] 재회~피날레 자막 12개. 모두 재회 시점(x9045)에 앵커 + 누적 off(=(n-1)*4.6: 표시3.6+간격1.0).
   //  선 속도는 등속(불변). 자막이 선 완성보다 길면 피날레를 유지하며 이어짐 → 전체 시간만 늘어남.
-  {at:'x', x:REUNION_X, off:0.0,  dur:3.6, text:'그러던 어느 날,\n참 신기하게도 우리의 시간은\n다시 만났습니다.'},
-  {at:'x', x:REUNION_X, off:5.1,  dur:3.6, text:'조금 달라진 모습으로,\n여전히 익숙한 사람으로.'},
-  {at:'x', x:REUNION_X, off:11.07,  dur:3.6, text:'우리는 다시\n서로의 하루를 나누기 시작했습니다.'},
-  {at:'x', x:REUNION_X, off:17.1, dur:3.6, text:'특별하지 않는 날들이\n조금씩 특별해졌습니다.'},   // +0.5초(요리 씬 앞 0.5초 삽입)
-  {at:'x', x:REUNION_X, off:23.87, dur:3.6, text:'좋은 날에는 함께 웃고,'},   // 이하 +1초(요리 씬 앞뒤 각0.5초)
-  {at:'x', x:REUNION_X, off:29.59, dur:3.6, text:'마음이 무거운 날에는\n서로의 곁을 지키고,'},
-  {at:'x', x:REUNION_X, off:36.59, dur:3.6, text:'별일 없는 날에는\n그저 나란히 걸으며,'},
-  {at:'x', x:REUNION_X, off:43.59, dur:3.6, text:'그렇게 우리는\n‘곁’의 의미를 알게 되었습니다.'},
-  {at:'x', x:REUNION_X, off:49.59, dur:3.6, text:'곁이란, 서로의 하루를 나누고'},
-  {at:'x', x:REUNION_X, off:58.09, dur:3.6, text:'혼자 걷던 길을\n나란히 걷는 것.'},
-  {at:'x', x:REUNION_X, off:68.59, dur:3.6, text:'우리는 서로에게\n‘곁’이라는 선물을 받았습니다.'},
+  {at:'x', x:REUNION_X, off:0.0,  dur:5.0, text:'그러던 어느 날,\n참 신기하게도 우리의 시간은\n다시 만났습니다.'},
+  {at:'x', x:REUNION_X, off:5.1,  dur:5.0, text:'조금 달라진 모습으로,\n여전히 익숙한 사람으로.'},
+  {at:'x', x:REUNION_X, off:11.07,  dur:5.0, text:'우리는 다시\n서로의 하루를 나누기 시작했습니다.'},
+  {at:'x', x:REUNION_X, off:17.9, dur:5.0, text:'특별하지 않는 날들이\n조금씩 특별해졌습니다.'},   // +0.5초(요리 씬 앞 0.5초 삽입) · off 17.1→17.9(실제 1초 뒤)
+  {at:'x', x:REUNION_X, off:23.87, dur:5.0, text:'좋은 날에는 함께 웃고,'},   // 이하 +1초(요리 씬 앞뒤 각0.5초)
+  {at:'x', x:REUNION_X, off:29.59, dur:5.0, text:'마음이 무거운 날에는\n서로의 곁을 지키고,'},
+  {at:'x', x:REUNION_X, off:36.59, dur:5.0, text:'별일 없는 날에는\n그저 나란히 걸으며,'},
+  {at:'x', x:REUNION_X, off:43.59, dur:5.0, text:'그렇게 우리는\n‘곁’의 의미를 알게 되었습니다.'},
+  {at:'x', x:REUNION_X, off:49.59, dur:5.0, text:'곁이란, 서로의 하루를 나누고'},
+  {at:'x', x:REUNION_X, off:58.09, dur:5.0, text:'혼자 걷던 길을\n나란히 걷는 것.'},
+  {at:'x', x:REUNION_X, off:66.99, dur:5.0, text:'우리는 서로에게\n‘곁’이라는 선물을 받았습니다.'},   // off 68.59→66.99(실제 2초 앞)
   {at:'lineEnd', off:0.15, dur:5.0, text:'그리고 오늘,\n우리는 새로운 시간을 시작합니다.'},   // 선이 화면 끝(화살표)에 닿는 순간 등장
 ];
+const SUB_OFF_SCALE = SPEED_DIV / SPEED_DIV_BASE;   // off(선-진행 상대초)를 현재 선속도에 맞춰 스케일 → 느려진 씬과 자막 등장시점 동기(20% 느리면 1.25배)
 const lines = SUBS.map(function(s){
   var t0;
   if('t' in s) t0=s.t;
-  else { var a=anchorInfo(s); t0=(a?storyTimeAtX(a.x)+a.lag:0)+(s.off||0); }   // 오브젝트 등장시각(펜도달+lag)+off
+  else { var a=anchorInfo(s); t0=(a?storyTimeAtX(a.x)+a.lag:0)+(s.off||0)*SUB_OFF_SCALE; }   // 오브젝트 등장시각(펜도달+lag)+off. off는 선-진행 상대초 → SPEED 변하면 SUB_OFF_SCALE 로 재스케일해 씬과 동기
   return [t0, t0+s.dur, s.text, s.color||null, !!s.mid, s];   // [3]=색상(null=기본 chalk) [4]=중앙배치 [5]=원본 sub(seq 등)
 });
 
@@ -2500,7 +2509,8 @@ function animateGiftToss(t){
 //  결정적(인덱스 해시)이라 오프라인 렌더에도 동일. 트리 등장(≈t68)~나란히끝 이후(≈t82) 활성, 이후 페이드아웃.
 var _petalG=null, _petals=null;
 function animatePetals(t){
-  var _dt=window.SEASON_DT||0, START=83.4+_dt, ENDFADE=93.0+_dt, ENDGONE=95.5+_dt;   // 두 벚나무가 다 그려진 뒤 시작 (+11s 인트로 · +계절삽입 SEASON_DT)
+  var _cf=window.__cherryFin?window.__cherryFin():0, _base=(_cf>1?_cf:(82.0+(window.SEASON_DT||0)));   // 벚나무 완성 시각 앵커(SPEED 자동 추종). 폴백=옛 절대시각
+  var START=_base+1.4, ENDFADE=_base+11.0, ENDGONE=_base+13.5;   // 두 벚나무가 다 그려진 뒤 시작(내부 지속시간 보존)
   if(t<START-1 || t>ENDGONE){ if(_petalG) _petalG.style.opacity='0'; return; }
   if(!_petalG){
     _petalG=el('g',{}); cam.appendChild(_petalG);
@@ -2534,7 +2544,8 @@ function animatePetals(t){
 // [가을 낙엽 날림] 가을나무(월드 renderX≈9800) 주변에서 단풍잎이 흩날려 떨어짐. 벚꽃잎과 동일 파티클 방식(cam 월드좌표·결정적).
 var _leafG=null, _fleaves=null;
 function animateAutumnLeaves(t){
-  var _dt=window.SEASON_DT||0, START=91.0+_dt, ENDFADE=99.0+_dt, ENDGONE=101.5+_dt;   // 가을나무 잎이 다 그려진 뒤 시작 → 재회 즈음 페이드아웃 (+11s 인트로 · +SEASON_DT)
+  var _af=window.__autumnFin?window.__autumnFin():0, _base=(_af>1?_af:(90.5+(window.SEASON_DT||0)));   // 가을잎 완성 시각 앵커(SPEED 자동 추종). 폴백=옛 절대시각
+  var START=_base+0.5, ENDFADE=_base+8.5, ENDGONE=_base+11.0;   // 가을나무 잎이 다 그려진 뒤 시작(내부 지속시간 보존)
   if(t<START-1 || t>ENDGONE){ if(_leafG) _leafG.style.opacity='0'; return; }
   if(!_leafG){
     _leafG=el('g',{}); cam.appendChild(_leafG);
@@ -2602,7 +2613,7 @@ function animateAurora(t){
 // [벚꽃잎 쌓임 애니메이션] 벚나무 밑동(render 8640/8770)에 꽃잎이 위에서 하나씩 착지하며 시차로 쌓임. cam 월드좌표·결정적.
 var _pileG=null, _pilePetals=null;
 function animatePetalPile(t){
-  var START=82.0+(window.SEASON_DT||0), LANDSPAN=6.5, END=999;   // 벚나무 그려진 뒤부터 6.5초간 하나씩 착지(누적), 이후 유지 (+11s 인트로 · +SEASON_DT)
+  var _cf=window.__cherryFin?window.__cherryFin():0, START=(_cf>1?_cf:(82.0+(window.SEASON_DT||0))), LANDSPAN=6.5, END=999;   // 벚나무 완성 시각 앵커(SPEED 자동 추종). 6.5초간 하나씩 착지(누적), 이후 유지. 폴백=옛 절대시각
   if(t<START-0.5){ if(_pileG) _pileG.style.opacity='0'; return; }
   if(!_pileG){
     _pileG=el('g',{}); _pileG.setAttribute('filter','url(#chalkSoft)'); cam.appendChild(_pileG);
@@ -2634,7 +2645,7 @@ function animatePetalPile(t){
 // [가을 낙엽 쌓임 애니메이션] 가을나무 밑동(render≈9800)에 단풍잎이 위에서 하나씩 착지하며 시차로 쌓임. cam 월드좌표·결정적.
 var _lpileG=null, _lpile=null;
 function animateLeafPile(t){
-  var START=90.5+(window.SEASON_DT||0), LANDSPAN=7.5;   // (+11s 인트로 · +SEASON_DT: 가을낙엽 쌓임 시작)
+  var _af=window.__autumnFin?window.__autumnFin():0, START=(_af>1?_af:(90.5+(window.SEASON_DT||0))), LANDSPAN=7.5;   // 가을잎 완성 시각 앵커(SPEED 자동 추종). 폴백=옛 절대시각
   if(t<START-0.5){ if(_lpileG) _lpileG.style.opacity='0'; return; }
   if(!_lpileG){
     _lpileG=el('g',{}); _lpileG.setAttribute('filter','url(#chalkSoft)'); cam.appendChild(_lpileG);
@@ -3034,6 +3045,7 @@ function frame(ts){
     cap.classList.toggle('mid', active[4]);   // [자막 위치] 인트로 타이틀은 화면 중앙
     const txt=active[2], win=active[1]-active[0], el0=t-active[0];
     const s5=active[5];   // 원본 sub 객체(seq/cps/pause 등 확장 속성)
+    cap.style.transform=(!active[4]&&s5&&s5.dropLines)?('translateY('+(s5.dropLines*1.4)+'em)'):'';   // [자막 세로 이동] dropLines 지정 시 한 줄(≈1.4em)씩 아래로. mid(인트로)는 CSS transform 유지
     let shown, penWriting, writeEnd, penEmptyLine=false;
     if(s5 && s5.seq){
       // [순차 쓰기] 줄 단위로 천천히 쓰고, 줄 사이에 텀(pause). cps=글자당 초.
@@ -3048,11 +3060,21 @@ function frame(ts){
       }
       shown=out.join('\n'); writeEnd=cursor;   // 마지막 글자 완료 시각
     }else{
-      // 글자당 CPS초, 단 창 길이의 62%를 넘지 않게
-      const writeDur=Math.min(txt.length*CPS, win*0.62);
-      const wr=Math.min(1,el0/writeDur);
-      shown=txt.slice(0, Math.round(txt.length*wr)); penWriting=wr<1; writeEnd=writeDur;
-      penEmptyLine = penWriting && /\n$/.test(shown);   // 방금 개행을 지나 아직 글자 0개인 새 줄로 넘어온 순간
+      // 글자당 CPS초 + 줄바꿈마다 0.5초 텀(쉬었다 다음 줄 쓰기). 기본은 창 길이의 62% 상한, 단 s5.writeDur 지정 시 그 시간에 정확히 맞춰 씀.
+      const parts=txt.split('\n'), LINE_PAUSE=0.5;
+      let natural=(parts.length-1)*LINE_PAUSE; for(let _i=0;_i<parts.length;_i++) natural+=parts[_i].length*CPS;
+      const _target=(s5&&s5.writeDur)?s5.writeDur:Math.min(natural, win*0.62);   // writeDur=이 자막 쓰기시간 직접지정(상한 무시)
+      const _scale=natural>0 ? _target/natural : 1;
+      const cps=CPS*_scale, pause=LINE_PAUSE*_scale;
+      let cursor=0; const out=[]; penWriting=false;
+      for(let li=0;li<parts.length;li++){
+        const L=parts[li], wd=Math.max(0.001, L.length*cps), st=cursor, en=cursor+wd;
+        if(el0>=en) out.push(L);
+        else if(el0>=st){ const _n=Math.max(0, Math.round(L.length*((el0-st)/wd))); out.push(L.slice(0,_n)); penWriting=true; penEmptyLine=(_n===0); }   // 쓰는 중인 줄. _n===0 = 개행 직후 빈 새 줄(분필 그 줄로 내림)
+        else out.push('');   // 아직 시작 전(=이전 줄 텀 중 포함) → 빈 줄, penWriting=false 라 텀 동안 분필소리 멈춤
+        cursor = en + (li<parts.length-1 ? pause : 0);
+      }
+      shown=out.join('\n'); writeEnd=cursor;   // 마지막 글자 완료 시각
     }
     const allDone = el0>=writeEnd;
     // penEmptyLine = 펜이 '글자 0개인 새 줄'에 있음 → 개행을 capText 에 남겨 분필을 그 새 줄로 내림.
