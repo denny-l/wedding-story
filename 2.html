@@ -273,7 +273,7 @@
   <audio id="bgmAudio" preload="auto" src="./bgm2.mp3?v=7ca907fb"></audio>
 </div>
 
-<script src="objects.js?v=ecce4abf"></script>
+<script src="objects.js?v=6d64c452"></script>
 <script>
 const {COUPLE_V,HOUSE_V,OAK_V,BUSHY_V,LEAFY_V,COUPLE2_V,BIKE_V,ROUNDTREE_V,MOON_V}=window.WEDDING_SHAPES;  // 공용 objects.js 의 shape 데이터 참조
 
@@ -990,7 +990,7 @@ add(libNode('lb183', 8210, 840, 90, {topDown:true, keepfill:true, bottomUp:true}
 add(libNode('lb183', 8320, 484, 90, {topDown:true, keepfill:true, bottomUp:true}), 8320, 'season', 0.95); var _winterTree2b=items[items.length-1]; _winterTree2b.follow='top'; _winterTree2b.followX=10768;   // 겨울나무2 윗라인(여자쪽)에도 하나
 
 // [여름 해] 여름 씬 윗선(여자쪽) 가장 위 하늘에 해. anchor center, follow 없음(하늘 고정), season grp.
-add(libNode('lb184', 7336, 179, 156, {anchor:'center', topDown:true, sw:5.5, color:'var(--gold)'}), 7336, 'season', 1.0); items[items.length-1].nobounce=true;
+add(libNode('lb184', 7336, 179, 156, {anchor:'center', topDown:true, sw:3.86, color:'var(--gold)'}), 7336, 'season', 1.0); items[items.length-1].nobounce=true;
 
 // [계절 꽃·풀 배치] ①벚꽃나무 옆 꽃 5종(줄기꽃, 솔리드 핑크 keepfill) ②여름 윗선=조금만(해바라기1·들꽃2) ③여름 아랫선=여름나무 주변에 다수(해바라기3·풀2·들꽃3, 선기반 벡터). follow로 분기 라인 추종. followX=codeX+1876.
 function _plant(id,cx,y,size,side,fx,lag,opt){ opt=opt||{topDown:true,sw:2.4}; opt.topDown=true; opt.bottomUp=true; add(libNode(id,cx,y,size,opt),cx,'season',lag); var it=items[items.length-1]; it.follow=side; it.followX=fx; it.nobounce=true; return it; }   // 계절 풀·꽃: 밑에서부터(bottomUp)
@@ -1050,8 +1050,7 @@ window.GIFTTOSS={girlWait:_gtGW, girlGive:_gtGG, boyWait:_gtBW, boyCatch:_gtBC, 
 
 // 두번째 실 위치(P2X=7598, 두 선 사이)에 coconut tree on an island 그림. 펜은 이미 지나갔으므로(52.1s) lag로 실 소멸시점(~56.9s)에 등장.
 // [삭제] coconut tree(lb3) — 사용자 지시로 제거(여름나무 대체). 기존: add(libNode('lb3', 6238, 540, 130, {fill:true, anchor:'center', topDown:true, sw:3, color:'var(--leaf)'}), 6238, 'island', 4.85);
-// 첫번째 실 위치(P1X=7120, 두 선 사이)에 메시지폰. lag 4.85 → 첫 실 애니 끝(소멸) 시점에 등장.
-add(libNode('lb82', 5502, 540, 100, {anchor:'center', topDown:true, sw:4.6}), 5502, 'island', 4.85);   // 메시지폰 — 첫 실 자리(렌더x7120=코드5502+시프트1618), 실 사라질 때 등장. 빨강(원색). 굵기↑↑
+// 첫번째 실 위치(P1X=7120)에 통신 아이콘 4개(전화·노트북메일·편지·폰) — commHangScene 이 제주씬처럼 매달아 등장. (기존 메시지폰 lb82 제거)
 
 // [헤어짐2] "서로 다른 곳에서 각자의 꿈을 향해 / 서로의 하루를 살아갔습니다" — 각자의 일상 비네트.
 //   위선(로즈)=여자: 캐리어 소녀 + 커피 + 책 + 꽃 / 아래선(애저)=남자: 산책 소년(lb77) + 노트북 + 빌딩 + 별.  발이 선에 닿게(bottom-anchor), y=선 안착값.
@@ -2345,6 +2344,11 @@ function animateForkPull(t){
       } else { for(let i=0;i<th.brays.length;i++) th.brays[i].style.opacity='0'; th.flash.style.opacity='0'; }
     } };
   thr(F.th1,F.P1X,F.T1); thr(F.th2,F.P2X,F.T2);
+  const dipAt=(T,tt)=>{ if(T==null) return 0; const dd=tt-T-EM; if(dd<=0) return 0; const SLK=0.7,YNK=0.55,SET=0.9,OVER=1.15; if(dd<SLK) return 0.06*ss(dd/SLK); const yy=dd-SLK; if(yy<YNK) return 0.06+(OVER-0.06)*ss(yy/YNK); return OVER-(OVER-1)*ss(Math.min(1,(yy-YNK)/SET)); };
+  const hgcAt=(x,tt)=>{ const e=env(x); if(e<=0) return 0; let g=GB - DIPAMT*dipAt(F.T1,tt)*sp(x,F.P1X) + REB*dipAt(F.T1,tt)*sp(x,F.P1X+RBO) - DIPAMT2*dipAt(F.T2,tt)*sp2(x,F.P2X); return e*Math.max(24,g); };
+  const yTopAt=(x,tt)=>540-(hgcAt(x,tt)+env(x)*meander(_sRemap(x)));
+  const yBotAt=(x,tt)=>{ const nb=540+(hgcAt(x,tt)+env(x)*meander(_sRemap(x))); const w=BLUE_W(_sRemap(x)); return w>0?(nb*(1-w)+BLUE_TARGET*w):nb; };
+  F.lineYat=function(x,w,tt){ return w==='bottom'? yBotAt(x,tt) : yTopAt(x,tt); };
   F.lineY=function(x,w){ return w==='bottom'? yBot(x) : yTop(x); };   // 현재 프레임의 선-y 노출 → 선 위 오브젝트가 좁혀짐/파동을 따라 이동
 }
 
@@ -2536,6 +2540,37 @@ function animateAutumnLeaves(t){
     var sx=(q.flip<0.5?1:-1)*q.sc;   // 좌우 뒤집힘 섞어 팔랑임
     q.el.setAttribute('transform','translate('+x.toFixed(1)+' '+y.toFixed(1)+') rotate('+rot.toFixed(1)+') scale('+sx.toFixed(2)+' '+q.sc.toFixed(2)+')');
   }
+}
+
+// [오로라] 가을나무 다음 밤하늘 가로 리본(aurora.png=6.webp). 나무·선 뒤. 와이프를 펜(메인선 tipX)에 묶어 선이 지나간 곳까지만 좌→우로 드러남(절대 선보다 앞서지 않음).
+var _auroraG=null, _auWipeS1=null, _auWipeS2=null, _auX0=0, _auW=1;
+function animateAurora(t){
+  var W=1300, X0=10995-W/2, LAG=90;   // 중심 world x≈10995. LAG=펜보다 살짝 뒤(월드px)에서 드러나게 여유.
+  var BW=0.24;   // 소프트 경계폭(리본폭 대비)
+  var tip=(typeof tipXAt==='function')?tipXAt(t):0;
+  if(tip < X0-40){ if(_auroraG) _auroraG.style.opacity='0'; return; }   // 펜이 리본 왼쪽에 닿기 전엔 숨김
+  if(!_auroraG){
+    var H=Math.round(W*311/1000), Y0=10;
+    _auX0=X0; _auW=W;
+    var defs=document.querySelector('#scene defs');
+    var grad=el('linearGradient',{id:'auWipeG', x1:'0',y1:'0',x2:'1',y2:'0'});
+    _auWipeS1=el('stop',{offset:'0','stop-color':'#fff','stop-opacity':'1'});
+    _auWipeS2=el('stop',{offset:'0','stop-color':'#fff','stop-opacity':'0'});
+    grad.appendChild(_auWipeS1); grad.appendChild(_auWipeS2); defs.appendChild(grad);
+    var mask=el('mask',{id:'auWipe', maskContentUnits:'userSpaceOnUse'});
+    mask.appendChild(el('rect',{x:String(X0),y:String(Y0),width:String(W),height:String(H),fill:'url(#auWipeG)'}));
+    defs.appendChild(mask);
+    _auroraG=el('g',{mask:'url(#auWipe)'}); cam.insertBefore(_auroraG, cam.firstChild);
+    var img=el('image',{x:String(X0),y:String(Y0),width:String(W),height:String(H),preserveAspectRatio:'none'});
+    img.setAttribute('href','aurora.png?v=1bd79e4a'); img.setAttributeNS('http://www.w3.org/1999/xlink','href','aurora.png?v=1bd79e4a');
+    _auroraG.appendChild(img);
+  }
+  // 노출 경계 = 펜 위치(-LAG)를 리본 0~1 로 환산 → 선이 지나간 만큼만 드러남
+  var rp=Math.max(0, Math.min(1, (tip - LAG - _auX0)/_auW));
+  _auWipeS1.setAttribute('offset', Math.max(0,rp-BW).toFixed(3));
+  _auWipeS2.setAttribute('offset', rp.toFixed(3));
+  var breathe=0.28+0.05*Math.sin(t*0.5);   // 전체 조금 더 연하게(최대 ~0.33)
+  _auroraG.style.opacity=breathe.toFixed(3);
 }
 
 // [벚꽃잎 쌓임 애니메이션] 벚나무 밑동(render 8640/8770)에 꽃잎이 위에서 하나씩 착지하며 시차로 쌓임. cam 월드좌표·결정적.
@@ -2781,6 +2816,7 @@ function frame(ts){
   animatePetals(t);     // [벚꽃잎] 벚나무 주변 꽃잎 흩날림
   animatePetalPile(t);  // [벚꽃잎 쌓임] 벚나무 밑동에 하나씩 착지하며 누적
   animateAutumnLeaves(t);   // [가을낙엽] 가을나무 주변 단풍잎 흩날림
+  animateAurora(t);     // [오로라] 가을나무 다음 밤하늘 배경(aurora.png)
   animateLeafPile(t);   // [가을낙엽 쌓임] 가을나무 밑동에 하나씩 착지하며 누적
   animateWinterSnow(t); // [겨울 눈] 겨울나무 밑 파란선에 흰 눈 두둑 + 눈송이
   animateFireworks(t);  // [불꽃놀이] 야경 강변 씬 밤하늘 버스트
@@ -2792,7 +2828,7 @@ function frame(ts){
     let fdy=0;   // [follow] 선-추종: 선이 좁혀지거나 파동치면 오브젝트도 같은 만큼 세로 이동
     if(it.follow && FORK_PULL.lineY && r>0){
       const ly=FORK_PULL.lineY(it.followX, it.follow);
-      if(it.followBaseY==null) it.followBaseY=ly;   // 첫 등장(=rest) 선-y를 기준으로 캡처 → 상수 오프셋 없음
+      if(it.followBaseY==null) it.followBaseY=(FORK_PULL.lineYat && it.t!=null)?FORK_PULL.lineYat(it.followX,it.follow,it.t):ly;   // [결정화] 등장시각(it.t)의 선-y 기준 → 캡처 타이밍/seek 무관
       fdy = ly - it.followBaseY;
     }
     const dxt = (it.dx||fdy) ? ('translate('+(it.dx||0)+' '+fdy.toFixed(1)+') ') : '';   // [insertGap] x오프셋 + [follow] y오프셋 — 모든 transform 앞
@@ -2946,7 +2982,7 @@ function frame(ts){
     cap.classList.toggle('mid', active[4]);   // [자막 위치] 인트로 타이틀은 화면 중앙
     const txt=active[2], win=active[1]-active[0], el0=t-active[0];
     const s5=active[5];   // 원본 sub 객체(seq/cps/pause 등 확장 속성)
-    let shown, penWriting, writeEnd;
+    let shown, penWriting, writeEnd, penEmptyLine=false;
     if(s5 && s5.seq){
       // [순차 쓰기] 줄 단위로 천천히 쓰고, 줄 사이에 텀(pause). cps=글자당 초.
       const parts=txt.split('\n'), cps=s5.cps||0.26, pause=(s5.pause==null?1.0:s5.pause);
@@ -2954,7 +2990,7 @@ function frame(ts){
       for(let li=0; li<parts.length; li++){
         const L=parts[li], wd=Math.max(0.001, L.length*cps), st=cursor, en=cursor+wd;
         if(el0>=en) out.push(L);
-        else if(el0>=st){ out.push(L.slice(0, Math.max(0, Math.round(L.length*((el0-st)/wd))))); penWriting=true; }
+        else if(el0>=st){ const _n=Math.max(0, Math.round(L.length*((el0-st)/wd))); out.push(L.slice(0,_n)); penWriting=true; penEmptyLine=(_n===0); }
         else out.push('');
         cursor = en + (li<parts.length-1 ? pause : 0);
       }
@@ -2964,10 +3000,14 @@ function frame(ts){
       const writeDur=Math.min(txt.length*CPS, win*0.62);
       const wr=Math.min(1,el0/writeDur);
       shown=txt.slice(0, Math.round(txt.length*wr)); penWriting=wr<1; writeEnd=writeDur;
+      penEmptyLine = penWriting && /\n$/.test(shown);   // 방금 개행을 지나 아직 글자 0개인 새 줄로 넘어온 순간
     }
     const allDone = el0>=writeEnd;
-    if(cap.dataset.cur!==shown){ cap.dataset.cur=shown;
-      const _tr=(shown.match(/\n+$/)||[''])[0];   // 후행 개행(예약된 아랫줄) — 분필 뒤로 빼서 분필이 현재 쓰는 줄에 남게
+    // penEmptyLine = 펜이 '글자 0개인 새 줄'에 있음 → 개행을 capText 에 남겨 분필을 그 새 줄로 내림.
+    // 그 외(윗줄을 쓰는 중이거나 텀·정지) → 후행 개행을 분필 뒤(capTail)로 뺀다.
+    const _cKey=shown+(penEmptyLine?'\u0001':'');   // 같은 shown 이라도 상태 바뀌면 재배치
+    if(cap.dataset.cur!==_cKey){ cap.dataset.cur=_cKey;
+      const _tr = penEmptyLine ? '' : (shown.match(/\n+$/)||[''])[0];
       capText.textContent=shown.slice(0, shown.length-_tr.length);
       const _ct=document.getElementById('capTail'); if(_ct) _ct.textContent=_tr; }
     // 쓰는 동안엔 소리를 계속 재생(끊김 없음), 다 쓰면 멈춤
@@ -3009,6 +3049,7 @@ function frame(ts){
 
 
   if(window.__jejuUpdate) window.__jejuUpdate(t);   // [제주 매달기] 등장 갱신
+  if(window.__commUpdate) window.__commUpdate(t);   // [통신 아이콘 매달기] 첫 실 자리 등장 갱신
   if(window.__carIt && window.__carIt.node && window.__carIt.t!=null){   // [자동차 슬라이드-인] 왼쪽 위에서 현재 위치로 이동
     var _ci=window.__carIt, _ce=t-_ci.t, _SL=1.2;
     if(_ce>=0 && _ce<=_SL+0.05){ var _sp=Math.max(0,Math.min(1,_ce/_SL)); _sp=_sp*_sp*(3-2*_sp);
@@ -3031,7 +3072,7 @@ function reset(){
   lineClipRect.setAttribute('width','0');   // 그레인 전부 숨김
   const lg=document.getElementById('lineG'); if(lg) lg.style.opacity='0';   // 재생 전엔 선 자체를 감춤
   items.forEach(it=>{
-    it._state=undefined; it._wipeSolid=0; it._pmInit=0;
+    it._state=undefined; it._wipeSolid=0; it._pmInit=0; it.followBaseY=null;
     it.node.setAttribute('opacity','0');
     it.node.removeAttribute('transform');
     if(it.shapes) it.shapes.forEach(sh=>{
@@ -3131,7 +3172,7 @@ try{ _fwdSelfTest(); }catch(e){ console.error('[fwd self-test] 예외', e); }   
     var x=xs[i], top=(s[1]==='top');
     var lineY=(typeof FORK_PULL!=='undefined'&&FORK_PULL.lineY)?FORK_PULL.lineY(x, top?'top':'bottom'):(top?400:680);
     var col= top?'#ef8fa9':'#6fa9d9';
-    var iconY=lineY+DROP, sc=ICON/Math.max(vb[2],vb[3]), iw=vb[2]*sc, ih=vb[3]*sc;
+    var _icn=ICON*(({phone:0.75,smartphone:0.75})[s[0]]||1); var iconY=lineY+DROP, sc=_icn/Math.max(vb[2],vb[3]), iw=vb[2]*sc, ih=vb[3]*sc;
     var grp=el('g',{}); grp.style.opacity='0';
     var drop=el('path',{d:'M '+x.toFixed(1)+' '+lineY.toFixed(1)+' L '+x.toFixed(1)+' '+iconY.toFixed(1),stroke:col,'stroke-width':'3',fill:'none','stroke-linecap':'round'});
     drop.setAttribute('stroke-dasharray',DROP); drop.setAttribute('stroke-dashoffset',DROP);
@@ -3155,11 +3196,11 @@ try{ _fwdSelfTest(); }catch(e){ console.error('[fwd self-test] 예외', e); }   
   window.__jejuUpdate=function(t){
     var T2=(typeof FORK_PULL!=='undefined')?FORK_PULL.T2:null;
     var hasLY=(typeof FORK_PULL!=='undefined'&&FORK_PULL.lineY);
-    if(T2==null){ nodes.forEach(function(n){ if(n._st!==-1){ n._st=-1; n.grp.style.opacity='0';n.sub.style.opacity='0';n.drop.setAttribute('stroke-dashoffset',n.L);n.paths.forEach(function(pp){pp.el.style.strokeDashoffset=pp.len;}); } }); return; }
+    if(T2==null){ nodes.forEach(function(n){ if(n._st!==-1){ n._st=-1; n.grp.style.opacity='0';n.sub.style.opacity='0';n.drop.setAttribute('stroke-dashoffset',n.L);n.paths.forEach(function(pp){pp.el.style.strokeDashoffset=pp.len; pp.el.style.opacity="0";}); } }); return; }
     var START=T2+3.0, STEP=0.6;
     nodes.forEach(function(n,i){
       var rt=START+i*STEP, e=t-rt;
-      if(e<=0){ if(n._st!==0){ n._st=0; n.grp.style.opacity='0'; n.sub.style.opacity='0'; n.drop.setAttribute('stroke-dashoffset',n.L); n._doff=n.L; n.paths.forEach(function(pp){pp.el.style.strokeDashoffset=pp.len;}); } return; }   // 아직 안 나온 노드는 재작성 안 함(변경 감지)
+      if(e<=0){ if(n._st!==0){ n._st=0; n.grp.style.opacity='0'; n.sub.style.opacity='0'; n.drop.setAttribute('stroke-dashoffset',n.L); n._doff=n.L; n.paths.forEach(function(pp){pp.el.style.strokeDashoffset=pp.len; pp.el.style.opacity="0";}); } return; }   // 아직 안 나온 노드는 재작성 안 함(변경 감지)
       if(hasLY){   // 드롭선 끝(위쪽)을 실제 메인선 y에 맞춤 — 값이 바뀔 때만 씀(정착 후 중첩 SVG 재작성 중단)
         var ly=FORK_PULL.lineY(n.x, n.top?'top':'bottom');
         if(ly!==n._ly){ n._ly=ly; var iy=ly+DROP;
@@ -3172,7 +3213,62 @@ try{ _fwdSelfTest(); }catch(e){ console.error('[fwd self-test] 예외', e); }   
       var subop= e>=DDUR?'1':'0'; if(subop!==n._subop){ n._subop=subop; n.sub.style.opacity=subop; }
       var ie=Math.max(0,Math.min(1,(e-DDUR)/1.0));   // 아이콘 그리기 1.0초
       if(ie!==n._ie){ n._ie=ie;   // 아이콘 선-드로잉: 진행도 변할 때만(다 그린 뒤 스킵). 길이비례 배분 → 일정 속도
-        n.paths.forEach(function(pp){ var pr=Math.max(0,Math.min(1,(ie-pp.cs)/pp.cw)); var v=(pp.len*(1-pr)).toFixed(1); if(v!==pp._v){ pp._v=v; pp.el.style.strokeDashoffset=v; } }); }
+        n.paths.forEach(function(pp){ var pr=Math.max(0,Math.min(1,(ie-pp.cs)/pp.cw)); var op=pr>0?"1":"0"; if(op!==pp._op){pp._op=op; pp.el.style.opacity=op;} var v=(pp.len*(1-pr)).toFixed(1); if(v!==pp._v){ pp._v=v; pp.el.style.strokeDashoffset=v; } }); }
+    });
+  };
+})();
+
+
+
+// ═══════ [통신 아이콘 매달기] 첫 실(P1X≈7120) 소멸 후 전화·노트북메일·편지·폰 4개가 제주씬처럼 매달려 등장 (기존 메시지폰 대체) ═══════
+(function commHangScene(){
+  var cam=document.getElementById('cam'); if(!cam) return;
+  var O={"phone":{"viewBox":"0 0 374 336","paths":[["#79d15e",14.1,"M 114.0 19.0 L 93.5 25.7 L 68.1 36.5 L 43.9 50.3 L 27.4 64.2 L 17.9 76.1 L 13.1 84.7 L 10.8 90.8 L 9.2 97.8 L 8.2 108.5 L 8.7 121.6 L 11.0 134.0"],["#79d15e",14.1,"M 108.0 97.0 L 109.4 82.2 L 116.0 72.2 L 127.5 66.8 L 140.7 63.9 L 158.5 62.2 L 187.8 61.9 L 224.4 64.6 L 253.0 70.9 L 265.0 81.8 L 266.0 97.0"],["#79d15e",14.1,"M 108.0 97.0 L 96.1 100.0 L 86.2 103.2 L 76.9 106.9 L 66.8 111.2 L 56.6 115.6 L 46.8 119.9 L 36.6 124.4 L 26.2 128.9 L 18.2 132.1 L 13.0 134.0"],["#79d15e",14.1,"M 108.0 97.0 L 110.1 102.6 L 110.8 109.5 L 108.1 117.0 L 100.1 125.2 L 88.1 134.4 L 75.0 143.1 L 62.6 150.0 L 51.5 155.1 L 40.4 158.0 L 29.1 157.4 L 20.0 153.1 L 14.8 145.4 L 12.0 135.0"],["#79d15e",14.1,"M 361.0 136.0 L 363.5 129.7 L 364.7 117.4 L 362.9 98.6 L 357.4 79.1 L 348.2 63.4 L 337.1 51.4 L 326.9 43.1 L 319.2 38.0 L 312.6 34.5 L 304.2 30.7 L 290.7 25.7 L 273.5 20.7 L 257.6 17.1 L 239.1 14.6 L 209.8 13.0 L 176.5 12.8 L 154.4 13.8 L 142.9 15.0 L 133.4 16.3 L 124.3 17.7 L 116.0 19.0"],["#79d15e",14.1,"M 360.0 136.0 L 351.0 132.4 L 342.6 128.5 L 334.9 124.6 L 327.9 120.9 L 321.6 117.6 L 315.4 114.8 L 308.1 111.8 L 297.7 107.7 L 285.6 103.0 L 275.0 99.4 L 266.0 97.0"],["#79d15e",14.1,"M 266.0 97.0 L 263.6 103.2 L 263.2 110.2 L 266.3 117.6 L 272.6 124.6 L 280.1 130.2 L 287.6 134.4 L 294.8 138.4 L 301.1 142.0 L 306.9 145.0 L 312.4 147.6 L 317.4 150.2 L 322.9 153.4 L 330.4 156.6 L 339.6 157.6 L 348.7 154.6 L 355.9 147.2 L 361.0 137.0"],["#79d15e",14.1,"M 314.0 311.0 L 326.8 307.6 L 336.2 303.8 L 341.7 297.7 L 344.6 286.2 L 345.6 271.4 L 344.9 258.5 L 341.6 246.1 L 334.1 231.2 L 323.0 217.2 L 310.7 207.2 L 299.6 199.2 L 290.2 189.8 L 281.4 178.6 L 272.6 167.7 L 264.8 158.6 L 258.1 151.3 L 252.4 145.1 L 246.8 139.2 L 240.8 131.8 L 235.6 121.1 L 229.2 109.4 L 214.4 102.1 L 186.9 101.9 L 156.5 110.5 L 133.8 127.3 L 117.9 145.8 L 103.9 161.0 L 90.8 174.3 L 79.1 186.9 L 68.6 197.4 L 57.8 206.0 L 46.6 214.5 L 36.9 223.9 L 30.1 235.1 L 25.7 248.6 L 23.1 261.7 L 21.8 272.2 L 21.8 280.9 L 23.2 288.8 L 26.8 296.1 L 33.8 302.1 L 42.7 305.8 L 50.2 307.9 L 54.9 311.0 L 59.8 315.9 L 67.8 320.2 L 77.8 321.7 L 86.1 319.9 L 91.6 316.0 L 96.2 311.4 L 104.9 307.9 L 127.9 306.4 L 174.3 306.7 L 229.2 308.4 L 263.6 312.1 L 274.4 317.1 L 279.4 321.4 L 286.9 323.8 L 295.6 323.9 L 303.4 321.7 L 309.1 317.4 L 313.0 312.0"],["#f4c430",10.8,"M 218.0 172.0 L 222.4 174.6 L 226.9 178.8 L 230.3 183.1 L 232.2 187.2 L 233.7 191.9 L 234.7 196.1 L 235.0 199.0"],["#f4c430",10.8,"M 228.0 225.0 L 231.1 229.6 L 238.1 235.6 L 249.0 243.0"],["#f4c430",10.8,"M 250.0 243.0 L 253.9 237.8 L 256.6 230.8 L 258.2 218.9 L 258.3 203.0 L 256.2 188.2 L 251.4 176.4 L 243.5 165.4 L 231.8 154.5 L 215.9 145.5 L 196.2 140.3 L 175.6 140.0 L 157.8 144.4 L 143.5 152.5 L 132.2 163.0 L 123.8 175.8 L 117.8 190.4 L 114.7 205.5 L 115.1 220.4 L 119.1 235.5 L 126.5 249.8 L 136.8 261.8 L 149.4 271.0 L 164.6 277.2 L 181.5 280.1 L 198.8 279.2 L 215.4 274.2 L 229.9 265.9 L 240.0 257.3 L 245.2 250.9 L 247.7 246.8 L 249.0 244.0"],["#f4c430",10.8,"M 198.0 184.0 L 190.4 183.1 L 181.3 184.3 L 172.4 188.2 L 165.9 194.1 L 162.4 201.8 L 162.0 211.0 L 165.1 220.8 L 171.6 228.8 L 180.4 233.2 L 190.5 233.9 L 199.7 231.1 L 206.3 224.9 L 209.9 215.1 L 210.1 203.7 L 205.8 193.2 L 198.0 184.0"]]},"laptop_mail":{"viewBox":"0 0 488 282","paths":[["#f4c430",16.5,"M 24.0 71.0 L 56.0 105.0"],["#f4c430",16.5,"M 439.0 150.0 L 480.0 127.0"],["#f4c430",16.5,"M 44.0 151.0 L 41.3 148.2 L 35.9 144.6 L 28.1 139.9 L 20.7 135.4 L 14.3 131.6 L 8.0 128.0"],["#f4c430",16.5,"M 431.0 101.0 L 464.0 68.0"],["#4db4e6",15.2,"M 149.0 73.0 L 143.8 84.6 L 141.6 112.3 L 142.9 150.0 L 149.2 175.5 L 173.2 183.4 L 227.9 184.4 L 294.5 183.9 L 335.9 175.7 L 347.2 149.2 L 347.4 111.4 L 344.8 84.8 L 340.0 75.0"],["#4db4e6",15.2,"M 339.0 74.0 L 322.0 67.2 L 273.9 63.7 L 206.9 63.9 L 162.6 66.9 L 150.0 72.0"],["#4db4e6",15.2,"M 150.0 73.0 L 173.6 92.1 L 197.2 110.6 L 219.9 127.2 L 237.5 137.7 L 253.4 136.4 L 284.6 115.6 L 338.0 75.0"],["#eef0f0",14.0,"M 90.0 224.0 L 76.4 232.2 L 64.4 240.4 L 56.1 246.9 L 51.6 252.4 L 49.9 258.5 L 53.1 264.4 L 85.2 268.5 L 185.9 269.9 L 325.7 268.4 L 414.9 262.2 L 431.0 250.2 L 417.9 236.1 L 402.0 224.0"],["#eef0f0",14.0,"M 91.0 224.0 L 402.0 224.0"],["#eef0f0",14.0,"M 402.0 224.0 L 402.2 111.1 L 401.1 43.2 L 391.6 18.6 L 350.1 12.4 L 261.5 11.0 L 162.9 11.6 L 106.5 14.2 L 91.8 31.6 L 90.2 98.1 L 90.0 223.0"]]},"postcard":{"viewBox":"0 0 480 318","paths":[["#f4c430",15.2,"M 456.0 115.0 L 428.0 142.0"],["#f4c430",15.2,"M 13.0 175.0 L 40.0 191.0"],["#f4c430",15.2,"M 441.0 181.0 L 454.6 173.7 L 465.4 167.9 L 470.9 164.3 L 472.0 162.0"],["#f4c430",15.2,"M 4.0 230.0 L 13.6 230.4 L 23.8 231.8 L 32.7 233.8 L 39.4 236.1 L 45.0 239.0"],["#f4c430",15.2,"M 378.0 39.0 L 371.2 23.4 L 363.7 15.1 L 354.7 13.9 L 343.9 15.9 L 332.8 18.8 L 323.7 21.0 L 316.7 22.6 L 307.6 24.7 L 293.5 27.9 L 276.6 31.9 L 259.7 35.9 L 242.2 40.0 L 225.1 44.1 L 208.6 48.1 L 189.2 53.0 L 167.0 58.5 L 146.3 63.6 L 129.4 67.7 L 116.2 70.9 L 104.7 73.6 L 93.2 76.4 L 83.3 78.9 L 75.6 81.0 L 68.4 83.2 L 61.8 86.6 L 57.9 92.6 L 57.6 103.0 L 60.2 118.2 L 65.0 139.6 L 70.9 165.0 L 76.1 186.4 L 79.6 200.9 L 82.4 213.2 L 85.4 226.7 L 89.0 241.5 L 92.6 255.9 L 95.8 268.8 L 99.1 281.3 L 103.6 293.6 L 110.4 301.4 L 122.8 302.6 L 142.9 299.1 L 166.5 293.8 L 185.7 289.3 L 199.1 286.1 L 213.8 282.5 L 232.1 278.1 L 247.3 274.5 L 257.0 272.1 L 266.0 269.9 L 275.6 267.5 L 284.4 265.4 L 295.0 262.9 L 309.4 259.4 L 326.8 255.2 L 346.8 250.6 L 367.3 245.8 L 386.3 240.8 L 402.8 234.9 L 412.5 227.6 L 413.9 217.0 L 411.1 202.9 L 407.4 187.2 L 403.7 171.6 L 400.5 157.3 L 397.9 144.7 L 394.6 127.4 L 388.0 92.8 L 378.0 39.0"],["#4db4e6",12.6,"M 346.0 237.0 L 354.4 232.6 L 366.6 226.3 L 384.0 218.0"],["#4db4e6",12.6,"M 115.0 86.0 L 104.8 94.8 L 95.4 101.7 L 88.0 106.0"],["#4db4e6",12.6,"M 318.0 41.0 L 307.0 47.0"],["#4db4e6",12.6,"M 166.0 276.0 L 152.1 272.6 L 139.0 271.0"],["#4db4e6",12.6,"M 102.0 241.0 L 106.2 251.8 L 114.0 265.0"],["#4db4e6",12.6,"M 239.0 52.0 L 230.8 60.2 L 221.5 67.8 L 213.1 72.9 L 207.0 75.0"],["#f2596b",13.4,"M 143.0 84.0 L 152.1 82.3 L 161.1 80.1 L 169.8 76.9 L 178.0 73.0"],["#f2596b",13.4,"M 403.0 209.0 L 395.4 190.6 L 386.0 170.0"],["#f2596b",13.4,"M 238.0 251.0 L 230.7 253.8 L 220.6 257.4 L 205.1 262.9 L 185.0 270.0"],["#f2596b",13.4,"M 109.0 236.0 L 99.9 224.8 L 92.0 214.0"],["#f2596b",13.4,"M 270.0 45.0 L 289.2 44.1 L 301.7 42.5 L 308.0 41.0"],["#f2596b",13.4,"M 333.0 85.0 L 325.8 96.5 L 319.0 105.0"],["#f2596b",13.4,"M 78.0 156.0 L 86.6 169.6 L 91.6 178.0 L 94.0 182.0"],["#f2596b",13.4,"M 295.0 93.0 L 305.4 99.2 L 318.0 105.0"],["#f2596b",13.4,"M 296.0 241.0 L 311.4 236.2 L 325.0 231.0"],["#f2596b",13.4,"M 320.0 122.0 L 319.0 106.0"],["#eef0f0",10.8,"M 136.0 233.0 L 148.1 229.4 L 162.2 225.6 L 188.1 218.8 L 230.0 208.0"],["#eef0f0",10.8,"M 226.0 131.0 L 213.4 135.1 L 198.4 139.4 L 175.1 145.8 L 144.8 153.9 L 115.0 162.0"],["#eef0f0",10.8,"M 222.0 175.0 L 128.0 200.0"],["#eef0f0",10.8,"M 302.0 59.0 L 290.3 59.9 L 281.2 61.4 L 274.4 62.4 L 268.8 63.6 L 265.2 67.2 L 264.9 73.2 L 266.8 80.7 L 269.2 88.7 L 271.3 96.5 L 272.1 103.4 L 272.4 109.5 L 274.0 115.9 L 277.2 124.2 L 280.6 133.8 L 282.9 143.0 L 283.8 151.1 L 284.6 157.2 L 287.2 160.2 L 292.0 159.5 L 298.3 156.7 L 305.3 154.7 L 312.7 154.1 L 320.3 152.9 L 328.0 150.3 L 337.1 148.1 L 348.4 146.8 L 358.7 144.6 L 363.5 139.8 L 362.6 131.5 L 359.5 120.8 L 357.0 110.2 L 355.2 102.0 L 354.6 95.5 L 355.1 89.2 L 355.2 83.6 L 354.0 79.0 L 352.0 73.5 L 350.4 64.4 L 348.9 53.6 L 345.6 46.9 L 337.9 47.0 L 325.9 50.6 L 313.1 54.7 L 302.0 59.0"]]},"smartphone":{"viewBox":"0 0 313 403","paths":[["#79d15e",12.2,"M 53.0 198.0 L 62.9 191.1 L 77.2 183.0 L 103.4 176.6 L 137.1 173.4 L 161.7 171.6 L 173.4 169.3 L 181.0 165.2 L 188.6 158.4 L 195.1 148.1 L 199.1 134.7 L 199.9 120.7 L 197.8 108.9 L 192.6 99.6 L 184.5 91.9 L 169.1 86.7 L 137.0 84.9 L 93.3 87.1 L 59.3 93.3 L 42.4 103.1 L 34.7 114.5 L 31.3 125.8 L 31.6 137.1 L 35.2 148.2 L 41.8 159.1 L 47.9 169.8 L 50.7 179.9 L 50.8 188.1 L 50.9 193.8 L 52.0 198.0"],["#4db4e6",15.6,"M 307.0 188.0 L 299.7 192.5 L 290.5 197.1 L 276.9 203.1 L 259.0 211.0"],["#4db4e6",15.6,"M 79.0 46.0 L 121.5 46.9 L 149.0 47.0"],["#4db4e6",15.6,"M 284.0 132.0 L 252.0 163.0"],["#4db4e6",15.6,"M 11.0 332.0 L 225.0 332.0"],["#4db4e6",15.6,"M 10.0 333.0 L 10.5 345.4 L 13.6 358.1 L 20.4 370.1 L 31.2 379.6 L 44.8 385.7 L 59.1 388.9 L 78.2 390.6 L 109.7 391.1 L 145.9 390.6 L 171.7 389.5 L 187.1 387.7 L 199.8 384.1 L 210.4 378.4 L 217.5 372.0 L 221.7 364.2 L 224.2 351.5 L 226.0 333.0"],["#4db4e6",15.6,"M 10.0 331.0 L 9.4 261.2 L 8.8 181.9 L 8.8 104.9 L 9.6 58.2 L 12.1 41.4 L 18.2 32.2 L 29.8 22.5 L 51.9 15.6 L 92.9 12.4 L 143.4 12.0 L 179.8 13.8 L 197.5 17.6 L 208.1 23.7 L 216.4 31.9 L 221.8 43.2 L 224.6 57.4 L 225.7 86.4 L 226.1 172.3 L 226.0 331.0"],["#4db4e6",15.6,"M 137.0 364.0 L 133.4 357.1 L 124.2 353.2 L 111.5 353.8 L 102.8 358.4 L 101.4 364.6 L 105.2 369.4 L 112.6 372.1 L 121.8 372.7 L 129.8 371.3 L 134.6 368.2 L 137.0 364.0"],["#eef0f0",10.8,"M 101.0 294.0 L 86.8 291.7 L 75.1 286.9 L 66.4 279.4 L 60.9 270.4 L 58.8 259.4 L 59.9 246.4 L 64.3 234.2 L 71.7 225.4 L 80.1 219.9 L 91.4 217.0 L 114.1 215.6 L 146.9 216.4 L 173.4 221.1 L 186.7 230.7 L 191.9 244.9 L 191.0 261.9 L 184.7 278.2 L 177.1 292.2 L 171.8 302.9 L 167.4 307.7 L 158.2 305.1 L 136.4 299.1 L 101.0 294.0"]]}};
+  var seq=[["phone","top"],["laptop_mail","bottom"],["postcard","top"],["smartphone","bottom"]];
+  var root=el('g',{'data-comm':'1'}); cam.appendChild(root);
+  var X0=7130, X1=7460, DROP=34, ICON=108;
+  var SCL={phone:0.75, smartphone:0.75};
+  var xs=[]; for(var i=0;i<seq.length;i++) xs.push(X0+(X1-X0)*i/(seq.length-1));
+  var nodes=[];
+  seq.forEach(function(s,i){
+    var o=O[s[0]]; if(!o) return;
+    var vb=o.viewBox.trim().split(/\s+/).map(Number);
+    var x=xs[i], top=(s[1]==='top');
+    var lineY=(typeof FORK_PULL!=='undefined'&&FORK_PULL.lineY)?FORK_PULL.lineY(x, top?'top':'bottom'):(top?400:680);
+    var col= top?'#ef8fa9':'#6fa9d9';
+    var _icn=ICON*(SCL[s[0]]||1);
+    var iconY=lineY+DROP, sc=_icn/Math.max(vb[2],vb[3]), iw=vb[2]*sc, ih=vb[3]*sc;
+    var grp=el('g',{}); grp.style.opacity='0';
+    var drop=el('path',{d:'M '+x.toFixed(1)+' '+lineY.toFixed(1)+' L '+x.toFixed(1)+' '+iconY.toFixed(1),stroke:col,'stroke-width':'3',fill:'none','stroke-linecap':'round'});
+    grp.appendChild(drop);
+    var sub=document.createElementNS(NS,'svg'); sub.setAttribute('x',(x-iw/2).toFixed(1)); sub.setAttribute('y',iconY.toFixed(1)); sub.setAttribute('width',iw.toFixed(1)); sub.setAttribute('height',ih.toFixed(1)); sub.setAttribute('viewBox',o.viewBox); sub.style.opacity='0';
+    // 제주식: 각 색-path 를 그대로 stroke 로 넣고(채움 없음), M 단위 서브패스로 분리해 하나씩 선-드로잉
+    o.paths.forEach(function(pc){
+      var subs=pc[2].match(/[Mm][^Mm]*/g)||[pc[2]];
+      subs.forEach(function(sd){ var p=document.createElementNS(NS,'path'); p.setAttribute('d',sd.trim()); p.setAttribute('fill','none'); p.setAttribute('stroke',pc[0]); p.setAttribute('stroke-width',pc[1]); p.setAttribute('stroke-linecap','round'); p.setAttribute('stroke-linejoin','round'); sub.appendChild(p); });
+    });
+    grp.appendChild(sub); root.appendChild(grp);
+    var paths=[].slice.call(sub.querySelectorAll('path')).map(function(pp){ var L=0,by=0; try{L=pp.getTotalLength(); by=pp.getBBox().y;}catch(e){} if(L>0){ pp.style.strokeDasharray=L; pp.style.strokeDashoffset=L; } return {el:pp,len:L||1,y:by}; });
+    paths.sort(function(a,b){ return a.y-b.y; });   // 위→아래
+    var _TL=0; paths.forEach(function(p){_TL+=p.len;}); if(_TL<=0)_TL=1;
+    var _acc=0; paths.forEach(function(p){ p.cs=_acc/_TL; p.cw=Math.max(1e-4,p.len/_TL); _acc+=p.len; });
+    nodes.push({grp:grp,drop:drop,sub:sub,L:DROP,x:x,top:top,paths:paths});
+  });
+  // __commUpdate = 제주 __jejuUpdate 와 동일 로직(드롭선 → sub 표시 → 아이콘 선-드로잉 1.0s 등속)
+  window.__commUpdate=function(t){
+    var T1=(typeof FORK_PULL!=='undefined')?FORK_PULL.T1:null;
+    if(T1==null){ nodes.forEach(function(n){ if(n._st!==-1){ n._st=-1; n.grp.style.opacity='0'; n.sub.style.opacity='0'; n.drop.setAttribute('stroke-dashoffset',n.L); n.paths.forEach(function(pp){pp.el.style.strokeDashoffset=pp.len; pp.el.style.opacity="0";}); } }); return; }
+    var START=T1+3.7, STEP=0.6;
+    nodes.forEach(function(n,i){
+      var rt=START+i*STEP, e=t-rt;
+      if(e<=0){ if(n._st!==0){ n._st=0; n.grp.style.opacity='0'; n.sub.style.opacity='0'; n.drop.setAttribute('stroke-dashoffset',n.L); n._doff=n.L; n.paths.forEach(function(pp){pp.el.style.strokeDashoffset=pp.len; pp.el.style.opacity="0";}); } return; }
+      if(n._st!==1){ n._st=1; n.grp.style.opacity='1'; }
+      if(typeof FORK_PULL!=='undefined'&&FORK_PULL.lineY){ var ly=FORK_PULL.lineY(n.x, n.top?'top':'bottom'); if(ly!==n._ly){ n._ly=ly; var iy=ly+DROP; n.drop.setAttribute('d','M '+n.x.toFixed(1)+' '+ly.toFixed(1)+' L '+n.x.toFixed(1)+' '+iy.toFixed(1)); n.sub.setAttribute('y',iy.toFixed(1)); } }
+      var DDUR=0.45; var dp=Math.min(1,e/DDUR); var doff=+(n.L*(1-dp)).toFixed(2); if(doff!==n._doff){ n._doff=doff; n.drop.setAttribute('stroke-dashoffset',doff); }
+      var subop= e>=DDUR?'1':'0'; if(subop!==n._subop){ n._subop=subop; n.sub.style.opacity=subop; }
+      var ie=Math.max(0,Math.min(1,(e-DDUR)/1.0));   // 아이콘 그리기 1.0초(제주 동일)
+      if(ie!==n._ie){ n._ie=ie;
+        n.paths.forEach(function(pp){ var pr=Math.max(0,Math.min(1,(ie-pp.cs)/pp.cw)); var op=pr>0?"1":"0"; if(op!==pp._op){pp._op=op; pp.el.style.opacity=op;} var v=(pp.len*(1-pr)).toFixed(1); if(v!==pp._v){ pp._v=v; pp.el.style.strokeDashoffset=v; } }); }
     });
   };
 })();
