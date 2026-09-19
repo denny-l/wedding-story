@@ -20,9 +20,10 @@ window.__render = async function(startIdx, endIdx){
     items.forEach(it=>{ if(it._culled){ it.node.style.display=''; it._culled=false; } });
     // ── 화면밖 오브젝트 컬링(직렬화 대상 축소) ──
     const tm=/translate3d\(\s*(-?[\d.]+)px/.exec(camEl.style.transform||''); const camX=tm?+tm[1]:0;
+    const sm=/scale\(([\d.]+)\)/.exec(camEl.style.transform||''); const camS=sm?+sm[1]:1;   // 와이드샷 줌아웃 반영(계절씬): 화면-x = ax*camS + camX
     const det=[];
     items.forEach(it=>{ if(!it.node||!it.node.parentNode||it.ax==null||it.pin) return;
-      const sx=it.ax+camX; if(sx<-M||sx>VBW+M){ det.push([it.node,it.node.parentNode,it.node.nextSibling]); it.node.parentNode.removeChild(it.node); } });
+      const sx=it.ax*camS+camX; if(sx<-M||sx>VBW+M){ det.push([it.node,it.node.parentNode,it.node.nextSibling]); it.node.parentNode.removeChild(it.node); } });
     ctx.fillStyle='#0e0e0f'; ctx.fillRect(0,0,W,Hh);
     try{ const r=await toImg(scene); ctx.drawImage(r[0],0,0,W,Hh); URL.revokeObjectURL(r[1]); }catch(e){ window.__err='scene:'+e; }
     for(let k=det.length-1;k>=0;k--){ try{ det[k][1].insertBefore(det[k][0],det[k][2]); }catch(e){ det[k][1].appendChild(det[k][0]); } }
