@@ -273,7 +273,7 @@
   <audio id="bgmAudio" preload="auto" src="./bgm3.mp3?v=291a0221"></audio>
 </div>
 
-<script src="objects.js?v=6d64c452"></script>
+<script src="objects.js?v=dbc86916"></script>
 <script>
 const {COUPLE_V,HOUSE_V,OAK_V,BUSHY_V,LEAFY_V,COUPLE2_V,BIKE_V,ROUNDTREE_V,MOON_V}=window.WEDDING_SHAPES;  // 공용 objects.js 의 shape 데이터 참조
 
@@ -821,7 +821,7 @@ function libNode(id,x,y,size,opt){
     _pd.lines.forEach(function(d){ var pm=el('path',{d:d,fill:'none',stroke:'#fff','stroke-width':String(_mw),'stroke-linecap':'round','stroke-linejoin':'round'}); _mk.appendChild(pm); _plist.push(pm); });
     inner.appendChild(_mk); inner.setAttribute('mask','url(#'+_mid+')'); outer._penMask=_plist;
   }
-  // [가림 B] opt.occlude: 오브젝트 실루엣(convex hull)을 board색으로 뒤에 깔고, 좌→우 clip wipe 를 그리기 진행도에 연동(프레임 루프가 rect.width 갱신).
+  // [가림 B] opt.occlude: 오브젝트 실제 실루엣(도형 복제, board색)을 뒤에 깔아 선/뒷건물을 딱 커플 모양만큼만 가림(convex hull 대신 → 오목한 틈 안 덮음). 좌→우/위→아래 clip wipe 를 그리기 진행도에 연동.
   if(opt.occlude){
     var occPts=[];
     inner.querySelectorAll('path,polygon,polyline').forEach(function(pp){
@@ -832,20 +832,44 @@ function libNode(id,x,y,size,opt){
       var cx=+pp.getAttribute('cx'), cy=+pp.getAttribute('cy'); if(!isNaN(cx)&&!isNaN(cy)) occPts.push([cx,cy]);
     });
     if(occPts.length>2){
-      var hull=convexHull(occPts);
-      var hd='M '+hull.map(function(p){return p[0].toFixed(1)+' '+p[1].toFixed(1);}).join(' L ')+' Z';
-      var hx=hull.map(function(p){return p[0];}), hy=hull.map(function(p){return p[1];});
+      var hx=occPts.map(function(p){return p[0];}), hy=occPts.map(function(p){return p[1];});
       var mnx=Math.min.apply(null,hx), mxx=Math.max.apply(null,hx), mny=Math.min.apply(null,hy), mxy=Math.max.apply(null,hy);
-      var cid='occ'+(OCC_N++), vert=!!opt.topDown;   // topDown=위→아래 그림 → 수직 wipe, 아니면 수평
+      var cid='occ'+(OCC_N++), vert=!!opt.topDown;
       var fullW=(mxx-mnx+8), fullH=(mxy-mny+8);
       var clip=el('clipPath',{id:cid,clipPathUnits:'userSpaceOnUse'});
       var crect=el('rect',{x:(mnx-4).toFixed(1),y:(mny-4).toFixed(1),width:vert?fullW.toFixed(1):'0',height:vert?'0':fullH.toFixed(1)});
       clip.appendChild(crect);
-      var backing=el('path',{d:hd,fill:'var(--board)',stroke:'var(--board)','stroke-width':'1','clip-path':'url(#'+cid+')'});
-      inner.insertBefore(backing, inner.firstChild);   // 오브젝트 획 뒤(먼저 페인트) = 선은 가리고 오브젝트는 그 위
+      // 실루엣 backing = 오브젝트 도형 복제(board색). seam 메움용 얇은 board stroke.
+      var backingG=el('g',{'clip-path':'url(#'+cid+')'});
+      // 서브패스를 점집합+bbox로 수집 → 근접한 것끼리 클러스터(한 인물=한 덩어리) → 덩어리별 convex hull 을 board solid 로 채움.
+      var grps=[];
+      inner.querySelectorAll('path,polygon,polyline').forEach(function(pp){
+        var dd=pp.getAttribute('d')||pp.getAttribute('points')||''; var subs=dd.match(/[Mm][^Mm]*/g)||[dd];
+        subs.forEach(function(sd){ var nums=sd.match(/-?\d+(?:\.\d+)?/g); if(!nums||nums.length<4) return;
+          var pts=[],mnx=1e9,mny=1e9,mxx=-1e9,mxy=-1e9;
+          for(var k=0;k+1<nums.length;k+=2){ var X=+nums[k],Y=+nums[k+1]; pts.push([X,Y]); if(X<mnx)mnx=X; if(X>mxx)mxx=X; if(Y<mny)mny=Y; if(Y>mxy)mxy=Y; }
+          grps.push({pts:pts,b:[mnx,mny,mxx,mxy]});
+        });
+      });
+      inner.querySelectorAll('circle,ellipse').forEach(function(pp){ var cx=+pp.getAttribute('cx'),cy=+pp.getAttribute('cy'),rr=+(pp.getAttribute('r')||pp.getAttribute('rx')||3); if(isNaN(cx))return; grps.push({pts:[[cx-rr,cy-rr],[cx+rr,cy-rr],[cx+rr,cy+rr],[cx-rr,cy+rr]],b:[cx-rr,cy-rr,cx+rr,cy+rr]}); });
+      // 클러스터: bbox 가 pad 이내로 겹치면 union
+      var pad=Math.max(12, Math.min(vb[2],vb[3])*0.06);
+      var par=grps.map(function(_,i){return i;});
+      function find(a){ while(par[a]!==a){par[a]=par[par[a]];a=par[a];} return a; }
+      function near(A,B){ return !(A[0]-pad>B[2] || B[0]-pad>A[2] || A[1]-pad>B[3] || B[1]-pad>A[3]); }
+      for(var a=0;a<grps.length;a++) for(var b2=a+1;b2<grps.length;b2++){ if(near(grps[a].b,grps[b2].b)){ par[find(a)]=find(b2); } }
+      var clusters={};
+      for(var i=0;i<grps.length;i++){ var r=find(i); (clusters[r]=clusters[r]||[]).push.apply(clusters[r],grps[i].pts); }
+      var _dil=Math.max(4,Math.min(vb[2],vb[3])*0.015).toFixed(1);
+      Object.keys(clusters).forEach(function(key){ var hull=convexHull(clusters[key]); if(hull.length<3) return;
+        var hd='M '+hull.map(function(p){return p[0].toFixed(1)+' '+p[1].toFixed(1);}).join(' L ')+' Z';
+        var c=el('path',{d:hd,fill:'var(--board)',stroke:'var(--board)','stroke-width':_dil,'stroke-linejoin':'round','stroke-linecap':'round'});
+        backingG.appendChild(c);
+      });
+      inner.insertBefore(backingG, inner.firstChild);   // 오브젝트 획 뒤(먼저 페인트) = 선/건물은 가리고 오브젝트는 그 위
       inner.insertBefore(clip, inner.firstChild);
       outer._occ={rect:crect, vert:vert, fullW:fullW, fullH:fullH};
-      if(opt.wipeDraw){ inner.setAttribute('clip-path','url(#'+cid+')'); }   // [wipeDraw] 본체도 같은 wipe 클립 → solid 채움이 위→아래로 드러남(단일선처럼, 이중선 숨김)
+      if(opt.wipeDraw){ inner.setAttribute('clip-path','url(#'+cid+')'); }
     }
   }
   return outer;
@@ -1027,7 +1051,7 @@ add(libNode('lb133', 5032, 700, 220, {topDown:true, sw:2.4, keepfill:true}), 503
 add(libNode('lb129', 5236, 220, 188, {anchor:'center', topDown:true, sw:2.4, keepfill:true, rot:29}), 5236, 'comfort', 1.6); var _hoUmbO=items[items.length-1]; _hoUmbO.hoCtl=1;   // 펼친 우산 — 착지 위치(건네기 애니가 도착시 펼침). 머리 위 살짝 기울임. 씬 +30 하강
 window.HANDOVER={umbOpenIt:_hoUmbO, boyDown:_hoBoyDown, boyReach:_hoBoy, X:6854, startX:6720, startY:530, endX:6854, endY:268, T0:null};   // [건네기] 닫힌우산이 남자손(start)→여자위(end) 포물선→열림. boyDown=팔내림/boyReach=팔뻗음 스왑
 add(libNode('lb132', 5282, 460, 48, {anchor:'center', topDown:true, sw:2.4, keepfill:true}), 5282, 'comfort', 0.45); var _hoPud=items[items.length-1];   // 물웅덩이(여자 발밑). 씬 +30 하강
-add(libNode('lb131', 5282, 435, 175, {topDown:true, sw:2.4, keepfill:true}), 5282, 'comfort', 0.5); var _hoGirl=items[items.length-1];   // 웅크린 여자. 씬 +30 하강
+add(libNode('lb131', 5282, 435, 175, {topDown:true, sw:2.4, keepfill:true, occlude:true}), 5282, 'comfort', 0.5); var _hoGirl=items[items.length-1];   // 웅크린 여자. 씬 +30 하강. occlude=부위별 solid 백킹(뒤 요소 안 비침)
 add(libNode('lb262', 5522, 238, 92, {anchor:'center', topDown:true, sw:2.4, keepfill:true}), 5522, 'comfort', 0.95); var _hoPalette=items[items.length-1];   // 팔레트 — 여자아이 오른쪽 위(오른쪽+위 100%씩 이동)
 // [실 수렴 동반하강] 우산·물웅덩이·여자·팔레트 = 위선(x6900) 추종 → 실 수렴으로 위 메인선 내려오면 함께 하강
 _hoUmbO.follow='top'; _hoUmbO.followX=6900; _hoPud.follow='top'; _hoPud.followX=6900; _hoGirl.follow='top'; _hoGirl.followX=6900; _hoPalette.follow='top'; _hoPalette.followX=6900;
@@ -1060,7 +1084,7 @@ window.GIFTTOSS={girlWait:_gtGW, girlGive:_gtGG, boyWait:_gtBW, boyCatch:_gtBC, 
 // 여자(위선·핑크)
 add(libNode('lb252', 4000, 494, 95,  {topDown:true, keepfill:true, fatten:1.2, bottomUp:true}),  4000, 'apartlife', 0.10);  // 분홍 꽃(위선 좌)
 add(libNode('lb253', 4095, 448, 30,  {topDown:true, keepfill:true, fatten:1.2, bottomUp:true}),  4095, 'apartlife', 0.14);  // 풀(위선)
-add(libNode('lb242', 4235, 414, 210, {topDown:true, keepfill:true, fatten:1.2}),                 4235, 'apartlife', 0.20);  // 여행 여아(발=위선)
+add(libNode('lb242', 4235, 414, 221, {topDown:true, keepfill:true, fatten:1.2}),                 4235, 'apartlife', 0.20);  // 여행 여아(발=위선)
 add(libNode('lb243', 4316, 402, 72,  {topDown:true, keepfill:true, fatten:1.2}),                 4316, 'apartlife', 0.30);  // 분홍 캐리어(여아 뒤)
 add(libNode('lb245', 4520, 411, 150, {topDown:true, sw:2.6}),                 4520, 'apartlife', 0.34);  // 공항 표지판(기둥=위선)
 // 하늘(구름·비행기)
@@ -1071,7 +1095,7 @@ add(libNode('lb248', 4890, 231, 52,  {anchor:'center', topDown:true, sw:2.6}), 4
 add(libNode('lb250', 4300, 541, 42,  {anchor:'center', topDown:true, keepfill:true, fatten:1.2}), 4300, 'apartlife', 0.16);  // 별A(사이)
 add(libNode('lb251', 4690, 490, 42,  {anchor:'center', topDown:true, keepfill:true, fatten:1.2}), 4690, 'apartlife', 0.44);  // 별B(사이)
 // 남자(아래선·블루)
-add(libNode('lb244', 4470, 694, 205, {topDown:true, keepfill:true, fatten:1.2}),                 4470, 'apartlife', 0.25);  // 여행 남아(발=아래선)
+add(libNode('lb244', 4470, 694, 215, {topDown:true, keepfill:true, fatten:1.2}),                 4470, 'apartlife', 0.25);  // 여행 남아(발=아래선)
 add(libNode('lb253', 4560, 669, 30,  {topDown:true, keepfill:true, fatten:1.2, bottomUp:true}),  4560, 'apartlife', 0.48);  // 풀(아래선)
 add(libNode('lb45', 4780, 590, 105, {anchor:'center', topDown:true, sw:4.2, color:'var(--azure)'}), 4780, 'apartlife', 0.42);  // 노트북(복원) — 남아 우측 빈 공간
 
@@ -1079,7 +1103,7 @@ add(libNode('lb45', 4780, 590, 105, {anchor:'center', topDown:true, sw:4.2, colo
 //   씬: 돌고돌아 재회 · 더 단단해진 · 함께 걷습니다 · 특별한 하루(자전거) · 앞으로의 날(집·나무) · 오늘부터(하트 터짐)
 //   grp: reunite / stronger / together / days / home / today
 // [씬] 돌고 돌아, 운명처럼 다시 만났습니다 — 손 흔드는 남자(왼) + 차 탄 여자(오른, 재회)
-add(libNode('lb192', 5016, 580, 230, {topDown:true, keepfill:true, occlude:true}), 5016, 'reunite', 0.3); items[items.length-1].subkey='reunite';   // 손 흔드는 남아3(벡터·매끈, 바지흰색). occlude=메인선 가림
+add(libNode('lb192', 5016, 580, 230, {topDown:true, keepfill:true, occlude:true}), 5016, 'reunite', 0.3); items[items.length-1].subkey='reunite'; window.__reuniteBoy=items[items.length-1];   // 손 흔드는 남아3(벡터·매끈, 바지흰색). occlude=메인선 가림
 add(libNode('lb193', 5274, 424, 279, {topDown:true, keepfill:true}), 5274, 'reunite', 0.5); window.__carIt=items[items.length-1];   // 차 탄 여아3(벡터·매끈) — 하트 위치. 슬라이드-인(왼쪽위→현재) 애니 대상
 
 // [씬] 조금 달라진 모습으로, 여전히 익숙한 사람으로 — 벤치 커플(선 위, 렌더 x≈9682, 선 y540, 등장 71.4s)
@@ -1132,7 +1156,7 @@ add(libNode('lb30', 6800, 513, 66, {topDown:true, bottomUp:true, sw:3.6, color:'
 add(libNode('lb90', 7075, 420, 118, {fill:true, topDown:true, sw:2.0}), 7075, 'days', 0.35);   // 건물(좌·반높이 wing) 커플에서 띄움 렌더≈13010
 add(libNode('lb91', 7133, 417, 150, {fill:true, topDown:true, sw:2.0}), 7133, 'days', 0.45);   // 건물(우·높은동, 창문5) 렌더≈13158
 // 밤하늘 달·별(원본 이미지대로 배치·크기 제각각). 매핑 codeX=6962+(imgX-740)*0.342, y=335+(imgY-430)*0.51, size=imgW*0.51
-add(libNode('lb36', 7100, 167, 72, {anchor:'center', topDown:true, sw:3.0}),                7100, 'days', 0.2);    // 초승달(우상단) img(1144,189)
+add(libNode('lb36', 7082, 167, 72, {anchor:'center', topDown:true, sw:3.0}),                7082, 'days', 0.2);    // 초승달(우상단) img(1144,189)
 add(libNode('lb37', 6986, 174, 18, {anchor:'center', topDown:true, sw:2.6, fill:true}),     6986, 'days', 0.25);   // 큰 별 img(810,202)
 add(libNode('lb37', 6880, 180, 17, {anchor:'center', topDown:true, sw:2.6}),                6880, 'days', 0.30);   // 별(윤곽) img(499,215)
 add(libNode('lb37', 7053, 249, 15, {anchor:'center', topDown:true, sw:2.4, fill:true}),     7053, 'days', 0.35);   // 별 img(1005,349)
@@ -1153,7 +1177,7 @@ add(libNode('lb92', 7156, 471, 50, {topDown:true, bottomUp:true, sw:2.6}), 7156,
 // [씬] 별일 없는 날에는 그저 나란히 걸으며 (자막 off 33.09) — 걷는 커플 + 위 전구줄 + 양옆 꽃. 계단↔피크닉 사이, 선 위.
 // 전구 가랜드(lb95) — 2줄 크로스 스웨그+전구+점+반짝임, 커플 머리 위. keepfill로 baked 색 유지.
 add(libNode('lb95', 7280, 205, 136, {anchor:'center', topDown:true, keepfill:true}), 7280, 'days', 0.15);   // 전구 가랜드 1개. size 124->136(+10%)
-add(libNode('lb197', 7280, 540, 240, {topDown:true, keepfill:true}), 7280, 'days', 0.4);   // 손잡고 걷는 커플(중앙, 선 위·발=y540). [메인선 지움(occlude) 삭제 — 사용자 지시]
+add(libNode('lb197', 7280, 540, 240, {topDown:true, keepfill:true}), 7280, 'days', 0.4);   // 손잡고 걷는 커플(별일 없는 씬, 뒤 건물 없음 → occlude 불필요)
 // 양옆 꽃 — flower()(초록 줄기·잎 + 분홍 꽃잎 + 골드 심). 이미지대로 전구 좌우폭(화면 7032~7526) 안쪽 양 끝에 배치.
 // codeX=7280(커플과 동일 씬 시점에 그려짐; 전구 lb95도 codeX 7280에 폭 7032~7526 차지). 좌2+우3. 줄기끝 y+1.5s=지면 y540.
 // 꽃 종류 섞음(flower·pansy·cherry). 색도 살짝 변주(rose/ember).
@@ -2199,6 +2223,8 @@ function animateForkPull(t){
     flG.appendChild(F.pkLive); flG.appendChild(F.blLive);
     // [남자 재회] 남자 노드를 fork선(flG) 위 레이어로 올림 → occlude 실루엣이 머리에 겹치는 윗 fork선을 가림
     var _boyOcc=(typeof items!=='undefined')&&items.find(function(it){return it.subkey==='reunite'&&it.node;}); if(_boyOcc) document.getElementById('cam').appendChild(_boyOcc.node);
+    // [comfort 씬 fork선 위로] 우산 handover·감전 등 comfort 오브젝트는 fork 라이브선(flG) 위 레이어로 올림 → occlude 백킹이 선을 가림(선이 몸 위로 안 비침).
+    if(typeof items!=='undefined'){ var _cam2=document.getElementById('cam'); items.forEach(function(it){ if(it.grp==='comfort'&&it.node) _cam2.appendChild(it.node); }); }
   }
   const ss=u=>{u=Math.max(0,Math.min(1,u));return u*u*(3-2*u);};
   const EM=0.4;   // 실이 여자선(위)→남자선(아래) 뻗어 붙는 시간. attach = T+EM.
@@ -2705,7 +2731,7 @@ function animateFireworks(t){
     var BURSTS=[[-205,150],[25,100],[205,205],[-80,240],[130,80],[75,300],[-150,55],[290,150]];   // dx,cy(하늘) — SX 기준 (2개 추가)
     _fw=[];
     // [선물 불꽃] 가운데 버스트 하나는 방사형 대신 선물상자 윤곽(상자+뚜껑+리본+리본고리)으로 입자가 퍼진다.
-    var GIFT_IDX=7, GS=92;   // 선물 버스트 = 마지막(DOM 최상단)·피날레 · 크기(정규좌표→px)
+    var GIFT_IDX=2, GS=92;   // 선물 버스트 = 3번째 · 크기(정규좌표→px)
     function giftPts(){ var P=[]; function seg(x0,y0,x1,y1,n){ for(var i=0;i<=n;i++){ var u=i/n; P.push([x0+(x1-x0)*u, y0+(y1-y0)*u]); } }
       var L=-1,Rr=1,Tp=-0.45,Bt=1.05;
       seg(L,Tp,Rr,Tp,5); seg(L,Bt,Rr,Bt,5); seg(L,Tp,L,Bt,4); seg(Rr,Tp,Rr,Bt,4);                              // 상자 본체
@@ -2717,7 +2743,7 @@ function animateFireworks(t){
       return P; }
     for(var b=0;b<BURSTS.length;b++){
       var isGift=(b===GIFT_IDX);
-      var cx=SX+(isGift?250:BURSTS[b][0]), cy=(isGift?160:BURSTS[b][1]), col=isGift?'var(--rose)':COLS[b%COLS.length];
+      var cx=SX+BURSTS[b][0], cy=BURSTS[b][1], col=isGift?'var(--rose)':COLS[b%COLS.length];
       var gp=isGift?giftPts():null;
       var nsp=isGift?gp.length:(12+Math.floor(R(b*7+1)*5)), g=el('g',{}); _fwG.appendChild(g); var sparks=[];
       for(var i=0;i<nsp;i++){
@@ -2726,7 +2752,7 @@ function animateFireworks(t){
         if(isGift){ sparks.push({p:p,dot:dot,gift:true,tx:gp[i][0]*GS,ty:gp[i][1]*GS}); }
         else { var a=(i/nsp)*Math.PI*2 + R(b*13+i)*0.18; sparks.push({p:p,dot:dot,a:a,rmax:62+R(b*17+i)*46}); }
       }
-      _fw.push({cx:cx,cy:cy,sparks:sparks, t0:START+0.3 + (isGift?4.5:b*0.75), dur:(isGift?3.0:2.6), rep:1, gap:3.6});
+      _fw.push({cx:cx,cy:cy,sparks:sparks, t0:START+0.3 + b*0.75, dur:(isGift?3.0:2.6), rep:1, gap:3.6});
     }
   }
   _fwG.style.opacity='1';
@@ -2743,6 +2769,32 @@ function animateFireworks(t){
       sp.p.style.opacity=(fade*0.9).toFixed(2);
       sp.dot.setAttribute('cx',x1.toFixed(1)); sp.dot.setAttribute('cy',(y1+grav).toFixed(1)); sp.dot.style.opacity=fade.toFixed(2);
     }
+  }
+}
+
+// [재회 깜짝 트윙클] 오브젝트에 이미 있는 금색(#eec21f) 놀람 마크(남아 p3·여아 p2)를 자동차 정지 전엔 숨겼다가, 정지 직후 팝-인.
+var _rtwEls=null;
+function animateReunionTwinkle(t){
+  var car=window.__carIt, boy=window.__reuniteBoy;
+  if(!car||!boy||car.t==null||!car.node||!boy.node) return;
+  var START=car.t+1.25;   // 슬라이드(1.2s) 끝난 직후
+  if(_rtwEls==null){
+    _rtwEls=[];
+    // 놀람 마크 = gold(#eec21f) 채움/선. (여아 티셔츠는 objects.js 에서 빨강으로 분리했으므로 gold=마크만)
+    [boy,car].forEach(function(it){ it.node.querySelectorAll('path').forEach(function(p){
+      var fl=(p.getAttribute('fill')||'').toLowerCase(), st=(p.getAttribute('stroke')||'').toLowerCase();
+      if(fl==='#eec21f'||st==='#eec21f'){ var b; try{b=p.getBBox();}catch(e){b=null;} _rtwEls.push({el:p, cx:b?b.x+b.width/2:0, cy:b?b.y+b.height/2:0}); }
+    }); });
+    if(_rtwEls.length===0){ _rtwEls=null; return; }
+  }
+  for(var i=0;i<_rtwEls.length;i++){ var o=_rtwEls[i];
+    if(t<START){ o.el.style.opacity='0'; continue; }
+    var e=t-START, pop=Math.min(1,e/0.35);
+    var ov=pop<1?(1+0.45*Math.sin(pop*Math.PI)):1;   // 팝 오버슈트
+    var sc=pop*ov;
+    o.el.style.strokeDashoffset='0';   // 확실히 완성 상태로
+    o.el.style.opacity=Math.min(1,pop*1.3).toFixed(2);
+    o.el.setAttribute('transform','translate('+o.cx.toFixed(1)+' '+o.cy.toFixed(1)+') scale('+sc.toFixed(3)+') translate('+(-o.cx).toFixed(1)+' '+(-o.cy).toFixed(1)+')');
   }
 }
 
@@ -3056,6 +3108,7 @@ function frame(ts){
       var _ox=-300*(1-_sp), _oy=-170*(1-_sp), _dx=(_ci.dx||0);
       _ci.node.setAttribute('transform','translate('+(_dx+_ox).toFixed(1)+' '+_oy.toFixed(1)+')'); }
   }
+  animateReunionTwinkle(t);   // [재회 깜짝 트윙클] 오브젝트 금색 마크 팝인
   if(t<DURATION){ raf=requestAnimationFrame(frame); }
   else{ running=false; document.getElementById('ui').classList.remove('hide');
         document.getElementById('hint').classList.remove('hide'); }
