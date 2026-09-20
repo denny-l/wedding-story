@@ -273,7 +273,7 @@
   <audio id="bgmAudio" preload="auto" src="./bgm2.mp3?v=7ca907fb"></audio>
 </div>
 
-<script src="objects.js?v=dbc86916"></script>
+<script src="objects.js?v=19d75008"></script>
 <script>
 const {COUPLE_V,HOUSE_V,OAK_V,BUSHY_V,LEAFY_V,COUPLE2_V,BIKE_V,ROUNDTREE_V,MOON_V}=window.WEDDING_SHAPES;  // 공용 objects.js 의 shape 데이터 참조
 
@@ -774,6 +774,7 @@ function libNode(id,x,y,size,opt){
   if(opt.topDown) outer.setAttribute('data-topdown','1');   // 위→아래 순차 선-그리기(규칙)
   if(opt.bottomUp) outer.setAttribute('data-bottomup','1');   // 아래→위 순차(나무 줄기 등: 밑동→가지끝)
   if(opt.randDraw) outer.setAttribute('data-randdraw','1');   // 랜덤 순서로 그리기(꽃 등) — y정렬 대신 위치해시로 섞음
+  if(opt.seqFill) outer.setAttribute('data-seqfill','1');   // 채움 도형을 펜 진행(위→아래)에 맞춰 순서대로 채움(기찻길 침목 줄무늬 등)
   if(opt.color) outer.style.color=opt.color;
   var scX=(sc*(opt.stretchX||1));   // opt.stretchX: 가로만(폭) 조절(배치점=center-x 기준)
   var scY=(sc*(opt.stretchY||1));   // opt.stretchY: 세로만 늘림(배치점=bottom-center 기준 → 위로 늘어남)
@@ -791,6 +792,10 @@ function libNode(id,x,y,size,opt){
         if(_fl && _fl!=='none'){ var _fw=((opt.fatten||1.5)/sc).toFixed(2);
           p.setAttribute('stroke',_fl); p.style.stroke=_fl; p.setAttribute('stroke-width',_fw); p.style.strokeWidth=_fw;
           p.setAttribute('stroke-linejoin','round'); p.setAttribute('stroke-linecap','round'); }
+      }
+      if(opt.swScale){   // [swScale] baked stroke-width 를 배율로 굵기 조절(keepfill 단일선 오브젝트용, 예: lb264 커플 1.2배). fill 전용 요소(stroke 없음)는 무관
+        var _bw=parseFloat(p.getAttribute('stroke-width')||(/stroke-width:\s*([\d.]+)/.exec(p.getAttribute('style')||'')||[])[1]);
+        if(_bw>0){ var _nw=(_bw*opt.swScale).toFixed(2); p.setAttribute('stroke-width',_nw); p.style.strokeWidth=_nw; }
       }
       if(opt.forceFill){   // [forceFill] fill:none 인 윤곽 path 를 제 stroke색으로 채워 solid화 → 이중선 틈 메움(단일선처럼)
         var _cf=(/fill:\s*([^;"]+)/.exec(p.getAttribute('style')||'')||[])[1]; _cf=_cf?_cf.trim():p.getAttribute('fill');
@@ -867,7 +872,7 @@ function libNode(id,x,y,size,opt){
         var c=el('path',{d:hd,fill:'var(--board)',stroke:'var(--board)','stroke-width':_dil,'stroke-linejoin':'round','stroke-linecap':'round'});
         backingG.appendChild(c);
       });
-      inner.insertBefore(backingG, inner.firstChild);   // 오브젝트 획 뒤(먼저 페인트) = 선/건물은 가리고 오브젝트는 그 위
+      if(!opt.noBacking) inner.insertBefore(backingG, inner.firstChild);   // 오브젝트 획 뒤(먼저 페인트) = 선/건물은 가리고 오브젓트는 그 위. noBacking=헐 백킹 없이 wipe 클립만(실루엣 채움이 svg에 baked된 오브젓트용, 예: lb264)
       inner.insertBefore(clip, inner.firstChild);
       outer._occ={rect:crect, vert:vert, fullW:fullW, fullH:fullH};
       if(opt.wipeDraw){ inner.setAttribute('clip-path','url(#'+cid+')'); }
@@ -894,23 +899,23 @@ addAt(rays(200,540,60,'var(--gold)',22), 13.1, 0.5, true);   // 스파클 시계
 // 두 갈래(rose 윗선=소녀 pFAt / azure 아랫선=소년 pFAb, x680~2435 프리롤 좌표)에 라이브러리 오브젝트를 선-드로잉(keepfill+dirDraw)으로 배치.
 (function youngScene(){
   function P(lib,x,y,size,fat,lag,center){ var opt={topDown:true, keepfill:true, fatten:fat}; if(center) opt.anchor='center'; add(libNode(lib,x,y,size,opt), x, 'young', lag); }
-  P('lb235',1000,431.7,44,0.25,0.1);   // 풀
-  P('lb228',1200,375.7,120,0.91,0.15);   // 막대사탕 노랑
-  P('lb235',1450,356.5,44,0.25,0.1);   // 풀
+  P('lb253',1000,431.7,44,0.25,0.1);   // 풀(서로다른곳 씬 lb253로 교체)
+  add(libNode('lb228',1200,375.7,120,{topDown:true, sw:4.2}), 1200,'young',0.15);   // 막대사탕 노랑
+  P('lb253',1450,356.5,44,0.25,0.1);   // 풀(서로다른곳 씬 lb253로 교체)
   P('lb225',1690,365.8,196,1.7,0.2);   // 여아(걷기)
-  P('lb229',1950,403.2,120,0.91,0.15);   // 막대사탕 보라
+  add(libNode('lb229',1950,403.2,120,{topDown:true, sw:4.2}), 1950,'young',0.15);   // 막대사탕 보라
   P('lb226',1051,667.6,196,1.7,0.2);   // 남아(걷기)
-  P('lb235',1230,708.5,44,0.25,0.1);   // 풀
-  P('lb230',1330,718.6,120,0.91,0.15);   // 막대사탕 파랑
-  P('lb227',1560,722,120,0.91,0.15);   // 막대사탕 분홍
-  P('lb235',1750,708.8,44,0.25,0.1);   // 풀
-  P('lb231',2000,661.9,120,0.91,0.15);   // 막대사탕 초록
-  add(libNode('lb37', 880,250,46,{anchor:'center',topDown:true,sw:2.9}), 880,'young',0.1);   // 별(shy 씬 별 lb37로 변경)
-  add(libNode('lb37',1500,245,42,{anchor:'center',topDown:true,sw:2.9}),1500,'young',0.1);   // 별(shy 씬 별)
-  add(libNode('lb37',1950,195,44,{anchor:'center',topDown:true,sw:2.9}),1950,'young',0.1);   // 별(shy 씬 별)
-  add(libNode('lb37',1250,540,42,{anchor:'center',topDown:true,sw:2.9}),1250,'young',0.1);   // 별(shy 씬 별)
-  P('lb233',2130,440,54,0.38,0.12,1);   // 나비 분홍
-  P('lb234',1420,548,54,0.38,0.12,1);   // 나비 파랑
+  P('lb253',1230,708.5,44,0.25,0.1);   // 풀(서로다른곳 씬 lb253로 교체)
+  add(libNode('lb230',1330,718.6,120,{topDown:true, sw:4.2}), 1330,'young',0.15);   // 막대사탕 파랑
+  add(libNode('lb227',1560,722,120,{topDown:true, sw:4.2}), 1560,'young',0.15);   // 막대사탕 분홍 (단일선 변환: keepfill 대신 stroke, 경로별 색 유지). sw 3.4=두께 상향
+  P('lb253',1750,708.8,44,0.25,0.1);   // 풀(서로다른곳 씬 lb253로 교체)
+  add(libNode('lb231',2000,661.9,120,{topDown:true, sw:4.2}), 2000,'young',0.15);   // 막대사탕 초록
+  add(libNode('lb37', 880,181,46,{anchor:'center',topDown:true,sw:2.9}), 880,'young',0.1);   // 별(shy 씬 별 lb37로 변경) — 위로 150%(크기46×1.5=69) 이동
+  add(libNode('lb37',1500,161,42,{anchor:'center',topDown:true,sw:2.9}),1500,'young',0.1);   // 별(shy 씬 별) — 위로 200%(42×2=84, 원래 245)
+  add(libNode('lb37',1950,129,44,{anchor:'center',topDown:true,sw:2.9}),1950,'young',0.1);   // 별(shy 씬 별) — 위로 150%(44×1.5=66)
+  add(libNode('lb37',1250,477,42,{anchor:'center',topDown:true,sw:2.9}),1250,'young',0.1);   // 별(shy 씬 별) — 위로 150%(42×1.5=63)
+  add(libNode('lb233',2130,278,54,{anchor:'center',topDown:true,swLocal:24}), 2130,'young',0.12);   // 나비 분홍 (lb76 나비 기반 선-드로잉, 색만 분홍) — y 440→278(자기크기 300% 위로)
+  add(libNode('lb234',1420,548,54,{anchor:'center',topDown:true,swLocal:24}), 1420,'young',0.12);   // 나비 파랑 (lb76 나비 기반 선-드로잉, 색만 파랑)
 })();
 
 
@@ -920,7 +925,7 @@ addAt(rays(200,540,60,'var(--gold)',22), 13.1, 0.5, true);   // 스파클 시계
 // [씬] 스무 살, 우리는 처음 만났습니다 — 새싹이 선 전체에 좌우로 퍼짐
 // 첫 만남 — 메인선(p1) 자체가 심박처럼 튀고 그대로 이어져 하트를 그린다(EKG+하트를 경로에 직접 삽입).
 // 하트는 심박선의 일부이므로 별도 오브젝트가 아니다. 새싹은 심박 구간(x 1000~1390) 밖에 배치(타이밍 안정).
-add(leaf(2440, 538,36,-1,-1), 2440,  'meet'); items[items.length-1].subkey='meet';
+add(leaf(2290, 516,36,-1,-1), 2290,  'young'); items[items.length-1].subkey='meet';   // 심박 전 새싹(풀) — 왼쪽으로 이동(2440→2290). y=516=위쪽 갈래선(pFAt) 높이에 밑동 맞춤. x<2435(메인선 시작) 갈래 구간이라 grp='young'(storyTimeAtX)으로 타이밍 정확화
 add(leaf(2915,533,32,-1,-1), 2915, 'meet');
 
 // [씬] 함께 웃고, 함께 꿈꾸던 날들 — 산책 커플 + 광선 하트 + 좌우 꽃 (라이브러리 오브젝트)
@@ -969,7 +974,8 @@ add(libNode('lb239', 4168, 590, 98, {topDown:true, keepfill:true, fatten:1.0, bo
 add(libNode('lb239', 4203, 591, 96, {topDown:true, keepfill:true, fatten:1.0, bottomUp:true}), 4203, 'dream', 0.25);   // 우 데이지3
 
 // [씬] 별거 아닌 하루도 함께라서 참 좋았습니다 (3씬-3) — 자전거 커플(라이더 2명). 선 위(x4524,y585). grp='dream'로 두어 insertGap 시프트 제외.
-add(libNode('lb236', 4654, 578, 300, {topDown:true, keepfill:true, fatten:1.2, rot:-5.2}), 4654, 'dream', 0.3); window.__bikeIt=items[items.length-1];   // 자전거 커플(lb236 신규·채움기반). rot:-5.2(선 기울기와 평행)+y578: 앞·뒷바퀴 모두 선에 얹힘
+add(libNode('lb236', 4654, 578, 300, {topDown:true, sw:3.4, rot:-5.2}), 4654, 'dream', 0.3); window.__bikeIt=items[items.length-1];   // 자전거 커플(lb236 단일선 변환·색유지). sw3.4(더 두껍게). rot:-5.2(선 기울기와 평행)+y578: 앞·뒷바퀴 모두 선에 얹힘
+add(libNode('lb267', 4720, 696, 138, {topDown:true, sw:2.6, rot:-5.2}), 4720, 'dream', 0.55); window.__dogIt=items[items.length-1];   // 말티즈(자전거 아래 지면에서 함께 달림). 흰 단색·왼쪽 방향(등록 그대로). 크기 138(15%↑). x4720. y696. rot 선 기울기 평행
 // 자전거 씬 배경 장식(보여준 이미지 배치대로): 음표(위)·꽃(좌우 지면). startAfterBike=자전거 다 그려진 뒤 4개 순차 등장(따로 놀지 않게)
 add(libNode('lb86', 4494, 300, 52, {fill:true, anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}), 4494, 'dream', 0.4); items[items.length-1].startAfterBike=0;   // 왼쪽 위 연음표 (가로 50%=26 왼쪽 이동: 4520->4494)
 add(libNode('lb85', 4585, 238, 46, {fill:true, anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}), 4585, 'dream', 0.45); items[items.length-1].startAfterBike=1;  // 왼쪽 위 8분음표
@@ -1127,25 +1133,15 @@ add(heart(6034,272,42,'var(--ember)',4,'var(--ember)'), 6034, 'together');  // �
 // [씬] 좋은 날에는 함께 웃고 — TV 보는 커플(자전거 대체, 선 위)
 add(libNode('lb195', 6621, 574, 304, {topDown:true, keepfill:true, occlude:true}), 6621, 'together', 0.3); items[items.length-1].subkey='daily';   // TV 보는 커플2(벡터·매끈). occlude=B(메인선 가림)
 
-// [씬] 특별하지 않는 날들이 조금씩 특별해졌습니다 — 요리 씬. 조리대(식탁) 라인=메인선(평탄화, kitchenFlat). 이미지 상대배치(스케일 0.5)
-// 전 오브젝트 동일 codeX(6292, 커플 기준) + it.dx 로 이미지 상대 render 오프셋(비균일 매핑 무관, 원본 배치 정확 재현). 스케일 0.4
-add(libNode('lb221', 6292, 580, 70, {sw:3.2, topDown:true, keepfill:true}), 6292, 'days', 0.0); items[items.length-1].dx=-192;   // 조리대(좌)
-add(libNode('lb222', 6292, 570, 61, {sw:3.2, topDown:true, keepfill:true}), 6292, 'days', 0.1); items[items.length-1].dx=196;    // 조리대(우)
-add(libNode('lb211', 6292, 393, 72, {sw:3.2, topDown:true, keepfill:true}), 6292, 'days', 0.2); items[items.length-1].dx=47;     // 뒤집개(걸이)
-add(libNode('lb212', 6292, 392, 72, {sw:3.2, topDown:true, keepfill:true}), 6292, 'days', 0.3); items[items.length-1].dx=94;     // 국자(걸이)
-add(libNode('lb213', 6292, 395, 79, {sw:3.2, topDown:true, keepfill:true}), 6292, 'days', 0.4); items[items.length-1].dx=145;    // 팬(걸이)
-add(libNode('lb214', 6292, 403, 62, {sw:3.2, topDown:true, bottomUp:true, keepfill:true}), 6292, 'days', 0.5); items[items.length-1].dx=-197;   // 화분(좌상)
-add(libNode('lb215', 6292, 514, 91, {sw:3.2, topDown:true, bottomUp:true, keepfill:true}), 6292, 'days', 0.6); items[items.length-1].dx=-197;   // 화분(좌중)
-add(libNode('lb217', 6292, 428, 65, {sw:3.2, topDown:true, bottomUp:true, keepfill:true}), 6292, 'days', 0.7); items[items.length-1].dx=208;    // 화초(우상)
-add(libNode('lb219', 6292, 522, 62, {sw:3.2, topDown:true, keepfill:true}), 6292, 'days', 0.8); items[items.length-1].dx=210;    // 티슈
-add(libNode('lb208', 6292, 566, 195, {sw:3.2, topDown:true, keepfill:true, occlude:true}), 6292, 'days', 1.0); items[items.length-1].dx=-2;   // 요리 남아(분리). occlude=메인선 가림
-add(libNode('lb254', 6292, 566, 195, {sw:3.2, topDown:true, keepfill:true, occlude:true}), 6292, 'days', 1.05); items[items.length-1].dx=-2;   // 요리 여아(분리·별도 오브젝트)
-add(libNode('lb209', 6292, 604, 78, {sw:3.2, topDown:true, keepfill:true}), 6292, 'days', 1.2); items[items.length-1].dx=-79;    // 조리 볼(음식)
-add(libNode('lb210', 6292, 604, 57, {sw:3.2, topDown:true, keepfill:true}), 6292, 'days', 1.3); items[items.length-1].dx=52;     // 도마+음식
-add(libNode('lb220', 6292, 640, 28, {sw:3.2, topDown:true, keepfill:true}), 6292, 'days', 1.4); items[items.length-1].dx=-64;    // 접시
-add(libNode('lb216', 6292, 652, 94, {sw:3.2, topDown:true, bottomUp:true, keepfill:true}), 6292, 'days', 1.5); items[items.length-1].dx=-110;   // 화분(좌하·전경)
-add(libNode('lb218', 6292, 649, 82, {sw:3.2, topDown:true, bottomUp:true, keepfill:true}), 6292, 'days', 1.6); items[items.length-1].dx=172;    // 꽃그릇(우하·전경)
-for(var _kfi=items.length-16;_kfi<items.length;_kfi++){ items[_kfi].fwdSkip=1; }   // 요리 16요소(남아·여아 분리): 수동 dx 오프셋 → fwd self-test 제외(렌더는 codeX+dx로 정확)
+// [씬] 특별하지 않는 날들이 조금씩 특별해졌습니다 — 골목 기찻길 씬(요리 씬 교체, 2026-09-20). 원본 이미지(1254²) 구도 그대로: 상가(lb266) 뒤 · 기찻길(lb265) 아래 · 커플(lb264) 무지개 위.
+// 스케일 k=678/585.5(상가 폭 678 = 560×1.21, 지평선 y565 고정 확대). 메인선(kitchenFlat y565, 반폭 365)은 원래 높이. 씬 전체를 _alleyDY(-130) 올려 커플 발이 선 위에 오게 함 → 두 사람이 선 위를 걷는 구성.
+// 그리기 순서(lag): 상가 0.0 → 커플 0.3 → 기찻길 1.1. DOM(z) 순서는 상가·기찻길·커플 그대로(커플이 맨 위). 기찻길을 커플보다 늦게 그려야 커플 실루엣 채움이 이미 그려진 기찻길 위로 페이드인하며 그림자처럼 보이는 현상이 없음.
+// 동일 codeX(6292) + it.dx 로 이미지 상대 오프셋(상가 중심 기준). 커플은 svg에 baked 실루엣 채움(var(--board))으로 기찻길을 가림 → occlude 헐 백킹 없이(noBacking), 선-드로잉 유지.
+var _alleyDY=-130;   // 골목 씬 전체 상하 오프셋(메인선 y565 고정, 씬만 이동). -130 → 커플 발바닥 698→568 = 메인선(565) 위에 서는 높이
+add(libNode('lb266', 6292, 726.4+_alleyDY, 535.2, {topDown:true, keepfill:true}), 6292, 'days', 0.0); items[items.length-1].dx=0;      // 골목 상가(간판·전구줄·테이블·벤치·식물·뒤 건물) — 단일선+솔리드(전구·창문) baked
+add(libNode('lb265', 6292, 852.0+_alleyDY, 287.0, {topDown:true, keepfill:true, seqFill:true}), 6292, 'days', 1.1); items[items.length-1].dx=3.2;    // 기찻길(레일 2줄씩·침목 돌·무지개 줄무늬 채움) — 소실점이 메인선 높이(565)
+add(libNode('lb264', 6292, 698.1+_alleyDY, 237.8, {topDown:true, keepfill:true, swScale:1.2, occlude:true, noBacking:true}), 6292, 'days', 0.3); items[items.length-1].dx=5.0;   // 기찻길 커플(손잡고 걷기) — 위→아래 선-드로잉(wipeDraw 아님: wipe는 완성본을 클립으로 드러내 선애니가 안 됨). baked 실루엣 채움(board)이 r 0.3→1.0 페이드인하며 뒤 기찻길·상가 가림
+for(var _kfi=items.length-3;_kfi<items.length;_kfi++){ items[_kfi].fwdSkip=1; }   // 골목 3요소: 수동 dx 오프셋 → fwd self-test 제외(렌더는 codeX+dx로 정확)
 
 // [씬] 마음이 무거운 날에는 서로의 곁을 지켰습니다 — 계단 커플(계단 바닥=선 y540, rt≈12573)
 add(libNode('lb196', 6962, 570, 240, {topDown:true, keepfill:true, occlude:true}), 6962, 'days', 0.0);   // 계단 커플=등돌린 커플2(벡터·매끈). occlude=B(그리기 따라 선 가림)
@@ -1257,7 +1253,8 @@ add(star(9066,720,18,'var(--ember)',2.8),    9250, 'today', 1.15);   // 우하 �
 // 각 요소를 획 단위로 쪼개 순서대로 그려지게 준비
 function prep(){
   items.forEach(it=>{
-    const kids=[...it.node.querySelectorAll('path,circle,line,ellipse')];
+    const _seq=!!(it.node.getAttribute && it.node.getAttribute('data-seqfill'));
+    const kids=[...it.node.querySelectorAll('path,circle,line,ellipse'+(_seq?',polygon,polyline':''))];   // seqFill 오브젝트는 polygon(침목 줄무늬 등 채움 도형)도 애니 대상에 포함(기본 수집엔 없어 즉시 통째로 보이던 문제)
     const list = kids.length ? kids : [it.node];
     it.shapes = list.map(sh=>{
       if(sh.getAttribute && sh.getAttribute('data-keepfill')){ return {el:sh, len:1, filled:false, draws:false}; }   // 정적 채움(불투명 실루엣·눈): 애니메이션 대상 제외 = 항상 보임
@@ -1319,6 +1316,17 @@ function prep(){
         _segs.sort((a,b)=> rk(a)-rk(b));
       } else { const _bu=!!it.node.getAttribute('data-bottomup'); _segs.sort((a,b)=> _td ? (_bu ? (b.y-a.y) : (a.y-b.y)) : (a.x-b.x)); }   // 위→아래(기본) / 아래→위(bottomUp) / 왼→오
       it.segs=_segs; it.segTotal=_segs.reduce((s,x)=>s+x.len,0)||1;
+      if(_td && it.node.getAttribute('data-seqfill')){   // [seqFill] 채움 도형(침목 줄무늬 등)을 한꺼번에 페이드하지 않고, 펜(위→아래 순차 획)이 그 도형의 y 를 지나는 진행도(rAt)에서 하나씩 채움
+        it.fillSeq=[]; let _acc=0; const _cum=_segs.map(sg=>{ const v=_acc; _acc+=sg.len/it.segTotal; return {y:sg.y, r:v}; });
+        const _rAtY=y=>{ let v=1; for(const c of _cum){ if(c.y>=y){ v=c.r; break; } } return v; };
+        it.shapes.forEach(sh=>{ if(!sh.filled) return; let bb={x:0,y:0,width:0,height:0}; try{ bb=sh.el.getBBox(); }catch(e){}
+          // 색 자체를 위→아래로 칠하듯 드러냄: 도형별 clip rect(높이 0→bbox)를 펜이 도형 윗변(rTop)~아랫변(rBot)을 지나는 진행도에 연동(최소 창 0.06)
+          const rTop=_rAtY(bb.y), rBot=Math.max(_rAtY(bb.y+bb.height), rTop+0.06);
+          const cid='sf'+(OCC_N++), cp=el('clipPath',{id:cid,clipPathUnits:'userSpaceOnUse'});
+          const cr=el('rect',{x:(bb.x-2).toFixed(1),y:(bb.y-2).toFixed(1),width:(bb.width+4).toFixed(1),height:'0'}); cp.appendChild(cr);
+          (sh.el.parentNode||it.node).appendChild(cp); sh.el.setAttribute('clip-path','url(#'+cid+')');
+          it.fillSeq.push({el:sh.el, rect:cr, fullH:bb.height+4, rTop:rTop, rBot:rBot}); });
+      }
       if(it.penReveal){   // [penReveal] 각 서브패스를 '채운 흰 도형'으로 마스크에 넣고, 그 획의 펜 진행도(sr)에 맞춰 노출 → 펜이 그리는 부위가 순서대로 채워짐(내부까지, flat wipe 아님)
         const _mid='pm'+(OCC_N++); const _mk=el('mask',{id:_mid,maskUnits:'userSpaceOnUse'});
         _segs.forEach(s=>{ const pm=el('path',{d:s.el.getAttribute('d'),fill:'#fff',stroke:'none'}); pm.setAttribute('fill-opacity','0'); _mk.appendChild(pm); s.mask=pm; });
@@ -1834,9 +1842,9 @@ function _fwdSelfTest(){   // 기존 오브젝트 전부 fwd(codeX,grp)===it.ax 
   p2el.setAttribute('d','M '+pts.join(' L '));
 })();
 
-// [주방 씬 메인선 일자] 요리 씬(codeX 6291) 구간의 p2 를 조리대 높이(y540)로 평탄화. 계단 램프(좌끝≈13629) 앞에서 끝나게 폭 제한.
+// [골목 씬 메인선 일자] 골목 기찻길 씬(codeX 6292) 구간의 p2 를 y565 로 평탄화(원래 높이 유지). 커플 발이 이 선 위에 오도록 씬을 _alleyDY 로 올림. 상가 폭(678)을 덮게 반폭 365. 계단 램프(좌끝≈13629) 앞에서 끝나게 폭 제한.
 (function kitchenFlat(){
-  const cx=fwd(6292,'days'), FY=565, PW=205, RW=230;   // FY=565: 좌(546)·우(TV,584) 자연라인 중간값 → 양옆 완만 연결(꺾임 방지). PW=카운터 반폭, RW=긴 램프
+  const cx=fwd(6292,'days'), FY=565, PW=365, RW=230;   // FY=565: 좌(546)·우(584) 자연라인 중간값 → 양옆 완만 연결(꺾임 방지). PW=상가 반폭, RW=긴 램프. 발 맞춤은 선이 아니라 씬(_alleyDY)을 올려서 함
   const p2el=document.getElementById('p2');
   const L=p2el.getTotalLength(), N=Math.ceil(L/10), pts=[];
   for(let i=0;i<=N;i++){
@@ -2120,34 +2128,34 @@ function anchorInfo(s){
   return null;
 }
 const SUBS=[
-  {t:1.0,  dur:10.5, text:'우리의 이야기는,\n아주 작은 순간에서 시작되었습니다.', color:'var(--gold)', mid:true, seq:true, cps:0.21, pause:1.0},   // [인트로 타이틀] 맨앞 인트로 씬, 1초후 화면 중앙 노란색. 줄 단위 느린 쓰기(cps)+줄 사이 텀(pause)
-  {t:11.4,  dur:3.0, text:'아주 작은 별 하나.'},                                  // 프리롤 별(고정, +11s)
-  {t:14.8,  dur:5.0, text:'별에서 한 줄이 시작되고,'},                             // 프리롤 선 탄생(고정, +11s)
-  {at:'x', x:1051, off:0,    dur:5.0, text:'어린 날의 꿈을 안고\n조금씩 자라왔습니다.'},  // 소년(유년 남아 걷기 x1051)
-  {at:'x', x:1690, off:1.1,  dur:5.0, text:'서로 다른 길 위에서\n서로를 모르고 지나쳤지만,'}, // 소녀(유년 여아 걷기 x1690)
-  {sub:'meet',     off:0.9,  dur:5.0, text:'스무 살,\n우리의 시간이 처음 만났습니다.'},
-  {sub:'shy',       off:-0.3, dur:5.0, text:'아직은 서툴고\n설레기만 했던 우리.'},          // 3씬-1 (뒷모습 커플+밤하늘)
-  {sub:'dream',     off:0.1,  dur:5.0, text:'함께 웃고,\n함께 꿈꾸던 날들.'},               // 3씬-2 (커플 등장)
-  {sub:'byeol',     off:-1.3, dur:5.0, text:'별것 아닌 하루도\n함께라서 참 좋았습니다.'},   // 3씬-3 (자전거 커플 앵커) 자막 앞으로 -0.8->-1.3 (추가 0.5초)
-  {at:'x', x:5378, off:0.8, dur:5.0, text:'그러다 우리의 시간은\n잠시 갈라졌습니다.'},                       // 헤어짐1 (off 0.8×1.25=실제 1초 뒤 등장)
-  {at:'x', x:6109, off:0, dur:5.0, text:'서로 다른 곳에서\n각자의 하루를 살아갔습니다.'},                        // 헤어짐2 (원래 2-1·2-2 두 자막 통합 — 그 구간 전체 동안 한 줄)
+  {t:1.0,  dur:10.5, text:'우리의 이야기는,\n아주 작은 순간에서 시작되었습니다', color:'var(--gold)', mid:true, seq:true, cps:0.21, pause:1.0},   // [인트로 타이틀] 맨앞 인트로 씬, 1초후 화면 중앙 노란색. 줄 단위 느린 쓰기(cps)+줄 사이 텀(pause)
+  {t:11.4,  dur:3.0, text:'아주 작은 별 하나'},                                  // 프리롤 별(고정, +11s)
+  {t:14.8,  dur:5.0, text:'별에서 한 줄이 시작되고'},                             // 프리롤 선 탄생(고정, +11s)
+  {at:'x', x:1051, off:0,    dur:5.0, text:'어린 날의 꿈을 안고\n조금씩 자라왔습니다'},  // 소년(유년 남아 걷기 x1051)
+  {at:'x', x:1690, off:1.1,  dur:5.0, text:'서로 다른 길 위에서\n서로를 모르고 지나쳤지만'}, // 소녀(유년 여아 걷기 x1690)
+  {sub:'meet',     off:0.9,  dur:5.0, text:'스무 살,\n우리의 시간이 처음 만났습니다'},
+  {sub:'shy',       off:-0.3, dur:5.0, text:'아직은 서툴고\n설레기만 했던 우리'},          // 3씬-1 (뒷모습 커플+밤하늘)
+  {sub:'dream',     off:0.1,  dur:5.0, text:'함께 웃고,\n함께 꿈꾸던 날들'},               // 3씬-2 (커플 등장)
+  {sub:'byeol',     off:-1.3, dur:5.0, text:'별것 아닌 하루도\n함께라서 참 좋았습니다'},   // 3씬-3 (자전거 커플 앵커) 자막 앞으로 -0.8->-1.3 (추가 0.5초)
+  {at:'x', x:5378, off:0.8, dur:5.0, text:'그러다 우리의 시간은\n잠시 갈라졌습니다'},                       // 헤어짐1 (off 0.8×1.25=실제 1초 뒤 등장)
+  {at:'x', x:6109, off:0, dur:5.0, text:'서로 다른 곳에서\n각자의 하루를 살아갔습니다'},                        // 헤어짐2 (원래 2-1·2-2 두 자막 통합 — 그 구간 전체 동안 한 줄)
   {at:'x', x:6840, off:0, dur:5.0, text:'때로는 서로의 위로가 되어주며,'},                                            // 헤어짐3
-  {at:'x', x:7829, off:0, dur:5.0, text:'보이지 않는 인연의 끈을\n놓지 않은 채.'},                             // 헤어짐4
-  {at:'x', x:8947, off:3.0, dur:18.0, writeDur:3.0, dropLines:1, text:'많은 계절이 흘렀습니다.'},                                    // 헤어짐5 (자막 +3초 뒤로, 한 줄·지속 15초·쓰기 3초·한 줄 아래)
+  {at:'x', x:7829, off:0, dur:5.0, text:'보이지 않는 인연의 끈을\n놓지 않은 채'},                             // 헤어짐4
+  {at:'x', x:8947, off:3.0, dur:18.0, writeDur:3.0, dropLines:1, text:'많은 계절이 흘렀습니다'},                                    // 헤어짐5 (자막 +3초 뒤로, 한 줄·지속 15초·쓰기 3초·한 줄 아래)
   // [함께2] 재회~피날레 자막 12개. 모두 재회 시점(x9045)에 앵커 + 누적 off(=(n-1)*4.6: 표시3.6+간격1.0).
   //  선 속도는 등속(불변). 자막이 선 완성보다 길면 피날레를 유지하며 이어짐 → 전체 시간만 늘어남.
-  {at:'x', x:REUNION_X, off:0.0,  dur:5.0, text:'그러던 어느 날,\n참 신기하게도 우리의 시간은\n다시 만났습니다.'},
-  {at:'x', x:REUNION_X, off:5.1,  dur:5.0, text:'조금 달라진 모습으로,\n여전히 익숙한 사람으로.'},
-  {at:'x', x:REUNION_X, off:11.07,  dur:5.0, text:'우리는 다시\n서로의 하루를 나누기 시작했습니다.'},
-  {at:'x', x:REUNION_X, off:17.9, dur:5.0, text:'특별하지 않는 날들이\n조금씩 특별해졌습니다.'},   // +0.5초(요리 씬 앞 0.5초 삽입) · off 17.1→17.9(실제 1초 뒤)
+  {at:'x', x:REUNION_X, off:0.0,  dur:5.0, text:'그러던 어느 날,\n참 신기하게도 우리의 시간은\n다시 만났습니다'},
+  {at:'x', x:REUNION_X, off:5.1,  dur:5.0, text:'조금 달라진 모습으로,\n여전히 익숙한 사람으로'},
+  {at:'x', x:REUNION_X, off:11.07,  dur:5.0, text:'우리는 다시\n서로의 하루를 나누기 시작했습니다'},
+  {at:'x', x:REUNION_X, off:17.9, dur:5.0, text:'특별하지 않는 날들이\n조금씩 특별해졌습니다'},   // +0.5초(요리 씬 앞 0.5초 삽입) · off 17.1→17.9(실제 1초 뒤)
   {at:'x', x:REUNION_X, off:23.87, dur:5.0, text:'좋은 날에는 함께 웃고,'},   // 이하 +1초(요리 씬 앞뒤 각0.5초)
   {at:'x', x:REUNION_X, off:29.59, dur:5.0, text:'마음이 무거운 날에는\n서로의 곁을 지키고,'},
   {at:'x', x:REUNION_X, off:36.59, dur:5.0, text:'별일 없는 날에는\n그저 나란히 걸으며,'},
-  {at:'x', x:REUNION_X, off:43.59, dur:5.0, text:'그렇게 우리는\n‘곁’의 의미를 알게 되었습니다.'},
+  {at:'x', x:REUNION_X, off:43.59, dur:5.0, text:'그렇게 우리는\n‘곁’의 의미를 알게 되었습니다'},
   {at:'x', x:REUNION_X, off:49.59, dur:5.0, text:'곁이란, 서로의 하루를 나누고'},
-  {at:'x', x:REUNION_X, off:58.09, dur:5.0, text:'혼자 걷던 길을\n나란히 걷는 것.'},
-  {at:'x', x:REUNION_X, off:66.99, dur:5.0, text:'우리는 서로에게\n‘곁’이라는 선물을 받았습니다.'},   // off 68.59→66.99(실제 2초 앞)
-  {at:'lineEnd', off:0.15, dur:5.0, text:'그리고 오늘,\n우리는 새로운 시간을 시작합니다.'},   // 선이 화면 끝(화살표)에 닿는 순간 등장
+  {at:'x', x:REUNION_X, off:58.09, dur:5.0, text:'혼자 걷던 길을\n나란히 걷는 것'},
+  {at:'x', x:REUNION_X, off:66.99, dur:5.0, text:'우리는 서로에게\n‘곁’이라는 선물을 받았습니다'},   // off 68.59→66.99(실제 2초 앞)
+  {at:'lineEnd', off:0.15, dur:5.0, text:'그리고 오늘,\n우리는 새로운 시간을 시작합니다'},   // 선이 화면 끝(화살표)에 닿는 순간 등장
 ];
 const SUB_OFF_SCALE = SPEED_DIV / SPEED_DIV_BASE;   // off(선-진행 상대초)를 현재 선속도에 맞춰 스케일 → 느려진 씬과 자막 등장시점 동기(20% 느리면 1.25배)
 const lines = SUBS.map(function(s){
@@ -2586,7 +2594,7 @@ function animateAurora(t){
   var W=1300, X0=10995-W/2, LAG=90;   // 중심 world x≈10995. LAG=펜보다 살짝 뒤(월드px)에서 드러나게 여유.
   var BW=0.24;   // 소프트 경계폭(리본폭 대비)
   var tip=(typeof tipXAt==='function')?tipXAt(t):0;
-  if(tip < X0-40){ if(_auroraG) _auroraG.style.opacity='0'; return; }   // 펜이 리본 왼쪽에 닿기 전엔 숨김
+  if(tip < X0-40){ if(_auroraG){ _auroraG.style.opacity='0'; if(_auFlowG) _auFlowG.style.opacity='0'; if(_auWipeS1) _auWipeS1.setAttribute('offset','0'); if(_auWipeS2) _auWipeS2.setAttribute('offset','0'); } return; }   // 펜이 리본 왼쪽에 닿기 전엔 숨김 + 노출 마스크도 0으로 리셋(되감기 시 완전노출 잔상 방지)
   if(!_auroraG){
     var H=Math.round(W*311/1000), Y0=10;
     _auX0=X0; _auW=W;
@@ -2852,7 +2860,7 @@ function frame(ts){
     // [계절 와이드샷] 계절씬(월드 x≈8863~11155)에 들어서면 카메라를 줌아웃해 고정 → 가로 전체로 계절 파노라마. "그러던 어느 날"(REUNION_X≈12012) 직전 원복.
     // E0 = 벚꽃(lb145)이 그려지기 시작하고 1초 뒤의 펜 위치 → 그 순간부터 pull-back 줌아웃. (SPEED 변해도 자동 추종)
     var _cd=(window.__cherryDraw0?window.__cherryDraw0():null), _E0=(_cd!=null?tipXAt(_cd+1.0):9500);
-    var _sw=(function(x){ var E0=_E0,E1=_E0+550,X0=11155,X1=11850, sm=function(u){u=Math.max(0,Math.min(1,u));return u*u*(3-2*u);};
+    var _sw=(function(x){ var E0=_E0,E1=_E0+458,X0=11155,X1=11734, sm=function(u){u=Math.max(0,Math.min(1,u));return u*u*(3-2*u);};   // 줌인 전환 550→458(속도+20%), 줌아웃 전환 695→579(속도+20%)
       if(x<=E0||x>=X1) return 0; if(x<E1) return sm((x-E0)/(E1-E0)); if(x<=X0) return 1; return 1-sm((x-X0)/(X1-X0)); })(tipX);
     if(_sw>0){ var _S=0.68, _CX=10009, _txW=960-_CX*_S, _tyW=540*(1-_S);   // _S=줌배율, _CX=계절 중심 월드x, 화면중앙(960,540)에 맞춤
       camS=1+(_S-1)*_sw; camX=camX*(1-_sw)+_txW*_sw; camY=_tyW*_sw; }
@@ -2973,6 +2981,7 @@ function frame(ts){
         if(it._state!==0){ it.node.setAttribute('opacity','0'); it._state=0;
           it.segs.forEach(s=>{ s.el.style.strokeDashoffset=s.len; s.el.style.visibility='hidden'; if(s.mask) s.mask.setAttribute('fill-opacity','0'); });
           it.shapes.forEach(sh=>{ if(sh.filled) sh.el.setAttribute('fill-opacity', it.penReveal?'1':'0'); });   // penReveal=채움 항상 solid, 마스크가 노출 제어
+          if(it.fillSeq) it.fillSeq.forEach(fs=>{ fs._h=null; fs.rect.setAttribute('height','0'); });
         }
         return;
       }
@@ -2982,8 +2991,10 @@ function frame(ts){
       it.segs.forEach(s=>{ const seg=s.len/it.segTotal; let sr=(r-acc)/seg; sr=sr<0?0:(sr>1?1:sr); acc+=seg;
         const _off=(s.len*(1-sr)).toFixed(1); s.el.style.strokeDashoffset=_off; s.el.style.visibility=sr>0.005?'visible':'hidden'; if(s.mask) s.mask.setAttribute('fill-opacity',sr.toFixed(3)); });   // penReveal: 마스크 획도 펜과 동기 → 채움이 펜 따라 노출
       // 색: penReveal/wipeDraw=채움 항상 solid(1)(penReveal은 마스크가, wipeDraw는 클립이 노출 제어). fillLead=채움이 펜 바짝 추종. 기본=외곽선 뒤따라.
-      const _solid=it.penReveal||it.wipeDraw; const fo=_solid?1:(it.fillLead?Math.min(1,Math.max(0,r/0.5)):Math.min(1,Math.max(0,(r-0.30)/0.70))); it.shapes.forEach(sh=>{ if(sh.filled) sh.el.setAttribute('fill-opacity',(_solid?1:(it.fillLead?fo:fo*fo)).toFixed(3)); });
-      if(r>=1){ it.segs.forEach(s=>{ s.el.style.strokeDashoffset='0'; s.el.style.visibility='visible'; if(s.mask) s.mask.setAttribute('fill-opacity','1'); }); it.shapes.forEach(sh=>{ if(sh.filled) sh.el.setAttribute('fill-opacity','1'); }); it._state=2; }
+      const _solid=it.penReveal||it.wipeDraw; const fo=_solid?1:(it.fillLead?Math.min(1,Math.max(0,r/0.5)):Math.min(1,Math.max(0,(r-0.30)/0.70)));
+      if(it.fillSeq){ it.fillSeq.forEach(fs=>{ const p=Math.min(1,Math.max(0,(r-fs.rTop)/(fs.rBot-fs.rTop))); fs.el.setAttribute('fill-opacity','1'); const h=(fs.fullH*p).toFixed(1); if(h!==fs._h){ fs._h=h; fs.rect.setAttribute('height',h); } }); }   // seqFill: 도형별 clip rect 를 펜 진행에 맞춰 위→아래로 늘려 색을 칠하듯 드러냄
+      else it.shapes.forEach(sh=>{ if(sh.filled) sh.el.setAttribute('fill-opacity',(_solid?1:(it.fillLead?fo:fo*fo)).toFixed(3)); });
+      if(r>=1){ it.segs.forEach(s=>{ s.el.style.strokeDashoffset='0'; s.el.style.visibility='visible'; if(s.mask) s.mask.setAttribute('fill-opacity','1'); }); it.shapes.forEach(sh=>{ if(sh.filled) sh.el.setAttribute('fill-opacity','1'); }); if(it.fillSeq) it.fillSeq.forEach(fs=>{ fs._h=null; fs.rect.setAttribute('height',fs.fullH.toFixed(1)); }); it._state=2; }
       else it._state=1;
       return;
     }
@@ -3188,6 +3199,7 @@ function reset(){
     });
   });
   endStars.setAttribute('opacity','0');
+  if(_auroraG){ _auroraG.style.opacity='0'; if(_auFlowG) _auFlowG.style.opacity='0'; if(_auWipeS1) _auWipeS1.setAttribute('offset','0'); if(_auWipeS2) _auWipeS2.setAttribute('offset','0'); }   // 리플레이 시 오로라 잔상 초기화
   cap.style.opacity=0; capText.textContent=''; cap.dataset.cur=''; chalk.style.opacity=0;
   chalkStop();
   if(bgmAudio){ bgmAudio.pause(); bgmAudio.currentTime=0; }
@@ -3228,6 +3240,8 @@ addEventListener('keydown',e=>{
 function seekTo(t){
   t=Math.max(0, Math.min(DURATION, t));
   window.__lineDone=false;                          // 되감기 시 선이 다시 그려지도록
+  // [오로라 잔상 방지] 되감기 즉시 동기 초기화 → frame() 실행 전 한 프레임이라도 이전 노출 상태가 칠해지지 않게(간헐 full-flash 방지). animateAurora 가 곧 올바른 값으로 다시 세움.
+  if(_auroraG){ _auroraG.style.opacity='0'; if(_auFlowG) _auFlowG.style.opacity='0'; if(_auWipeS1) _auWipeS1.setAttribute('offset','0'); if(_auWipeS2) _auWipeS2.setAttribute('offset','0'); }
   const lg=document.getElementById('lineG'); if(lg) lg.style.opacity='1';
   const wasRunning=running;
   if(!wasRunning) unlockAudio();                    // 정지 상태 클릭 → 사용자 제스처 안에서 오디오 시작
