@@ -273,7 +273,7 @@
   <audio id="bgmAudio" preload="auto" src="./bgm3.mp3?v=291a0221"></audio>
 </div>
 
-<script src="objects.js?v=0b84f364"></script>
+<script src="objects.js?v=73a9aa5e"></script>
 <script>
 const {COUPLE_V,HOUSE_V,OAK_V,BUSHY_V,LEAFY_V,COUPLE2_V,BIKE_V,ROUNDTREE_V,MOON_V}=window.WEDDING_SHAPES;  // 공용 objects.js 의 shape 데이터 참조
 
@@ -1232,7 +1232,7 @@ add(libNode('lb202', 8758, 543, 139, {topDown:true, keepfill:true}), 8758, 'home
 add(libNode('lb203', 8921, 589, 90,  {topDown:true, keepfill:true}), 8921, 'home', 0.1);   // 다리(우측, 같은 프레임)
 add(libNode('lb206', 8756, 674, 131, {topDown:true, keepfill:true}), 8756, 'home', 0.2);   // 강물(물결+반영, 수면선 아래)
 add(libNode('lb207', 8758, 736, 66,  {topDown:true, keepfill:true}), 8758, 'home', 0.3);   // 강변 바닥(둔치)
-add(libNode('lb201', 8758, 699, 331, {topDown:true, keepfill:true, occlude:true}), 8758, 'home', 0.5);   // 강변 커플(전경). occlude=뒤 가림
+add(libNode('lb201', 8758, 699, 331, {topDown:true, sw:2.6}), 8758, 'home', 0.5);   // 강변 커플(단일선 변환·색유지). 카페씬 방식=svg baked 실루엣 채움(var(--board))으로 뒤 가림, occlude 함수 미사용
 add(libNode('lb204', 8756, 693, 43,  {topDown:true, bottomUp:true, keepfill:true}), 8756, 'home', 0.6);   // 강변 풀(둔치 좌우)
 for(var _rv=items.length-7;_rv<items.length;_rv++){ items[_rv].riverScene=true; }   // [강변 씬 태그] 하트 중앙(피날레)에서 페이드아웃 대상
 
@@ -2139,18 +2139,18 @@ const SUBS=[
   {sub:'byeol',     off:-1.3, dur:5.0, text:'별것 아닌 하루도\n함께라서 참 좋았습니다'},   // 3씬-3 (자전거 커플 앵커) 자막 앞으로 -0.8->-1.3 (추가 0.5초)
   {at:'x', x:5378, off:0.8, dur:5.0, text:'그러다 우리의 시간은\n잠시 갈라졌습니다'},                       // 헤어짐1 (off 0.8×1.25=실제 1초 뒤 등장)
   {at:'x', x:6109, off:0, dur:5.0, text:'서로 다른 곳에서\n각자의 하루를 살아갔습니다'},                        // 헤어짐2 (원래 2-1·2-2 두 자막 통합 — 그 구간 전체 동안 한 줄)
-  {at:'x', x:6840, off:0, dur:5.0, text:'때로는 서로의 위로가 되어주며,'},                                            // 헤어짐3
+  {at:'x', x:6840, off:0, dur:5.0, text:'때로는 서로의 위로가 되어주며'},                                            // 헤어짐3
   {at:'x', x:7829, off:0, dur:5.0, text:'보이지 않는 인연의 끈을\n놓지 않은 채'},                             // 헤어짐4
-  {at:'x', x:8947, off:3.0, dur:18.0, writeDur:3.0, dropLines:1, text:'많은 계절이 흘렀습니다'},                                    // 헤어짐5 (자막 +3초 뒤로, 한 줄·지속 15초·쓰기 3초·한 줄 아래)
+  {at:'x', x:8947, off:3.0, dur:18.0, writeDur:3.0, dropLines:1, text:'그렇게 많은 계절이 흘렀습니다'},                                    // 헤어짐5 (자막 +3초 뒤로, 한 줄·지속 15초·쓰기 3초·한 줄 아래)
   // [함께2] 재회~피날레 자막 12개. 모두 재회 시점(x9045)에 앵커 + 누적 off(=(n-1)*4.6: 표시3.6+간격1.0).
   //  선 속도는 등속(불변). 자막이 선 완성보다 길면 피날레를 유지하며 이어짐 → 전체 시간만 늘어남.
   {at:'x', x:REUNION_X, off:0.0,  dur:5.0, text:'그러던 어느 날,\n참 신기하게도 우리의 시간은\n다시 만났습니다'},
   {at:'x', x:REUNION_X, off:5.1,  dur:5.0, text:'조금 달라진 모습으로,\n여전히 익숙한 사람으로'},
   {at:'x', x:REUNION_X, off:11.07,  dur:5.0, text:'우리는 다시\n서로의 하루를 나누기 시작했습니다'},
   {at:'x', x:REUNION_X, off:17.9, dur:5.0, text:'특별하지 않는 날들이\n조금씩 특별해졌습니다'},   // +0.5초(요리 씬 앞 0.5초 삽입) · off 17.1→17.9(실제 1초 뒤)
-  {at:'x', x:REUNION_X, off:23.87, dur:5.0, text:'좋은 날에는 함께 웃고,'},   // 이하 +1초(요리 씬 앞뒤 각0.5초)
-  {at:'x', x:REUNION_X, off:29.59, dur:5.0, text:'마음이 무거운 날에는\n서로의 곁을 지키고,'},
-  {at:'x', x:REUNION_X, off:36.59, dur:5.0, text:'별일 없는 날에는\n그저 나란히 걸으며,'},
+  {at:'x', x:REUNION_X, off:23.87, dur:5.0, text:'좋은 날에는 함께 웃고'},   // 이하 +1초(요리 씬 앞뒤 각0.5초)
+  {at:'x', x:REUNION_X, off:29.59, dur:5.0, text:'마음이 무거운 날에는\n서로의 곁을 지키고'},
+  {at:'x', x:REUNION_X, off:36.59, dur:5.0, text:'별일 없는 날에는\n그저 나란히 걸으며'},
   {at:'x', x:REUNION_X, off:43.59, dur:5.0, text:'그렇게 우리는\n‘곁’의 의미를 알게 되었습니다'},
   {at:'x', x:REUNION_X, off:49.59, dur:5.0, text:'곁이란, 서로의 하루를 나누고'},
   {at:'x', x:REUNION_X, off:58.09, dur:5.0, text:'혼자 걷던 길을\n나란히 걷는 것'},

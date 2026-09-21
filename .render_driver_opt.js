@@ -32,7 +32,7 @@ window.__render = async function(startIdx, endIdx){
     if(op>0.01&&txt){ ctx.save(); ctx.globalAlpha=Math.min(1,op);
       const isMid=cap.classList.contains('mid'); const fs=Math.round(W*(isMid?0.040:0.031));
       ctx.font='400 '+fs+'px Gaegu, sans-serif'; ctx.fillStyle=getComputedStyle(cap).color||'#f2ede2'; ctx.textAlign='center'; ctx.textBaseline='top'; ctx.shadowColor='rgba(242,237,226,.4)'; ctx.shadowBlur=W*0.012;
-      const Ls=txt.split('\n'), lh=fs*1.55; let y = isMid ? (Hh*0.5 - Ls.length*lh/2 + lh*0.15) : Hh*0.855;   // mid=화면 세로 중앙(인트로 타이틀), 기본=하단
+      const Ls=txt.split('\n'), lh=fs*1.55; let y = isMid ? (Hh*0.5 - Ls.length*lh/2 + lh*0.15) : (Hh*0.84 - Ls.length*lh/2 + lh*0.15);   // mid=화면 세로 중앙(인트로 타이틀), 기본=하단(중앙 0.84 기준 위아래로 늘어남→3줄도 720 안에 들어오고 웹과 높이 일치)
       let lastY=y, lastLine='';
       for(const ln of Ls){ ctx.fillText(ln,W/2,y); if(ln!==''){ lastY=y; lastLine=ln; } y+=lh; } ctx.restore();
       // ── 분필 조각(chalkStick) 합성: 자막 쓰는 동안 텍스트 끝에 백묵(회전 wobble) + 가루 glow ──
