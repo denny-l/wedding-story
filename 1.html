@@ -292,7 +292,7 @@ const capText=document.getElementById('capText');
 const chalk=document.getElementById('chalkStick');
 const chalkAudio=document.getElementById('chalkAudio');
 const bgmAudio=document.getElementById('bgmAudio');
-const BGM_START=6.0;   // BGM 시작 시각 = 6초 지난 뒤(인트로 자막 진행 중). (이전 5.0/4.0/3.0/1.0, 11.6=별 등장)
+const BGM_START=7.0;   // BGM 시작 시각 = 6초 지난 뒤(인트로 자막 진행 중). (이전 5.0/4.0/3.0/1.0, 11.6=별 등장)
 let audioReady=false;
 let chalkFadeTimer=null;
 
@@ -306,7 +306,7 @@ function unlockAudio(){
   if(p&&p.then){ p.then(()=>{ chalkAudio.pause(); chalkAudio.currentTime=0; }).catch(()=>{}); }
   // 배경 피아노 — 잠금만 해제하고 일단 멈춤. 실제 재생은 프레임 루프가 BGM_START(별 등장)부터 시작.
   bgmAudio.muted=false;
-  bgmAudio.loop=true;                    // BGM 루프 — 곡이 타임라인보다 짧아도 finale까지 채움
+  bgmAudio.loop=false;                   // 반복 없음 — 음악은 한 번만 재생(사용자 요청)
   bgmAudio.volume=0.55;                  // 분필소리보다 작게(배경)
   bgmAudio.currentTime=0;
   const pb=bgmAudio.play(); if(pb&&pb.then){ pb.then(()=>{ bgmAudio.pause(); bgmAudio.currentTime=0; }).catch(()=>{}); }
@@ -662,11 +662,6 @@ function limb(ax,ay,bx,by,w){
     +`A ${h.toFixed(1)} ${h.toFixed(1)} 0 0 1 ${A1[0].toFixed(1)} ${A1[1].toFixed(1)} Z`;
 }
 
-
-
-
-
-
 function couple2T(x,y,s){
   const g=el('g',{}); g.setAttribute('filter','url(#chalkSoft)');
   const k=s/1000;
@@ -689,7 +684,6 @@ function oakT(x,y,s){
   g.appendChild(inner);
   return g;
 }
-
 
 function moon(x,y,s){
   const g=el('g',{}); g.setAttribute('filter','url(#chalkSoft)');
@@ -918,7 +912,6 @@ addAt(rays(200,540,60,'var(--gold)',22), 13.1, 0.5, true);   // 스파클 시계
   add(libNode('lb234',1420,548,54,{anchor:'center',topDown:true,swLocal:24}), 1420,'young',0.12);   // 나비 파랑 (lb76 나비 기반 선-드로잉, 색만 파랑)
 })();
 
-
 // ┌──────── [3. 함께1] 첫 만남 ~ 함께 (단일선 p1) ────────┐
 //   씬: 스무살 첫만남 · 아직은 서툴고(밤하늘 뒷모습 커플) · 함께 웃고(산책 커플) · 별거 아닌 하루도(자전거 커플)   [grp: meet, dream]
 // [씬] 스무 살, 우리는 처음 만났습니다 — 새싹과 첫 하트가 한꺼번에
@@ -1028,18 +1021,18 @@ function _plant(id,cx,y,size,side,fx,lag,opt){ opt=opt||{topDown:true,sw:2.4}; o
 // 벚꽃 옆 꽃 5종 (윗선·줄기꽃·솔리드 핑크)
 _plant('lb167',6600,457,90,'top',8476,1.50,{topDown:true,keepfill:true});   // 데이지
 _plant('lb169',6660,459,88,'top',8536,1.55,{topDown:true,keepfill:true});   // 벚꽃
-_plant('lb170',6710,738,86,'bottom',8586,1.60,{topDown:true,keepfill:true});   // 네잎꽃 — 아랫선(남자쪽)으로 이동
-_plant('lb168',6840,766,90,'bottom',8716,1.50,{topDown:true,keepfill:true});   // 팬지 — 아랫선(남자쪽)으로 이동
+_plant('lb170',6710,773,86,'bottom',8586,1.60,{topDown:true,keepfill:true});   // 네잎꽃 — 아랫선(남자쪽). y 738→773: 새 파란선(더 낮음)에 발끝 실측 재안착(runtime followX 8973, 실측 gap -61)
+_plant('lb168',6840,793,90,'bottom',8716,1.50,{topDown:true,keepfill:true});   // 팬지 — 아랫선(남자쪽). y 766→793: 새 파란선에 발끝 실측 재안착(gap -27)
 _plant('lb171',6950,476,70,'top',8826,1.60);   // 들꽃(벡터)
 // 여름 윗선(여자·핑크): 조금만
 _plant('lb173',7200,482,95,'top',9076,1.15);   // 해바라기
 _plant('lb175',7420,479,62,'top',9296,1.30);   // 들꽃
 _plant('lb176',7640,471,62,'top',9516,1.35);   // 들꽃
 // 여름 아랫선(남자·블루): 여름나무(codeX7374) 주변에 다수
-_plant('lb174',7090,814,64,'bottom',8966,1.20);   // 들꽃
-_plant('lb181',7010,800,118,'bottom',8886,1.00);  // 해바라기(큰) — 더 왼쪽으로(→7010)
-_plant('lb178',7290,838,60,'bottom',9166,1.10);   // 풀
-_plant('lb172',7470,840,58,'bottom',9346,1.25);   // 들꽃
+_plant('lb174',7090,827,64,'bottom',8966,1.20);   // 들꽃. y 814→827: 새 파란선에 발끝 실측 재안착(gap +21)
+_plant('lb181',7010,818,118,'bottom',8886,1.00);  // 해바라기(큰) — 더 왼쪽으로(→7010). y 800→818: 새 파란선에 발끝 실측 재안착(gap +10)
+_plant('lb178',7290,844,60,'bottom',9166,1.10);   // 풀. y 838→844: 새 파란선에 발끝 실측 재안착(gap -6)
+_plant('lb172',7470,842,58,'bottom',9346,1.25);   // 들꽃. y 840→842: 새 파란선에 발끝 실측 재안착(gap +8)
 _plant('lb179',7550,840,62,'bottom',9426,1.15);   // 풀
 _plant('lb177',7660,840,90,'bottom',9536,1.05);   // 해바라기
 _plant('lb182',7710,840,56,'bottom',9586,1.30);   // 들꽃
@@ -1769,6 +1762,36 @@ window.NARROW3S_DX=1032;   // 좁은구간 연장: 3초(387)+재회앞 5초(645)
   window.SEASON_DX=DX; window.SEASON_DT=DX/129;   // 계절 파티클(벚꽃/낙엽/눈) X·시간 보정용 전역 오프셋
 })();
 
+// [재회 앞 3초 삽입] "그러던 어느 날"(재회) 앞 나란히 구간을 310px 연장 → 재회+피날레 전부 +3초(등속). DX=3초×SPEED(실측 103.18/s). 앞(계절·이전)은 불변.
+(function insertBeforeReunion4s(){
+  const DX=310;
+  insertForkGap(DX);              // 평행 구간 연장 + p2/피날레/선끝 일괄 +DX (+SHIFT_LOG·LINE_END_X)
+  REUNION_X += DX; PARALLEL_END += DX;
+  P2_STRETCH_DELTA += DX;         // SPEED 계산서 제외 → 등속, 재회 이후만 +3초
+})();
+
+// [평행선 꺾임 보정] 삽입(계절 등)이 베지어 끝점만 +DX 하고 제어점은 안 옮겨 평행 구간이 뒤틀림 → 제어점이 한쪽에 몰린 '평평한' 세그먼트를 감지해 제어점을 시작~끝 사이 고르게 재배치(y 선형보간). 곡선(수렴 등, |Δy|>25)은 건드리지 않음.
+(function smoothStretchedParallel(){
+  ['pPink','pBlue'].forEach(function(id){
+    var e=document.getElementById(id); if(!e) return;
+    var toks=e.getAttribute('d').replace(/\s+/g,' ').trim().split(' ');
+    var out=[]; var i=0, cx=0, cy=0;
+    while(i<toks.length){
+      if(toks[i]==='M'){ cx=+toks[i+1]; cy=+toks[i+2]; out.push('M',toks[i+1],toks[i+2]); i+=3; }
+      else if(toks[i]==='C'){
+        var c1x=+toks[i+1],c1y=+toks[i+2],c2x=+toks[i+3],c2y=+toks[i+4],ex=+toks[i+5],ey=+toks[i+6];
+        if(Math.abs(ey-cy)<25 && (ex-c2x) > 2.0*Math.max(1,(c1x-cx))){   // 평평 + 제어점 왼쪽 쏠림 = 뒤틀린 삽입 세그먼트
+          var sp=ex-cx; c1x=cx+sp/3; c2x=cx+2*sp/3; c1y=cy+(ey-cy)/3; c2y=cy+2*(ey-cy)/3;
+        }
+        out.push('C', (+c1x).toFixed(1),(+c1y).toFixed(1),(+c2x).toFixed(1),(+c2y).toFixed(1), ex, ey);
+        cx=ex; cy=ey; i+=7;
+      } else if(toks[i]==='L'){ cx=+toks[i+1]; cy=+toks[i+2]; out.push('L',toks[i+1],toks[i+2]); i+=3; }
+      else { out.push(toks[i]); i++; }
+    }
+    e.setAttribute('d', out.join(' '));
+  });
+})();
+
 // ═══ [fwd/inv 좌표 변환] SHIFT_LOG(각 시프트 연산이 기록한 스펙)을 순서대로 재생. ═══
 //  fwd(codeX, grp, pin) = 오브젝트의 최종 화면 x. inv(screenX, grp) = 그 화면 x를 만드는 codeX.
 //  → 화면 x에 배치: add(libNode('id', inv(화면x,grp), y, size,...), inv(화면x,grp), grp, lag)
@@ -1966,7 +1989,7 @@ function drawOpening(t){
 // 구간 밖은 정상 등속(SPEED). SPK_FLAT(=가로폭)만큼만 시간으로 치므로 전체 완성 시각(LINE_T1)은 무스파이크와 동일 → 피날레/자막 보존.
 // [마지막 선 연장] 하트가 화면 중앙에 온 뒤(카메라 정지) 선이 화면 오른쪽 끝까지 계속 그려지도록 선끝(=화살표 x)을 CAM_EDGE_EXT 만큼 연장. p2 경로는 이미 그 너머(≈21905)까지 존재.
 LINE_END_X += CAM_EDGE_EXT;
-(function extendArrow(){ var ar=items.filter(function(it){return it.grp==='today';}).sort(function(a,b){return b.ax-a.ax;})[0]; if(ar){ ar.dx=(ar.dx||0)+CAM_EDGE_EXT; ar.ax+=CAM_EDGE_EXT; ar.fwdSkip=1; } })();   // 화살표를 연장된 선끝으로 이동(수동 배치 → fwd 자체검증 제외)
+(function extendArrow(){ var ar=items.filter(function(it){return it.grp==='today';}).sort(function(a,b){return b.ax-a.ax;})[0]; if(ar){ ar.dx=(ar.dx||0)+CAM_EDGE_EXT; ar.ax+=CAM_EDGE_EXT; ar.fwdSkip=1; ar.nobounce=1; } })();   // nobounce: 등장 scale 바운스 제거 — →화살표라 스케일 시 팁이 좌우로 흔들리던 진동 방지   // 화살표를 연장된 선끝으로 이동(수동 배치 → fwd 자체검증 제외)
 SPK_A0=lenAtX(paths[0], X_SPK0);   // 스파이크 진입(실 호길이)
 SPK_A1=lenAtX(paths[0], X_SPK1);   // 하트 직후(실 호길이) — 하트 최대 x<X_SPK1 이라 단일 교차
 const SPK_ARC=SPK_A1-SPK_A0, SPK_FLAT=X_SPK1-X_SPK0, SPK_EXTRA=SPK_ARC-SPK_FLAT;   // 실 호길이 vs 평탄 등가 폭, 여분
@@ -2155,7 +2178,7 @@ const SUBS=[
   {at:'x', x:REUNION_X, off:49.59, dur:5.0, text:'곁이란, 서로의 하루를 나누고'},
   {at:'x', x:REUNION_X, off:58.09, dur:5.0, text:'혼자 걷던 길을\n나란히 걷는 것'},
   {at:'x', x:REUNION_X, off:66.99, dur:5.0, text:'우리는 서로에게\n‘곁’이라는 선물을 받았습니다'},   // off 68.59→66.99(실제 2초 앞)
-  {at:'lineEnd', off:0.15, dur:5.0, text:'그리고 오늘,\n우리는 새로운 시간을 시작합니다'},   // 선이 화면 끝(화살표)에 닿는 순간 등장
+  {at:'lineEnd', off:0.15, dur:12.0, text:'그리고 오늘,\n우리는 새로운 시간을 시작합니다'},   // 선이 화면 끝(화살표)에 닿는 순간 등장
 ];
 const SUB_OFF_SCALE = SPEED_DIV / SPEED_DIV_BASE;   // off(선-진행 상대초)를 현재 선속도에 맞춰 스케일 → 느려진 씬과 자막 등장시점 동기(20% 느리면 1.25배)
 const lines = SUBS.map(function(s){
@@ -2170,7 +2193,7 @@ const lines = SUBS.map(function(s){
 const CAM_FROM=760, CAM_TO=-5430;   // 선 끝(6390)이 화면 중앙(960)에 오도록: 960-6390=-5430
 const CAM_DRIFT=2.8;   // 선 완성 후 카메라가 선 끝을 오른쪽1/3→중앙으로 옮기는 시간(초)
 const VIEW_CENTER=1280;
-const DURATION=Math.max(LINE_T1+7.0, lines[lines.length-1][1]+2.0);   // 선 완성+피날레 OR 마지막 자막 끝(+2s) 중 더 늦은 쪽 — 자막이 선보다 길면 그만큼 전체 연장
+const DURATION=Math.max(LINE_T1+7.0, lines[lines.length-1][1]+0.5);   // 선 완성+피날레 OR 마지막 자막 끝(+2s) 중 더 늦은 쪽 — 자막이 선보다 길면 그만큼 전체 연장
 const HOME_FADE_T0=LINE_T1+0.15;  // 하트가 등장하는 시각(선 완성 직후) = 좌측 홈 오브젝트 페이드아웃 시작
 const HOME_FADE_DUR=0.8;          // 홈 오브젝트 페이드아웃 시간(초)
 const HEART_STOP_T=tAtX(LINE_END_X - CAM_EDGE_EXT);   // 하트가 화면 중앙에 와서 카메라가 멈추는 시각 = 강변 씬 페이드아웃 시작
@@ -2281,13 +2304,14 @@ function animateForkPull(t){
   // [파란선 하강] 선물 받는 씬(render≈7846) 이후 아래선만 여름나무 밑동을 향해 내려감 → 여름나무(9250)에서 840 도달 → 플래토(겨울나무 10350 포함, 평평 840 = 두 나무 밑동 정확히 통과) → 재회 전 원래 파형으로 복귀(재회 유지). yTop 불변=윗선 유지.
   //  플래토는 정확 정렬 위해 '평평 840'(파동 상쇄). 전환 구간은 normal↔840 블렌드로 자연스럽게 하강/상승.
   const BLUE_TARGET=840;   // 여름·겨울 밑동 y(≈840.2~840.3)
-  const BLUE_W=(function(){ const A=7846, B=9250, C=10820, D=REUNION_X-(window.SEASON_DX||0); const ss=t=>t*t*(3-2*t);   // D는 삽입 전 재회x(remap과 이중계산 방지)
+  // [파란선 하강 = 런타임(삽입 후) 좌표계] 하강 경계 B·C·D를 런타임 x로 잡아 계절 seam(8540)을 '연속으로' 통과 → 옛 방식(삽입 전 좌표+_sRemap hold)이 만들던 하강 도중 평평-hold 코너/점프가 사라짐. B/C=여름·겨울 밑동 런타임x(=원좌표+SEASON_DX), D=재회 런타임x. meander(잔물결)만 _sRemap으로 seam에서 hold(미세 파동이라 무해).
+  const BLUE_W=(function(){ const _sD=(window.SEASON_DX||0); const A=7846, B=9250+_sD, C=10820+_sD, D=REUNION_X; const ss=t=>t*t*(3-2*t);
     return x=>{ if(x<=A||x>=D) return 0; if(x<B) return ss((x-A)/(B-A)); if(x<=C) return 1; return 1-ss((x-C)/(D-C)); }; })();
   // [계절 삽입 remap] 계절 앞 메인선 DX 삽입 시, 파형(meander)의 x위상을 삽입만큼 되돌려 선 모양이 오브젝트(+DX 이동)와 일치하도록. 삽입구간은 평평 hold.
   const _sATX=8540, _sDX=(window.SEASON_DX||0);
   const _sRemap=x=> (_sDX<=0||x<=_sATX) ? x : (x>=_sATX+_sDX ? x-_sDX : _sATX);
   const yTop=x=>540-(hgc(x)+env(x)*(meander(_sRemap(x))+rip(x,0.0)));
-  const yBot=x=>{ const nb=540+(hgc(x)+env(x)*(meander(_sRemap(x))+rip(x,0.0))); const w=BLUE_W(_sRemap(x)); return w>0? (nb*(1-w)+BLUE_TARGET*w) : nb; };
+  const yBot=x=>{ const nb=540+(hgc(x)+env(x)*(meander(_sRemap(x))+rip(x,0.0))); const w=BLUE_W(x); return w>0? (nb*(1-w)+BLUE_TARGET*w) : nb; };
   const penX=xAtTime(t);   // 실제 선 그려진 지점(=펜, 오른쪽 1/3). 라이브선을 여기까지만 그림 → 딱 펜에서 끝남.
   const build=fy=>{ if(penX<=FORK_X+15) return ''; const xe=Math.min(REUNION_X,penX); let d='M '+FORK_X+' '+fy(FORK_X).toFixed(1);
     for(let x=FORK_X-218;x<=xe;x+=40){ d+=' L '+x+' '+fy(x).toFixed(1); }
@@ -2391,7 +2415,7 @@ function animateForkPull(t){
   const dipAt=(T,tt)=>{ if(T==null) return 0; const dd=tt-T-EM; if(dd<=0) return 0; const SLK=0.7,YNK=0.55,SET=0.9,OVER=1.15; if(dd<SLK) return 0.06*ss(dd/SLK); const yy=dd-SLK; if(yy<YNK) return 0.06+(OVER-0.06)*ss(yy/YNK); return OVER-(OVER-1)*ss(Math.min(1,(yy-YNK)/SET)); };
   const hgcAt=(x,tt)=>{ const e=env(x); if(e<=0) return 0; let g=GB - DIPAMT*dipAt(F.T1,tt)*sp(x,F.P1X) + REB*dipAt(F.T1,tt)*sp(x,F.P1X+RBO) - DIPAMT2*dipAt(F.T2,tt)*sp2(x,F.P2X); return e*Math.max(24,g); };
   const yTopAt=(x,tt)=>540-(hgcAt(x,tt)+env(x)*meander(_sRemap(x)));
-  const yBotAt=(x,tt)=>{ const nb=540+(hgcAt(x,tt)+env(x)*meander(_sRemap(x))); const w=BLUE_W(_sRemap(x)); return w>0?(nb*(1-w)+BLUE_TARGET*w):nb; };
+  const yBotAt=(x,tt)=>{ const nb=540+(hgcAt(x,tt)+env(x)*meander(_sRemap(x))); const w=BLUE_W(x); return w>0?(nb*(1-w)+BLUE_TARGET*w):nb; };   // 하강 w는 런타임 x(=yBot과 동일) — 오브젝트 스냅이 렌더선과 일치
   F.lineYat=function(x,w,tt){ return w==='bottom'? yBotAt(x,tt) : yTopAt(x,tt); };
   F.lineY=function(x,w){ return w==='bottom'? yBot(x) : yTop(x); };   // 현재 프레임의 선-y 노출 → 선 위 오브젝트가 좁혀짐/파동을 따라 이동
 }
@@ -3152,7 +3176,7 @@ function frame(ts){
   // BGM — 인트로 자막이 끝나고 별이 등장하는 시점(BGM_START)부터 재생. 그 전엔 무음.
   if(audioReady && bgmAudio){
     if(t>=BGM_START){
-      if(bgmAudio.paused){ try{ var _d=bgmAudio.duration||DURATION; bgmAudio.currentTime=Math.max(0,(t-BGM_START)%_d); }catch(e){} bgmAudio.muted=false; const _pb=bgmAudio.play(); if(_pb&&_pb.catch)_pb.catch(()=>{}); }
+      if(bgmAudio.paused){ try{ var _d=bgmAudio.duration||DURATION; bgmAudio.currentTime=Math.max(0,(t-BGM_START)); }catch(e){} bgmAudio.muted=false; const _pb=bgmAudio.play(); if(_pb&&_pb.catch)_pb.catch(()=>{}); }
     }else{
       if(!bgmAudio.paused) bgmAudio.pause();
     }
@@ -3163,7 +3187,6 @@ function frame(ts){
     const o=Math.min(1,(t-71.0)/2.4);
     endStars.setAttribute('opacity',o.toFixed(3));
   }
-
 
   if(window.__jejuUpdate) window.__jejuUpdate(t);   // [제주 매달기] 등장 갱신
   if(window.__commUpdate) window.__commUpdate(t);   // [통신 아이콘 매달기] 첫 실 자리 등장 갱신
@@ -3247,7 +3270,7 @@ function seekTo(t){
   if(!wasRunning) unlockAudio();                    // 정지 상태 클릭 → 사용자 제스처 안에서 오디오 시작
   start = performance.now() - t*1000;               // 프레임 시계를 t 로 이동(프레임 루프가 그 t를 렌더)
   if(bgmAudio){ try{
-    if(t>=BGM_START){ var _bd=bgmAudio.duration||DURATION; bgmAudio.currentTime=Math.max(0,(t-BGM_START)%_bd); }   // BGM은 BGM_START 기준 오프셋 + 루프(곡 길이로 모듈로)
+    if(t>=BGM_START){ var _bd=bgmAudio.duration||DURATION; bgmAudio.currentTime=Math.max(0,(t-BGM_START)); }   // BGM은 BGM_START 기준 오프셋 + 루프(곡 길이로 모듈로)
     else { bgmAudio.pause(); bgmAudio.currentTime=0; }
   }catch(e){} }
   document.getElementById('ui').classList.add('hide');
@@ -3274,8 +3297,6 @@ items.forEach(function(it){
 });
 items.forEach(it=>{ if(it.vineSuck) it.dur=1.1; });   // 덩굴: 멀리서 오기 + 밑둥으로 빨려들어감 시간
 try{ _fwdSelfTest(); }catch(e){ console.error('[fwd self-test] 예외', e); }   // fwd 정확성 자체검증(콘솔)
-
-
 
 // ═══════ [제주 매달기 씬] 선물던지기~계절 사이. 둘째 실(P2) 애니 종료 후 왼쪽부터 지그재그 등장(오버레이) ═══════
 (function jejuHangScene(){
@@ -3338,8 +3359,6 @@ try{ _fwdSelfTest(); }catch(e){ console.error('[fwd self-test] 예외', e); }   
     });
   };
 })();
-
-
 
 // ═══════ [통신 아이콘 매달기] 첫 실(P1X≈7120) 소멸 후 전화·노트북메일·편지·폰 4개가 제주씬처럼 매달려 등장 (기존 메시지폰 대체) ═══════
 (function commHangScene(){

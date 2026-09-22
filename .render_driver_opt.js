@@ -2,7 +2,7 @@
 // 검증: 컬링 프레임 == 원본 프레임 픽셀 동일(max diff 0). 카메라 화면-x = ax + camX (cam CSS translate3d).
 // 사용: 각 탭에서 이 스크립트 주입 후 window.__job = window.__render(startIdx, endIdx) 로 비동기 발사, 디스크 폴링.
 window.__render = async function(startIdx, endIdx){
-  const fps=120, W=1280, Hh=720, M=300, VBW=1920;
+  const fps=60, W=1280, Hh=720, M=300, VBW=1920;   // 60fps 기본(예식장·아이폰 모두 60Hz라 120 불필요). 프레임 절반→렌더 2배 빠름
   const scene=document.getElementById('scene'), grain=document.getElementById('grain');
   const cap=document.getElementById('caption'), capText=document.getElementById('capText');
   const camEl=document.getElementById('cam');
