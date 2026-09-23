@@ -1,1 +1,6 @@
+*.bak*
+*.predeploy*
+.bgmhunt/
 .venv_vec/
+frames/
+video1.new.mp4

@@ -273,7 +273,7 @@
   <audio id="bgmAudio" preload="auto" src="./bgm4.mp3?v=0ed3d872"></audio>
 </div>
 
-<script src="objects.js?v=73a9aa5e"></script>
+<script src="objects.js?v=c4654a35"></script>
 <script>
 const {COUPLE_V,HOUSE_V,OAK_V,BUSHY_V,LEAFY_V,COUPLE2_V,BIKE_V,ROUNDTREE_V,MOON_V}=window.WEDDING_SHAPES;  // 공용 objects.js 의 shape 데이터 참조
 
@@ -292,7 +292,7 @@ const capText=document.getElementById('capText');
 const chalk=document.getElementById('chalkStick');
 const chalkAudio=document.getElementById('chalkAudio');
 const bgmAudio=document.getElementById('bgmAudio');
-const BGM_START=7.0;   // BGM 시작 시각 = 6초 지난 뒤(인트로 자막 진행 중). (이전 5.0/4.0/3.0/1.0, 11.6=별 등장)
+const BGM_START=8.0;   // BGM 시작 시각 = 6초 지난 뒤(인트로 자막 진행 중). (이전 5.0/4.0/3.0/1.0, 11.6=별 등장)
 let audioReady=false;
 let chalkFadeTimer=null;
 
@@ -968,7 +968,7 @@ add(libNode('lb239', 4203, 591, 96, {topDown:true, keepfill:true, fatten:1.0, bo
 
 // [씬] 별거 아닌 하루도 함께라서 참 좋았습니다 (3씬-3) — 자전거 커플(라이더 2명). 선 위(x4524,y585). grp='dream'로 두어 insertGap 시프트 제외.
 add(libNode('lb236', 4654, 578, 300, {topDown:true, sw:3.4, rot:-5.2}), 4654, 'dream', 0.3); window.__bikeIt=items[items.length-1];   // 자전거 커플(lb236 단일선 변환·색유지). sw3.4(더 두껍게). rot:-5.2(선 기울기와 평행)+y578: 앞·뒷바퀴 모두 선에 얹힘
-add(libNode('lb267', 4720, 696, 138, {topDown:true, sw:2.6, rot:-5.2}), 4720, 'dream', 0.55); window.__dogIt=items[items.length-1];   // 말티즈(자전거 아래 지면에서 함께 달림). 흰 단색·왼쪽 방향(등록 그대로). 크기 138(15%↑). x4720. y696. rot 선 기울기 평행
+add(libNode('lb277', 4720, 696, 69, {topDown:true, keepfill:true, rot:-5.2}), 4720, 'dream', 0.55); window.__dogIt=items[items.length-1];   // 강아지 교체: lb267 → lb277 달리는 강아지(keepfill·잉크외곽 선-드로잉). 사이즈 69. 왼쪽 방향. rot 선 평행. (선애니메이션으로 그려짐, 바운스 없음)
 // 자전거 씬 배경 장식(보여준 이미지 배치대로): 음표(위)·꽃(좌우 지면). startAfterBike=자전거 다 그려진 뒤 4개 순차 등장(따로 놀지 않게)
 add(libNode('lb86', 4494, 300, 52, {fill:true, anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}), 4494, 'dream', 0.4); items[items.length-1].startAfterBike=0;   // 왼쪽 위 연음표 (가로 50%=26 왼쪽 이동: 4520->4494)
 add(libNode('lb85', 4585, 238, 46, {fill:true, anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}), 4585, 'dream', 0.45); items[items.length-1].startAfterBike=1;  // 왼쪽 위 8분음표
@@ -1099,12 +1099,23 @@ add(libNode('lb244', 4470, 694, 215, {topDown:true, keepfill:true, fatten:1.2}),
 add(libNode('lb253', 4560, 669, 30,  {topDown:true, keepfill:true, fatten:1.2, bottomUp:true}),  4560, 'apartlife', 0.48);  // 풀(아래선)
 add(libNode('lb45', 4780, 590, 105, {anchor:'center', topDown:true, sw:4.2, color:'var(--azure)'}), 4780, 'apartlife', 0.42);  // 노트북(복원) — 남아 우측 빈 공간
 
+// [던지기 전 씬 — 계절 다음, 재회 앞] 여아 서서 대기(오른쪽 보기). 첫 배치(위치 조정 예정).
+add(libNode('lb270', 4250, 520, 235, {topDown:true, sw:3.4}), 4250, 'reunite', 0.3); window.__throwGirl=items[items.length-1];   // 던지기전 여아
+add(libNode('lb271', 4590, 793, 235, {topDown:true, sw:3.4, stretchX:-1}), 4590, 'reunite', 0.35); window.__throwBoy=items[items.length-1];   // 던지기전 남아(파란선·왼쪽보기 반전, 왼쪽 100 이동)
+add(libNode('lb269', 4310, 394, 36, {anchor:'center', topDown:true, keepfill:true}), 4310, 'reunite', 0.5); window.__throwPlaneG=items[items.length-1];   // 여아 손 종이비행기(핑크)
+add(libNode('lb272', 4250, 520, 235, {topDown:true, sw:3.4}), 4250, 'reunite', 0.32); window.__throwGirlT=items[items.length-1]; window.__throwGirlT.node.setAttribute('opacity','0');   // 던질때 여아(스왑용)
+add(libNode('lb273', 4590, 793, 235, {topDown:true, sw:3.4}), 4590, 'reunite', 0.37); window.__throwBoyC=items[items.length-1]; window.__throwBoyC.node.setAttribute('opacity','0');   // 받을때 남아(스왑용, 왼쪽 100 이동)
+add(libNode('lb276', 4595, 793, 235, {topDown:true, sw:3.4}), 4595, 'reunite', 0.38); window.__throwBoyCheer=items[items.length-1]; window.__throwBoyCheer.node.setAttribute('opacity','0');   // 받은뒤 환호 남아(왼손에 비행기·스왑용, ax+5=비행기폭 중심보정, 왼쪽 100 이동)
+window.THROW={ before:window.__throwGirl, throwPose:window.__throwGirlT, boyBefore:window.__throwBoy, boyCatch:window.__throwBoyC, cheer:window.__throwBoyCheer, held:window.__throwPlaneG, X:11727, sx:11362, sy:366, ex:11624, ey:725, peak:180, noseDeg:-32, T0:null };   // ex 11718→11624(남아 왼쪽 100이동에 맞춰 착지점 이동)   // [종이비행기 던지기] 남아 그려짐→여아 throw 스왑→포물선 비행→하강 시 남아 catch 스왑→받는 손 도착
 // ┌──────── [5. 함께2] 재회 ~ 피날레 · 다시 함께 (단일선 p2 = 스크래치 무지개) ────────┐
 //   씬: 돌고돌아 재회 · 더 단단해진 · 함께 걷습니다 · 특별한 하루(자전거) · 앞으로의 날(집·나무) · 오늘부터(하트 터짐)
 //   grp: reunite / stronger / together / days / home / today
 // [씬] 돌고 돌아, 운명처럼 다시 만났습니다 — 손 흔드는 남자(왼) + 차 탄 여자(오른, 재회)
-add(libNode('lb192', 5016, 580, 230, {topDown:true, keepfill:true, occlude:true}), 5016, 'reunite', 0.3); items[items.length-1].subkey='reunite'; window.__reuniteBoy=items[items.length-1]; window.__reuniteBoy.startAtReunionSub=true;   // 손 흔드는 남아3. occlude=메인선 가림. startAtReunionSub=등장(그려지기)을 "그러던 어느 날" 자막 시점에 시작
-add(libNode('lb193', 5274, 424, 279, {topDown:true, keepfill:true}), 5274, 'reunite', 0.5); window.__carIt=items[items.length-1];   // 차 탄 여아3(벡터·매끈) — 하트 위치. 슬라이드-인(왼쪽위→현재) 애니 대상
+// [재회 배경 건물] 재회 커플 뒤 좌/우 건물(lb274 왼쪽 이자카야 · lb275 오른쪽 아파트). 커플보다 먼저 그려 배경(z-order 뒤).
+add(libNode('lb274', 4830, 548, 540, {topDown:true}), 4830, 'reunite', 0.15); window.__bldgL=items[items.length-1]; window.__bldgL.startAfterReunion=0.2;   // 재회 배경 왼쪽 건물 (1.2→0.2, 1초 더 빨리)
+add(libNode('lb275', 5342, 548, 540, {topDown:true, keepfill:true}), 5342, 'reunite', 0.15); window.__bldgR=items[items.length-1]; window.__bldgR.startAfterReunion=0.2;   // 재회 배경 오른쪽 건물 (1.2→0.2, 1초 더 빨리)
+add(libNode('lb192', 4876, 580, 230, {topDown:true, keepfill:true, occlude:true}), 4876, 'reunite', 0.3); items[items.length-1].subkey='reunite'; window.__reuniteBoy=items[items.length-1]; window.__reuniteBoy.startAtReunionSub=true; window.__reuniteBoy.reunionSubLead=0.40;   // 손 흔드는 남아3. occlude=메인선 가림. startAtReunionSub=등장을 "그러던 어느 날" 자막 시점에 시작. reunionSubLead=0.40 → 남아 선-드로잉(dur1.2) 끝이 자동차 도착(car.t+1.2)에 딱 맞음
+add(libNode('lb193', 5094, 454, 279, {topDown:true, keepfill:true}), 5094, 'reunite', 1.5); window.__carIt=items[items.length-1];   // 차 탄 여아3(벡터·매끈) — 하트 위치. 슬라이드-인(왼쪽위→현재) 애니 대상. lag 1.5(자동차 애니 1.5초 늦게 시작)
 
 // [씬] 조금 달라진 모습으로, 여전히 익숙한 사람으로 — 벤치 커플(선 위, 렌더 x≈9682, 선 y540, 등장 71.4s)
 add(libNode('lb194', 5620, 540, 231, {topDown:true, keepfill:true, occlude:true}), 5620, 'stronger', 0.0);   // 벤치 커플3(벡터·매끈). occlude=B
@@ -1137,7 +1148,7 @@ add(libNode('lb264', 6292, 698.1+_alleyDY, 237.8, {topDown:true, keepfill:true, 
 for(var _kfi=items.length-3;_kfi<items.length;_kfi++){ items[_kfi].fwdSkip=1; }   // 골목 3요소: 수동 dx 오프셋 → fwd self-test 제외(렌더는 codeX+dx로 정확)
 
 // [씬] 마음이 무거운 날에는 서로의 곁을 지켰습니다 — 계단 커플(계단 바닥=선 y540, rt≈12573)
-add(libNode('lb196', 6962, 570, 240, {topDown:true, keepfill:true, occlude:true}), 6962, 'days', 0.0);   // 계단 커플=등돌린 커플2(벡터·매끈). occlude=B(그리기 따라 선 가림)
+add(libNode('lb196', 6962, 570, 240, {topDown:true, keepfill:true, occlude:true}), 6962, 'days', 0.0); window.__stairChar=items[items.length-1]; var _stairSurr0=items.length;   // 계단 커플=등돌린 커플2. 캐릭터 먼저 그림. _stairSurr0=이후 주변 오브젝트 시작 인덱스
 add(libNode('lb89', 6850, 512, 320, {fill:true, topDown:true, sw:2.2}), 6850, 'days', 0.0);   // 가로등: 커플 왼쪽(렌더≈12516), 밑둥=호 램프선 y≈508
 // [계단씬] 가로등 전구 양옆 트윙클 — 원본 이미지 6직선 그대로(lampTwinkle). nobounce=바운스없이 위→아래 드로우온
 add(lampTwinkle(6850, 254, 1, 'var(--gold)'), 6850, 'days', 1.4); items[items.length-1].nobounce=true;   // lag 1.4 = 램프(dur1.2) 다 그려진 뒤 시작
@@ -1163,6 +1174,8 @@ add(libNode('lb40', 6816, 225,  5, {anchor:'center', topDown:true, sw:1.8, fill:
 add(libNode('lb93', 6877, 492, 44, {topDown:true, bottomUp:true, sw:2.6}), 6877, 'days', 0.5);    // 수풀 하강형 — 커플 좌측, 오른쪽 위로 50% 이동
 add(libNode('lb94', 7065, 472, 36, {topDown:true, bottomUp:true, sw:2.4}), 7065, 'days', 0.55);   // 수풀 작은 — 우측1(좌 건물 밑동)
 add(libNode('lb92', 7156, 471, 50, {topDown:true, bottomUp:true, sw:2.6}), 7156, 'days', 0.6);    // 수풀 넓은 — 우측2(우 건물 밑동)
+// [마음 무거운 날 계단씬] 커플(캐릭터) 먼저 그린 뒤, 주변(가로등·트윙클·꽃·건물·달·별·수풀)은 씬 전체가 화면에 들어온 시점에 '한번에' 그려지도록 앵커(afterStairChar)
+for(var _ssi=_stairSurr0;_ssi<items.length;_ssi++){ items[_ssi].afterStairChar=true; }
 
 // [씬] 별일 없는 날에는 그저 나란히 걸으며 (자막 off 33.09) — 걷는 커플 + 위 전구줄 + 양옆 꽃. 계단↔피크닉 사이, 선 위.
 // 전구 가랜드(lb95) — 2줄 크로스 스웨그+전구+점+반짝임, 커플 머리 위. keepfill로 baked 색 유지.
@@ -1359,9 +1372,14 @@ function prep(){
   // [남아 등장=자막 동기] 선-드로잉 모드(topDown)는 그대로 두고 시작 시각(it.t)만 "그러던 어느 날" 자막 시점으로 덮어씀
   // [자전거 음표] 자전거(lb236) 다 그려진 직후, 음표 4개를 0.18초 간격으로 순차 등장(각자 따로 놀지 않게)
   var _bk=window.__bikeIt, _bikeFin=(_bk&&_bk.t!=null)?(_bk.t+(_bk.dur||0)):null;
+  // [계단씬 주변 한번에] afterStairChar 오브젝트들의 최우측 등장시각(solo) = 씬 전체가 화면에 든 시점. 그 시점에 전부 동시 시작.
+  var _stairT=null; items.forEach(function(it){ if(it.afterStairChar && it.solo!=null && (_stairT==null||it.solo>_stairT)) _stairT=it.solo; });
+  if(_stairT!=null){ var _sc=window.__stairChar, _scFin=(_sc&&_sc.t!=null)?(_sc.t+(_sc.dur||0)):0; _stairT=Math.max(_stairT-2.0, _scFin+0.2); }   // 최우측 앵커에서 2초 앞당김(건물 늦음 해소), 단 캐릭터 완성 직후는 보장
   items.forEach(it=>{
-    if(it.startAtReunionSub && typeof storyTimeAtX==='function' && typeof REUNION_X!=='undefined'){ it.t = storyTimeAtX(REUNION_X); }
+    if(it.afterStairChar && _stairT!=null){ it.t = _stairT; }   // 주변은 한번에(동시) 그려짐
+    if(it.startAtReunionSub && typeof storyTimeAtX==='function' && typeof REUNION_X!=='undefined'){ it.t = storyTimeAtX(REUNION_X) - (it.reunionSubLead||0); }
     if(it.startAfterBike!=null && _bikeFin!=null){ it.t = _bikeFin + 0.1 + it.startAfterBike*0.18; }
+    if(it.startAfterReunion!=null && typeof storyTimeAtX==='function' && typeof REUNION_X!=='undefined'){ it.t = storyTimeAtX(REUNION_X) + it.startAfterReunion; }   // [건물 선애니] 재회 커플 등장 후 건물 그리기 시작
   });
 }
 
@@ -1770,6 +1788,38 @@ window.NARROW3S_DX=1032;   // 좁은구간 연장: 3초(387)+재회앞 5초(645)
   P2_STRETCH_DELTA += DX;         // SPEED 계산서 제외 → 등속, 재회 이후만 +3초
 })();
 
+// [던지기 씬 뒤·재회 앞 1초 삽입] 컨버전스 x 이후(재회/피날레)만 +DX → 던지기 오브젝트(reunite지만 ax<X_INS)는 제자리 → 틈 생성.
+(function insertAfterThrow1s(){
+  const DX=129;        // 1초(≈129px, SPEED≈129/s)
+  const X_INS=11900;   // 남아(11827)와 재회(12322) 사이
+  const p2=document.getElementById('p2');
+  function shiftX(d){ let k=0; return d.replace(/\s+/g,' ').trim().split(' ').map(function(t){ if(/^[A-Za-z]$/.test(t)){k=0;return t;} const v=+t,isX=(k%2===0);k++; return isX?(v+DX):v; }).join(' '); }
+  ['pPink','pBlue'].forEach(function(id){
+    const e=document.getElementById(id); if(!e) return;
+    const toks=e.getAttribute('d').replace(/\s+/g,' ').trim().split(' ');
+    let lastC=-1; for(let i=0;i<toks.length;i++){ if(toks[i]==='C') lastC=i; }
+    const xp=+toks[lastC-2], yp=+toks[lastC-1];
+    const conv=toks.slice(lastC);
+    for(let j=1;j<conv.length;j++){ if((j-1)%2===0) conv[j]=(+conv[j]+DX); }
+    const ins=['C', Math.round(xp+DX*0.4), yp, Math.round(xp+DX*0.6), yp, Math.round(xp+DX), yp];
+    e.setAttribute('d', toks.slice(0,lastC).concat(ins).concat(conv).join(' '));
+  });
+  p2.setAttribute('d', shiftX(p2.getAttribute('d')));
+  items.forEach(function(it){ if(it.ax!=null && !it.pin && it.ax>=X_INS){ it.ax+=DX; it.dx=(it.dx||0)+DX; } });
+  REUNION_X += DX; PARALLEL_END += DX; LINE_END_X += DX; P2_STRETCH_DELTA += DX;
+  SHIFT_LOG.push({t:'add', dx:DX, cond:{gtAx:X_INS}});
+})();
+
+// [재회 오프닝 뒤 1초 삽입] 오프닝(+건물)≤12559 과 벤치(stronger)≥12878 사이 atX=12700 에서 129px(=1초, 등속) 벌림.
+(function insertAfterReunionOpen1s(){
+  const atX=12700, DX=129;
+  const p2el=document.getElementById('p2'); let k=0;
+  p2el.setAttribute('d', p2el.getAttribute('d').replace(/\s+/g,' ').trim().split(' ').map(function(t){ if(/^[A-Za-z]$/.test(t)){k=0;return t;} const v=+t,isX=(k%2===0);k++; return (isX&&v>atX)?(v+DX).toFixed(1):t; }).join(' '));
+  items.forEach(function(it){ if(it.ax!=null && !it.pin && it.ax>atX){ it.ax+=DX; it.dx=(it.dx||0)+DX; } });
+  SHIFT_LOG.push({t:'add', dx:DX, cond:{gtAx:atX}});
+  LINE_END_X += DX; P2_STRETCH_DELTA += DX;
+})();
+
 // [평행선 꺾임 보정] 삽입(계절 등)이 베지어 끝점만 +DX 하고 제어점은 안 옮겨 평행 구간이 뒤틀림 → 제어점이 한쪽에 몰린 '평평한' 세그먼트를 감지해 제어점을 시작~끝 사이 고르게 재배치(y 선형보간). 곡선(수렴 등, |Δy|>25)은 건드리지 않음.
 (function smoothStretchedParallel(){
   ['pPink','pBlue'].forEach(function(id){
@@ -1877,6 +1927,27 @@ function _fwdSelfTest(){   // 기존 오브젝트 전부 fwd(codeX,grp)===it.ax 
     pts.push(pt.x.toFixed(1)+' '+y.toFixed(1));
   }
   p2el.setAttribute('d','M '+pts.join(' L '));
+})();
+
+// [카페씬 앞 나무 붙이기] 카페 앞 오크나무 때문에 창가커플↔카페 간격이 벌어짐(사용자: 나무를 카페씬에 삽입) → 나무~카페 사이 빈 메인선 1초(129px) 삭제 → 카페(+이후 전부)가 나무 쪽으로 129 당겨져 나무가 카페 왼쪽에 붙음. 자막(카페·강변)도 off -0.8(=1초) 함께 앞당김(SUBS 반영).
+(function deleteCafeTreeGap(){
+  var cafe=items.find(function(o){return o.subkey==='cafe';});
+  if(!cafe){ console.warn('[cafeTree] cafe 앵커 없음'); return; }
+  var atX=cafe.ax-290, DX=-129, DEL=-DX;   // 카페 건물 왼쪽 직전(빈 선 구간). 129px≈1초, 음수=삭제
+  // [경로 단조증가 유지] 구간(atX, atX+DEL]의 점을 '제거'하고 그 뒤 점만 -DEL 시프트 → 역방향 스텝 없음(카메라 왔다갔다 방지). 단순 x-시프트는 경계에서 뒤로 튐.
+  var p2el=document.getElementById('p2');
+  var toks=p2el.getAttribute('d').replace(/\s+/g,' ').trim().split(' '), pts=[];
+  for(var i=0;i<toks.length;){ if(/^[A-Za-z]$/.test(toks[i])){ i++; continue; } pts.push([+toks[i], +toks[i+1]]); i+=2; }
+  var keep=[];
+  for(var p=0;p<pts.length;p++){ var x=pts[p][0], y=pts[p][1];
+    if(x<=atX) keep.push([x,y]);
+    else if(x<=atX+DEL){ /* 삭제 구간 — 점 제거 */ }
+    else keep.push([x+DX, y]);
+  }
+  p2el.setAttribute('d','M '+keep.map(function(q){return q[0].toFixed(1)+' '+q[1].toFixed(1);}).join(' L '));
+  items.forEach(function(it){ if(it.ax!=null && !it.pin && it.ax>atX){ it.ax+=DX; it.dx=(it.dx||0)+DX; } });
+  SHIFT_LOG.push({t:'add', dx:DX, cond:{gtAx:atX}});
+  LINE_END_X += DX; P2_STRETCH_DELTA += DX;
 })();
 
 paths.forEach(p=>{
@@ -2168,16 +2239,16 @@ const SUBS=[
   // [함께2] 재회~피날레 자막 12개. 모두 재회 시점(x9045)에 앵커 + 누적 off(=(n-1)*4.6: 표시3.6+간격1.0).
   //  선 속도는 등속(불변). 자막이 선 완성보다 길면 피날레를 유지하며 이어짐 → 전체 시간만 늘어남.
   {at:'x', x:REUNION_X, off:0.0,  dur:5.0, text:'그러던 어느 날,\n참 신기하게도 우리의 시간은\n다시 만났습니다'},
-  {at:'x', x:REUNION_X, off:5.1,  dur:5.0, text:'조금 달라진 모습으로,\n여전히 익숙한 사람으로'},
-  {at:'x', x:REUNION_X, off:11.07,  dur:5.0, text:'우리는 다시\n서로의 하루를 나누기 시작했습니다'},
-  {at:'x', x:REUNION_X, off:17.9, dur:5.0, text:'특별하지 않는 날들이\n조금씩 특별해졌습니다'},   // +0.5초(요리 씬 앞 0.5초 삽입) · off 17.1→17.9(실제 1초 뒤)
-  {at:'x', x:REUNION_X, off:23.87, dur:5.0, text:'좋은 날에는 함께 웃고'},   // 이하 +1초(요리 씬 앞뒤 각0.5초)
-  {at:'x', x:REUNION_X, off:29.59, dur:5.0, text:'마음이 무거운 날에는\n서로의 곁을 지키고'},
-  {at:'x', x:REUNION_X, off:36.59, dur:5.0, text:'별일 없는 날에는\n그저 나란히 걸으며'},
-  {at:'x', x:REUNION_X, off:43.59, dur:5.0, text:'그렇게 우리는\n‘곁’의 의미를 알게 되었습니다'},
-  {at:'x', x:REUNION_X, off:49.59, dur:5.0, text:'곁이란, 서로의 하루를 나누고'},
-  {at:'x', x:REUNION_X, off:58.09, dur:5.0, text:'혼자 걷던 길을\n나란히 걷는 것'},
-  {at:'x', x:REUNION_X, off:66.99, dur:5.0, text:'우리는 서로에게\n‘곁’이라는 선물을 받았습니다'},   // off 68.59→66.99(실제 2초 앞)
+  {at:'x', x:REUNION_X, off:6.1,  dur:5.0, text:'조금 달라진 모습으로,\n여전히 익숙한 사람으로'},
+  {at:'x', x:REUNION_X, off:12.07,  dur:5.0, text:'우리는 다시\n서로의 하루를 나누기 시작했습니다'},
+  {at:'x', x:REUNION_X, off:18.9, dur:5.0, text:'특별하지 않는 날들이\n조금씩 특별해졌습니다'},   // +0.5초(요리 씬 앞 0.5초 삽입) · off 17.1→17.9(실제 1초 뒤)
+  {at:'x', x:REUNION_X, off:24.87, dur:5.0, text:'좋은 날에는 함께 웃고'},   // 이하 +1초(요리 씬 앞뒤 각0.5초)
+  {at:'x', x:REUNION_X, off:30.59, dur:5.0, text:'마음이 무거운 날에는\n서로의 곁을 지키고'},
+  {at:'x', x:REUNION_X, off:37.59, dur:5.0, text:'별일 없는 날에는\n그저 나란히 걸으며'},
+  {at:'x', x:REUNION_X, off:44.59, dur:5.0, text:'그렇게 우리는\n‘곁’의 의미를 알게 되었습니다'},
+  {at:'x', x:REUNION_X, off:50.59, dur:5.0, text:'곁이란, 서로의 하루를 나누고'},
+  {at:'x', x:REUNION_X, off:58.29, dur:5.0, text:'혼자 걷던 길을\n나란히 걷는 것'},   // off 59.09→58.29(카페앞 나무 붙이며 메인선 1초 삭제=off -0.8)
+  {at:'x', x:REUNION_X, off:67.19, dur:5.0, text:'우리는 서로에게\n‘곁’이라는 선물을 받았습니다'},   // off 67.99→67.19(카페 1초 삭제 -0.8)
   {at:'lineEnd', off:0.15, dur:12.0, text:'그리고 오늘,\n우리는 새로운 시간을 시작합니다'},   // 선이 화면 끝(화살표)에 닿는 순간 등장
 ];
 const SUB_OFF_SCALE = SPEED_DIV / SPEED_DIV_BASE;   // off(선-진행 상대초)를 현재 선속도에 맞춰 스케일 → 느려진 씬과 자막 등장시점 동기(20% 느리면 1.25배)
@@ -2536,6 +2607,55 @@ function animateGiftToss(t){
     _gtGiftNode.style.opacity='1';
     _gtGiftNode.setAttribute('transform','translate('+ex.toFixed(1)+' '+ey.toFixed(1)+') rotate(0)');
   }
+}
+
+// [종이비행기 던지기] 남아 다 그려짐 → 여아 throw 스왑 → 포물선 비행(손끝→받는손) → 하강 시 남아 catch 스왑 → 받는 손 도착
+var _thrInit=false, _thrPlane=null;
+function animateThrow(t){
+  var R=window.THROW; if(!R) return;
+  if(!_thrInit){ _thrInit=true;
+    _thrPlane=libNode('lb269',0,0,36,{anchor:'center',keepfill:true}); _thrPlane.style.opacity='0';
+    var deco=document.getElementById('deco'); if(deco) deco.appendChild(_thrPlane);
+    R.T0=storyTimeAtX(R.X)+2.8;   // 남아 다 그려진 뒤 던지기 시작(튜닝값)
+  }
+  var dt=t-R.T0, FLIGHT=1.5;
+  var ss=function(u){u=Math.max(0,Math.min(1,u));return u*u*(3-2*u);};
+  var throwing=(dt>=0), descending=(dt>=FLIGHT*0.55);
+  var celebrating=(dt>=FLIGHT+0.35);   // 받은 뒤 잠깐(0.35s) 후 환호 포즈(왼손에 비행기)로 스왑
+  if(R.before&&R.before.node)    R.before.node.setAttribute('opacity', throwing?'0':'1');
+  if(R.throwPose&&R.throwPose.node) R.throwPose.node.setAttribute('opacity', throwing?'1':'0');
+  if(R.held&&R.held.node)        R.held.node.setAttribute('opacity', throwing?'0':'1');
+  if(R.boyBefore&&R.boyBefore.node) R.boyBefore.node.setAttribute('opacity', descending?'0':'1');
+  if(R.boyCatch&&R.boyCatch.node)   R.boyCatch.node.setAttribute('opacity', (descending&&!celebrating)?'1':'0');
+  if(R.cheer&&R.cheer.node)         R.cheer.node.setAttribute('opacity', celebrating?'1':'0');
+  if(dt<0){ _thrPlane.style.opacity='0'; return; }
+  if(celebrating){ _thrPlane.style.opacity='0'; return; }   // 비행기는 환호 오브젝트(lb276)에 포함 → 날던 비행기 숨김
+  var pp=Math.min(1,dt/FLIGHT), p=ss(pp);
+  var x=R.sx+(R.ex-R.sx)*p, y=R.sy+(R.ey-R.sy)*p - R.peak*Math.sin(Math.PI*p);
+  var d2=Math.min(1,p+0.02), x2=R.sx+(R.ex-R.sx)*d2, y2=R.sy+(R.ey-R.sy)*d2 - R.peak*Math.sin(Math.PI*d2);
+  var ang=Math.atan2(y2-y, x2-x)*180/Math.PI - R.noseDeg;
+  _thrPlane.style.opacity='1';
+  _thrPlane.setAttribute('transform','translate('+x.toFixed(1)+' '+y.toFixed(1)+') rotate('+ang.toFixed(1)+')');
+}
+
+// [강아지] lb277 = 잉크 외곽선 선-드로잉(keepfill)으로 등장 → 다 그려지면 '가속도 있는' 탄도(포물선) 바운스 2번(감쇠) 후 정지.
+//  균일 sin(통통) 대신 중력형: 바닥에서 속도 최대(임팩트)·정점에서 0, 2번째 바운스는 더 작게(반발계수 0.5).
+function dogBounceY(bs){
+  var hops=[9.0, 4.5], g=560;   // 홉 높이(감쇠), g=중력형 계수(클수록 빠름)
+  var tt=bs;
+  for(var i=0;i<hops.length;i++){
+    var dur=2*Math.sqrt(2*hops[i]/g);
+    if(tt<dur){ var tau=tt/dur; return -hops[i]*4*tau*(1-tau); }   // 포물선: 정점 -h(가속도 일정)
+    tt-=dur;
+  }
+  return null;   // 정지(바운스 종료)
+}
+function animateDog(t){
+  var d=window.__dogIt; if(!d||!d.node||d.t==null) return;
+  if(d.dur==null || (t-d.t)/d.dur < 1) return;   // 선-드로잉 중엔 draw 에 맡김
+  var y=dogBounceY((t-d.t)-d.dur);
+  if(y==null) return;                             // 바운스 끝 → draw 위치 유지
+  d.node.setAttribute('transform','translate('+(d.dx||0)+' '+y.toFixed(2)+')');
 }
 
 // [벚꽃잎 날림] 벚나무(월드 renderX≈8640/8770) 주변에서 꽃잎이 흩날려 떨어짐. cam(월드좌표)에 파티클 레이어.
@@ -3080,6 +3200,8 @@ function frame(ts){
   animateShock(t);   // [감전개그] 커플→번개→감전 깜빡임→해골 (opacity 스왑, item 렌더 뒤 덮어씀)
   animateHandover(t);   // [건네기] 닫힌우산 남자손→여자위 포물선→펼쳐짐
   animateGiftToss(t);   // [선물 건네기] 여자 엎드려 두 손으로 아래로 → 선물 낙하 → 남자 받기
+  animateThrow(t);   // [종이비행기 던지기] 남아 그려짐→여아 throw→포물선 비행→남아 catch→도착
+  animateDog(t);   // [강아지] 선-드로잉 후 가속도 탄도 바운스 2번(감쇠)
 
   // 하트가 그려지기 시작하면 좌측 홈 오브젝트(집·나무·별·달)를 알파로 페이드아웃 → 깨끗한 하트 피날레
   items.forEach(it=>{
@@ -3106,6 +3228,7 @@ function frame(ts){
     cap.style.opacity=0;
     chalk.style.opacity=0;
     chalkStop();
+    window.__penWriting=false;   // [영상 렌더] 자막 없을 때 분필 off
   }else{
     cap.style.color=active[3]||'';            // [자막 색] per-sub 오버라이드(없으면 기본 --chalk)
     chalk.style.background=(active[3]&&/gold/.test(active[3])) ? 'linear-gradient(170deg,#fff6cf 0%,#eecb56 48%,#caa233 100%)' : '';   // [분필색] 자막이 노란색(gold)이면 분필도 노란색, 아니면 기본(크림)
@@ -3153,6 +3276,7 @@ function frame(ts){
       const _ct=document.getElementById('capTail'); if(_ct) _ct.textContent=_tr; }
     // 쓰는 동안엔 소리를 계속 재생(끊김 없음), 다 쓰면 멈춤
     if(penWriting) chalkPlay(); else chalkStop();
+    window.__penWriting=penWriting;   // [영상 렌더] 분필 오디오 트랙 생성용(프레임별 분필 on/off 기록)
     const fade=Math.min(1,(active[1]-t)/0.45);
     cap.style.opacity=(0.93*fade).toFixed(3);
 
