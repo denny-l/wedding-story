@@ -5,7 +5,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@300;400;700&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
 <style>
   /* 분필 필터 on/off는 스크립트의 CHALK_ON(true/false) 한 곳에서 제어. off면 data-chalk="off"가 붙어 전체 필터 해제 */
-  :root[data-chalk="off"] [filter="url(#chalkSoft)"]{ filter:none !important; }
+  :root[data-chalk="off"] [filter="url(#chalkGrain)"]{ filter:none !important; }
   :root{
     --board:#0e0e0f;
     --chalk:#f2ede2;
@@ -175,13 +175,25 @@
         <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="4" seed="7" result="t"/>
         <feDisplacementMap in="SourceGraphic" in2="t" scale="5" xChannelSelector="R" yChannelSelector="G"/>
       </filter>
-      <filter id="chalkSoft" x="-40%" y="-40%" width="180%" height="180%">
+      <filter id="chalkGrain" x="-40%" y="-40%" width="180%" height="180%">
         <!-- B: 알갱이 마스크 — 노이즈가 획 내부를 갉아 분필 알갱이처럼 부서짐 -->
         <feMorphology in="SourceGraphic" operator="dilate" radius="0.06" result="fat"/>
         <feTurbulence type="fractalNoise" baseFrequency="0.05 0.09" numOctaves="3" seed="3" result="t"/>
         <feDisplacementMap in="fat" in2="t" scale="0.75" xChannelSelector="R" yChannelSelector="G" result="disp"/>
         <feTurbulence type="fractalNoise" baseFrequency="0.30" numOctaves="2" seed="11" result="g"/>
         <feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 8 -1.8" result="mask"/>
+        <feComposite in="disp" in2="mask" operator="in" result="grain"/>
+        <feGaussianBlur in="disp" stdDeviation="0.5" result="dust"/>
+        <feColorMatrix in="dust" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.15 0" result="dustA"/>
+        <feMerge><feMergeNode in="dustA"/><feMergeNode in="grain"/></feMerge>
+      </filter>
+      <!-- chalkGrainLite: 강아지 등 큰 흰 채움이 얼룩덜룩해지지 않도록 grain(획 갉기)·변위를 약하게 -->
+      <filter id="chalkGrainLite" x="-40%" y="-40%" width="180%" height="180%">
+        <feMorphology in="SourceGraphic" operator="dilate" radius="0.06" result="fat"/>
+        <feTurbulence type="fractalNoise" baseFrequency="0.05 0.09" numOctaves="3" seed="3" result="t"/>
+        <feDisplacementMap in="fat" in2="t" scale="0.5" xChannelSelector="R" yChannelSelector="G" result="disp"/>
+        <feTurbulence type="fractalNoise" baseFrequency="0.30" numOctaves="2" seed="11" result="g"/>
+        <feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 10 -1.3" result="mask"/>
         <feComposite in="disp" in2="mask" operator="in" result="grain"/>
         <feGaussianBlur in="disp" stdDeviation="0.5" result="dust"/>
         <feColorMatrix in="dust" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.15 0" result="dustA"/>
@@ -217,7 +229,7 @@
     </defs>
 
     <!-- 배경 별 (엔딩용) -->
-    <g id="endStars" opacity="0" filter="url(#chalkSoft)"></g>
+    <g id="endStars" opacity="0" filter="url(#chalkGrain)"></g>
 
     <!-- 카메라 그룹 -->
     <g id="cam">
@@ -232,7 +244,7 @@
         <path id="pFAb" stroke-opacity="0.93" stroke="var(--azure)" stroke-width="8"
           d="M 680 540 C 845.0 544.8 953.8 660.0 1173.2 700.0 C 1392.5 736.8 1611.9 725.6 1831.3 700.0 C 2050.7 674.4 2171.8 565.6 2435.0 540.0"/>
       </g>
-      <g id="boyScene" filter="url(#chalkSoft)"></g><g id="lineG" mask="url(#chalkMask)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <g id="boyScene" filter="url(#chalkGrain)"></g><g id="lineG" mask="url(#chalkMask)" fill="none" stroke-linecap="round" stroke-linejoin="round">
 
         <!-- 1구간: 시작 → 언덕 -->
         <path id="p1" stroke-opacity="0.93" stroke="var(--gold)" stroke-width="9"
@@ -252,7 +264,9 @@
       </g>
 
       <!-- 장식 -->
-      <g id="deco" filter="url(#chalkSoft)"></g>
+      <g id="deco" filter="url(#chalkGrain)"></g>
+      <!-- decoLite: 약한 chalk 필터(강아지 등 큰 흰 채움 얼룩 방지). deco 위 레이어(전경 오브젝트용) -->
+      <g id="decoLite" filter="url(#chalkGrainLite)"></g>
     </g>
   </svg>
 
@@ -273,12 +287,12 @@
   <audio id="bgmAudio" preload="auto" src="./bgm2.mp3?v=f23b6297"></audio>
 </div>
 
-<script src="objects.js?v=c4654a35"></script>
+<script src="objects.js?v=98ba412c"></script>
 <script>
 const {COUPLE_V,HOUSE_V,OAK_V,BUSHY_V,LEAFY_V,COUPLE2_V,BIKE_V,ROUNDTREE_V,MOON_V}=window.WEDDING_SHAPES;  // 공용 objects.js 의 shape 데이터 참조
 
 const NS='http://www.w3.org/2000/svg';
-// ★ 분필(chalkSoft) 필터 on/off. 기본 ON. URL ?chalk=off 로 끄면 진단용(필터가 아이폰 끊김 원인인지 즉시 확인).
+// ★ 분필(chalkGrain) 필터 on/off. 기본 ON. URL ?chalk=off 로 끄면 진단용(필터가 아이폰 끊김 원인인지 즉시 확인).
 const CHALK_ON = !/[?&]chalk=off\b/.test(location.search);
 document.documentElement.setAttribute('data-chalk', CHALK_ON ? 'on' : 'off');
 const CPS=0.174;  // 글자 하나 쓰는 데 걸리는 초. 키우면 더 천천히 써짐 (0.145->0.174: 자막 쓰기 20% 느리게)
@@ -334,7 +348,7 @@ function rnd(){ _sd=(_sd*1103515245+12345)&0x7fffffff; return _sd/0x7fffffff; }
 
 // 여러 번 덧그린 낙서풍 별
 function scribbleStar(x,y,r,color,sw,passes){
-  const g=el('g',{}); g.setAttribute('filter','url(#chalkSoft)');
+  const g=el('g',{}); g.setAttribute('filter','url(#chalkGrain)');
   for(let p=0;p<(passes||3);p++){
     const j=()=>(rnd()-0.5)*r*0.17;
     let d='';
@@ -369,7 +383,7 @@ function star(x,y,r,color,sw){
     d+=(i?'L':'M')+(x+Math.cos(a1)*r)+' '+(y+Math.sin(a1)*r)+
        'L'+(x+Math.cos(a2)*r*.44)+' '+(y+Math.sin(a2)*r*.44);
   }
-  return el('path',{d:d+'Z',stroke:color,'stroke-width':sw||3,fill:'none','stroke-linejoin':'round',filter:'url(#chalkSoft)'});
+  return el('path',{d:d+'Z',stroke:color,'stroke-width':sw||3,fill:'none','stroke-linejoin':'round',filter:'url(#chalkGrain)'});
 }
 // 다각형 poly 안쪽을 분필 알갱이(짧은 다방향 획)로 채운 하나의 path 반환
 function chalkFill(poly, color, sw, seedBase, opt){
@@ -419,7 +433,7 @@ function chalkFillTest(inside, minx,miny,maxx,maxy, color, sw, seedBase, opt){
 const HEART4_D=["M71.18,21.78c6.74-1.17,12.3-2.43,17.93-3.05,9.6-1.06,18,1.55,25,8.67,12.63,13,15.9,28,10.75,45.12-2.84,9.43-9.94,15.27-17.89,20-8.34,5-17.13,9.22-25.63,14-11.7,6.52-21.56,15-28.41,26.76-1.35,2.31-3.89,3.93-5.48,5.47-4-.28-6.3-1.43-7-4.83-.43-1.94-1.2-3.81-1.7-5.74-2.21-8.39-6.23-15.92-10.76-23.25-6.78-10.94-14.12-21.53-20-33A71.89,71.89,0,0,1,0,41.31c-.37-12.09,3.59-23,12.76-31.7,10.52-10,33.5-14.7,49-1.49,3.17,2.7,5.26,6.69,7.72,10.16A20.55,20.55,0,0,1,71.18,21.78ZM47.47,118.4a9.63,9.63,0,0,0,2.13-1.48C58.66,105.84,70.18,98.1,82.9,91.8c7.67-3.8,15.17-8,22.44-12.56,11.32-7,13.55-16.93,10.85-29.07A36.87,36.87,0,0,0,111.75,40c-3.7-6.36-9.39-9.78-16.79-10.42-7.59-.65-14.77.31-21.56,4.11-3.79,2.11-7.32.63-9.13-3.27a15.5,15.5,0,0,1-1.08-3.25C61.68,20.26,56.8,16.61,50.71,14.1a31,31,0,0,0-16.86-1.91,19.2,19.2,0,0,0-7.89,3c-8.85,6.3-14.17,14.86-14.69,25.89A50.51,50.51,0,0,0,18,69.1c3.42,6,7,11.81,10.69,17.6,6.16,9.65,12.63,19.09,17.1,29.71A9.43,9.43,0,0,0,47.47,118.4Z","M47.47,118.4a9.43,9.43,0,0,1-1.65-2c-4.47-10.62-10.94-20.06-17.1-29.71C25,80.91,21.45,75.05,18,69.1a50.51,50.51,0,0,1-6.76-28c.52-11,5.84-19.59,14.69-25.89a19.2,19.2,0,0,1,7.89-3A31,31,0,0,1,50.71,14.1c6.09,2.51,11,6.16,12.48,13.07a15.5,15.5,0,0,0,1.08,3.25c1.81,3.9,5.34,5.38,9.13,3.27,6.79-3.8,14-4.76,21.56-4.11,7.4.64,13.09,4.06,16.79,10.42a36.87,36.87,0,0,1,4.44,10.17c2.7,12.14.47,22-10.85,29.07C98.07,83.77,90.57,88,82.9,91.8c-12.72,6.3-24.24,14-33.3,25.12A9.63,9.63,0,0,1,47.47,118.4Z"];
 function heart(x,y,s,color,sw,fill){
   // heart4 벡터 이식(중심 63.6,69.4 · 폭≈1.5s). p1(안쪽)+p0(외곽 ring)를 같은 색으로 채워 속이 꽉 찬 하트(흰색 없음)
-  const g=el('g',{}); g.setAttribute('filter','url(#chalkSoft)');
+  const g=el('g',{}); g.setAttribute('filter','url(#chalkGrain)');
   const cx=63.6, cy=69.4, k=s*0.011, fc=fill||color;
   const OUTER=HEART4_D[0].split('ZM')[0]+'Z';   // heart4 바깥 윤곽만(안쪽 서브패스 선 제외)
   const inner=el('g',{transform:`translate(${x} ${y}) scale(${k.toFixed(4)}) translate(${-cx} ${-cy})`});
@@ -449,7 +463,7 @@ function curlyStem(x,y,s,d,u){
 }
 function leaf(x,y,s,dir,up){
   up = (up===undefined) ? -1 : up;
-  const g=el('g',{}); g.setAttribute('filter','url(#chalkSoft)'); g.setAttribute('data-sprout','1');
+  const g=el('g',{}); g.setAttribute('filter','url(#chalkGrain)'); g.setAttribute('data-sprout','1');
   const d=dir, u=up;
   const st=curlyStem(x,y,s,d,u);
   const ex=st.tx, ey=st.ty;
@@ -493,7 +507,7 @@ function smoothClosed(pts,k,cap){
 // 침엽수 — 시안 트레이싱 기준점을 정리한 대칭 윤곽(위 삼각형+아래 삼각형+기둥)
 const PINE_PTS=[[0.5,0.0],[0.08,0.36],[0.21,0.36],[0.02,0.69],[0.465,0.715],[0.465,1.0],[0.535,1.0],[0.535,0.715],[0.98,0.69],[0.79,0.36],[0.92,0.36]];
 function tree(x,y,s){
-  const g=el('g',{}); g.setAttribute('filter','url(#chalkSoft)');
+  const g=el('g',{}); g.setAttribute('filter','url(#chalkGrain)');
   // [수정] 선에 가까운 밑동부터 위로 자라게: 외곽 시작점을 밑동(좌하)으로 → 왼쪽 타고 tip → 오른쪽 내려와 밑변은 마지막에 닫음
   const P=[[-0.44,-0.08],[-0.15,-0.52],[-0.28,-0.52],[0,-1.0],[0.28,-0.52],[0.15,-0.52],[0.44,-0.08]];
   const pts=P.map(p=>[x+p[0]*s, y+p[1]*s]);
@@ -511,7 +525,7 @@ function tree(x,y,s){
 // 덩굴이 멀리(from 방향)서 날아와 밑둥에서 돼지꼬리처럼 한 바퀴 감고 그 중심(밑둥)으로 수렴 → 쪽 빨려들어감.
 // 컬이 방향 전환을 흡수하므로 어느 각도로 와도 기둥과 자연스럽게 이어진다.
 function vineSuck(x,y,s,from){
-  const g=el('g',{}); g.setAttribute('filter','url(#chalkSoft)');
+  const g=el('g',{}); g.setAttribute('filter','url(#chalkGrain)');
   const fx=x+from[0]*s, fy=y+from[1]*s;   // 먼 시작점
   const bx=x, by=y+s*.16;                  // 밑둥(기둥 바닥) = 최종 수렴점
   // 경로: 먼 곳 → (중간) 한 바퀴 루프 → 밑둥으로 쭈욱 직선. 360도 나선 수렴이 아님.
@@ -544,7 +558,7 @@ function vineSuck(x,y,s,from){
 // 꽃 — 줄기 + 잎 + 5장 꽃잎 + 꽃심
 function flower(x,y,s,color){
   color=color||'var(--rose)';
-  const g=el('g',{}); g.setAttribute('filter','url(#chalkSoft)'); g.setAttribute('data-topdown','1'); g.setAttribute('data-bottomup','1');
+  const g=el('g',{}); g.setAttribute('filter','url(#chalkGrain)'); g.setAttribute('data-topdown','1'); g.setAttribute('data-bottomup','1');
   g.appendChild(el('path',{d:`M ${x} ${y+s*1.5} C ${x+s*.12} ${y+s*1.1}, ${x-s*.14} ${y+s*.85}, ${x} ${y+s*.35}`,
     stroke:'var(--leaf)','stroke-width':5.0,fill:'none','stroke-linecap':'round'}));
   g.appendChild(el('path',{d:`M ${x} ${y+s*.95} q ${s*.5} ${-s*.16} ${s*.64} ${s*.26} q ${-s*.5} ${s*.12} ${-s*.64} ${-s*.26} Z`,
@@ -563,7 +577,7 @@ function flower(x,y,s,color){
 // 팬지 — 둥근 겹꽃잎 5장(타원) + 골드 꽃심, 웨딩 줄기/잎
 function pansy(x,y,s,color){
   color=color||'var(--lilac)';
-  const g=el('g',{}); g.setAttribute('filter','url(#chalkSoft)'); g.setAttribute('data-topdown','1'); g.setAttribute('data-bottomup','1');
+  const g=el('g',{}); g.setAttribute('filter','url(#chalkGrain)'); g.setAttribute('data-topdown','1'); g.setAttribute('data-bottomup','1');
   g.appendChild(el('path',{d:`M ${x} ${y+s*1.5} C ${x+s*.12} ${y+s*1.1}, ${x-s*.14} ${y+s*.85}, ${x} ${y+s*.35}`,
     stroke:'var(--leaf)','stroke-width':5.0,fill:'none','stroke-linecap':'round'}));
   g.appendChild(el('path',{d:`M ${x} ${y+s*.95} q ${s*.5} ${-s*.16} ${s*.64} ${s*.26} q ${-s*.5} ${s*.12} ${-s*.64} ${-s*.26} Z`,
@@ -579,7 +593,7 @@ function pansy(x,y,s,color){
 // 벚꽃 — 끝이 갈라진 5잎 + 골드 꽃심, 웨딩 줄기/잎
 function cherry(x,y,s,color){
   color=color||'var(--rose)';
-  const g=el('g',{}); g.setAttribute('filter','url(#chalkSoft)'); g.setAttribute('data-topdown','1'); g.setAttribute('data-bottomup','1');
+  const g=el('g',{}); g.setAttribute('filter','url(#chalkGrain)'); g.setAttribute('data-topdown','1'); g.setAttribute('data-bottomup','1');
   g.appendChild(el('path',{d:`M ${x} ${y+s*1.5} C ${x+s*.12} ${y+s*1.1}, ${x-s*.14} ${y+s*.85}, ${x} ${y+s*.35}`,
     stroke:'var(--leaf)','stroke-width':5.0,fill:'none','stroke-linecap':'round'}));
   g.appendChild(el('path',{d:`M ${x} ${y+s*.95} q ${s*.5} ${-s*.16} ${s*.64} ${s*.26} q ${-s*.5} ${s*.12} ${-s*.64} ${-s*.26} Z`,
@@ -594,7 +608,7 @@ function cherry(x,y,s,color){
 }
 function sparkle(x,y,s,color){
   // s = 하트에서 빛살까지의 간격(반지름). 짧고 가는 빛살 몇 개만, 위쪽 위주.
-  const g=el('g',{}); g.setAttribute('filter','url(#chalkSoft)');
+  const g=el('g',{}); g.setAttribute('filter','url(#chalkGrain)');
   let seed=((x*7+y*3)|0)>>>0;
   const rnd=()=>{ seed=(seed*1103515245+12345)&0x7fffffff; return seed/0x7fffffff; };
   const angs=[-145,-115,-90,-63,-38];   // 위쪽 호에 몰린 각도들
@@ -615,7 +629,7 @@ function sparkle(x,y,s,color){
 }
 // 전방위로 퍼지는 큰 빛살(클라이맥스용) — 하트에서 간격을 두고 사방으로
 function burst(x,y,s,color){
-  const g=el('g',{}); g.setAttribute('filter','url(#chalkSoft)');
+  const g=el('g',{}); g.setAttribute('filter','url(#chalkGrain)');
   let seed=((x*3+y*7)|0)>>>0;
   const rnd=()=>{ seed=(seed*1103515245+12345)&0x7fffffff; return seed/0x7fffffff; };
   let d='';
@@ -635,7 +649,7 @@ function burst(x,y,s,color){
 // 가로등 트윙클 — 원본 이미지 6개 직선(각도·길이 픽셀 추출) 그대로. cx,cy=전구 중심, s=배율.
 //  세그먼트 = bulb 기준 상대오프셋(우리 스케일). 위→아래 순서로 배열(드로우온 순서).
 function lampTwinkle(cx,cy,s,color){
-  const g=el('g',{}); g.setAttribute('filter','url(#chalkSoft)');
+  const g=el('g',{}); g.setAttribute('filter','url(#chalkGrain)');
   const segs=[[-40.7,-7.0,-34.2,-4.7],[40.7,-6.5,33.7,-4.7],   // 위(좌·우) — 각 선 위끝부터
               [-33.2,6.5,-40.7,9.8],[32.3,7.5,40.7,12.2],       // 중(좌·우)
               [-28.0,17.3,-32.2,23.4],[25.7,17.8,29.9,23.4]];   // 아래(좌·우) → 드로우온 위→아래
@@ -663,7 +677,7 @@ function limb(ax,ay,bx,by,w){
 }
 
 function couple2T(x,y,s){
-  const g=el('g',{}); g.setAttribute('filter','url(#chalkSoft)');
+  const g=el('g',{}); g.setAttribute('filter','url(#chalkGrain)');
   const k=s/1000;
   const inner=el('g',{transform:`translate(${x} ${y}) scale(${k.toFixed(4)}) translate(${(-COUPLE2_V.w/2).toFixed(1)} -1000)`});
   COUPLE2_V.paths.forEach(o=>inner.appendChild(el('path',{d:o.d,stroke:o.c,'stroke-width':(4.6/k).toFixed(1),fill:'none','stroke-linecap':'round','stroke-linejoin':'round'})));
@@ -671,7 +685,7 @@ function couple2T(x,y,s){
 }
 
 function oakT(x,y,s){
-  const g=el('g',{}); g.setAttribute('filter','url(#chalkSoft)');
+  const g=el('g',{}); g.setAttribute('filter','url(#chalkGrain)');
   const k=s/1000;
   const leafC='var(--leaf)', trunkC='#b07a48';
   const inner=el('g',{transform:`translate(${x} ${y}) scale(${k.toFixed(4)}) translate(${(-OAK_V.w/2).toFixed(1)} -1000)`});
@@ -686,7 +700,7 @@ function oakT(x,y,s){
 }
 
 function moon(x,y,s){
-  const g=el('g',{}); g.setAttribute('filter','url(#chalkSoft)');
+  const g=el('g',{}); g.setAttribute('filter','url(#chalkGrain)');
   const d=`M ${x} ${y-s} A ${s} ${s} 0 1 0 ${x+s*.15} ${y+s} A ${s*.78} ${s*.78} 0 1 1 ${x} ${y-s} Z`;
   // 초승달 = 바깥 원 안 && 안쪽(오른쪽으로 치우친) 원 밖
   const icx=x+s*.62, icy=y-s*.02, ir=s*.82;
@@ -700,7 +714,7 @@ function moon(x,y,s){
 }
 const BOOK_D=["M371.5,52.138c-48.289,0-99.403,8.434-120.5,26.564c-21.097-18.131-72.211-26.564-120.5-26.564 C67.647,52.138,0,66.424,0,97.786v342v0.074c0,5.523,4.477,10,10,10c0.394,0,0.781-0.029,1.163-0.074h238.669 c0.052,0.006,0.103,0.017,0.155,0.023c0.333,0.033,0.67,0.051,1.012,0.051c0.342,0,0.679-0.018,1.012-0.051 c0.053-0.005,0.103-0.017,0.156-0.023h238.669c0.382,0.044,0.769,0.074,1.163,0.074c5.523,0,10-4.477,10-10 c0-0.012,0-0.023,0-0.035c0-0.013,0-0.026,0-0.039v-342C502,66.424,434.353,52.138,371.5,52.138z M33.073,429.786 c3.882-1.808,8.834-3.706,15.136-5.566c21.855-6.454,51.08-10.008,82.291-10.008s60.436,3.554,82.291,10.008 c6.302,1.86,11.253,3.758,15.136,5.566H33.073z M241,414.023c-24.733-13.481-68.702-19.811-110.5-19.811 c-41.798,0-85.767,6.33-110.5,19.811V97.786c0-1.448,5.006-8.777,28.13-15.618c21.864-6.468,51.117-10.03,82.37-10.03 s60.506,3.562,82.37,10.03C235.994,89.01,241,96.338,241,97.786V414.023z M274.073,429.786c3.882-1.808,8.834-3.706,15.136-5.566 c21.855-6.454,51.08-10.008,82.291-10.008s60.436,3.554,82.291,10.008c6.302,1.86,11.253,3.758,15.136,5.566H274.073z M482,414.023c-24.733-13.481-68.702-19.811-110.5-19.811c-41.798,0-85.767,6.33-110.5,19.811V97.786 c0-1.448,5.006-8.777,28.13-15.618c21.864-6.468,51.117-10.03,82.37-10.03s60.506,3.562,82.37,10.03 C476.994,89.01,482,96.338,482,97.786V414.023z", "M100.77,129.187c9.651-0.745,19.653-1.123,29.73-1.123c28.459,0,55.799,3.033,76.984,8.54 c0.843,0.219,1.689,0.324,2.522,0.324c4.444,0,8.501-2.985,9.671-7.487c1.39-5.345-1.817-10.805-7.163-12.194 c-22.781-5.922-51.908-9.183-82.016-9.183c-10.588,0-21.109,0.397-31.27,1.182c-5.506,0.425-9.626,5.233-9.201,10.74 C90.455,125.492,95.27,129.622,100.77,129.187z", "M50.993,136.929c0.833,0,1.679-0.105,2.522-0.324c4.476-1.164,9.297-2.232,14.331-3.178 c5.428-1.02,9.001-6.247,7.982-11.674c-1.02-5.428-6.248-9.003-11.674-7.982c-5.481,1.03-10.753,2.2-15.669,3.477 c-5.346,1.389-8.553,6.849-7.164,12.194C42.492,133.942,46.549,136.929,50.993,136.929z", "M212.516,168.969c-22.779-5.922-51.906-9.183-82.016-9.183c-30.11,0-59.237,3.261-82.016,9.183 c-5.345,1.39-8.552,6.849-7.162,12.194c1.39,5.345,6.85,8.551,12.194,7.162c21.183-5.507,48.523-8.54,76.984-8.54 s55.801,3.033,76.984,8.54c0.844,0.219,1.69,0.324,2.523,0.324c4.444,0,8.501-2.985,9.671-7.486 C221.068,175.818,217.861,170.359,212.516,168.969z", "M212.516,220.664c-22.779-5.922-51.906-9.183-82.016-9.183c-30.11,0-59.237,3.261-82.016,9.183 c-5.345,1.39-8.552,6.849-7.162,12.194c1.39,5.345,6.85,8.551,12.194,7.162c21.183-5.507,48.523-8.54,76.984-8.54 s55.801,3.033,76.984,8.54c0.844,0.219,1.69,0.324,2.523,0.324c4.444,0,8.501-2.985,9.671-7.486 C221.068,227.513,217.861,222.054,212.516,220.664z", "M53.515,291.743c21.186-5.507,48.525-8.54,76.984-8.54c28.459,0,55.799,3.033,76.984,8.54 c0.843,0.219,1.689,0.324,2.522,0.324c4.444,0,8.501-2.985,9.671-7.487c1.392-5.346-1.815-10.805-7.16-12.194 c-22.781-5.922-51.908-9.183-82.016-9.183c-30.108,0-59.235,3.261-82.016,9.183c-5.345,1.389-8.552,6.849-7.163,12.194 C42.71,289.925,48.171,293.133,53.515,291.743z", "M212.516,324.109c-22.779-5.922-51.906-9.183-82.016-9.183s-59.237,3.261-82.016,9.183 c-5.345,1.39-8.552,6.849-7.162,12.194c1.39,5.345,6.85,8.552,12.194,7.162c21.183-5.507,48.523-8.54,76.984-8.54 s55.801,3.033,76.984,8.54c0.844,0.219,1.69,0.324,2.523,0.324c4.444,0,8.501-2.985,9.671-7.486 C221.068,330.958,217.861,325.497,212.516,324.109z", "M294.516,136.604c21.186-5.507,48.525-8.54,76.984-8.54c28.459,0,55.799,3.033,76.984,8.54 c0.843,0.219,1.689,0.324,2.522,0.324c4.444,0,8.501-2.985,9.671-7.487c1.39-5.345-1.817-10.805-7.163-12.194 c-22.781-5.922-51.908-9.183-82.016-9.183c-30.108,0-59.235,3.261-82.016,9.183c-5.345,1.389-8.552,6.849-7.163,12.194 C283.711,134.786,289.171,137.994,294.516,136.604z", "M453.516,168.971c-22.779-5.922-51.906-9.183-82.016-9.183s-59.237,3.261-82.016,9.183 c-5.345,1.39-8.552,6.849-7.162,12.194c1.39,5.345,6.849,8.551,12.194,7.162c21.183-5.507,48.523-8.54,76.984-8.54 s55.801,3.033,76.984,8.54c0.844,0.219,1.69,0.324,2.523,0.324c4.444,0,8.501-2.985,9.671-7.486 C462.068,175.82,458.861,170.359,453.516,168.971z", "M453.516,220.664c-22.779-5.922-51.906-9.183-82.016-9.183s-59.237,3.261-82.016,9.183 c-5.345,1.39-8.552,6.849-7.162,12.194c1.39,5.345,6.849,8.552,12.194,7.162c21.183-5.507,48.523-8.54,76.984-8.54 s55.801,3.033,76.984,8.54c0.844,0.219,1.69,0.324,2.523,0.324c4.444,0,8.501-2.985,9.671-7.486 C462.068,227.513,458.861,222.054,453.516,220.664z", "M294.515,291.743c21.186-5.507,48.525-8.54,76.984-8.54c28.459,0,55.799,3.033,76.984,8.54 c0.843,0.219,1.689,0.324,2.522,0.324c4.444,0,8.501-2.985,9.671-7.487c1.392-5.346-1.815-10.805-7.16-12.194 c-22.781-5.922-51.908-9.183-82.016-9.183c-30.108,0-59.235,3.261-82.016,9.183c-5.345,1.389-8.552,6.849-7.163,12.194 C283.71,289.925,289.17,293.133,294.515,291.743z", "M453.516,324.109c-22.779-5.922-51.906-9.183-82.016-9.183s-59.237,3.261-82.016,9.183 c-5.345,1.39-8.552,6.849-7.162,12.194c1.39,5.345,6.849,8.552,12.194,7.162c21.183-5.507,48.523-8.54,76.984-8.54 s55.801,3.033,76.984,8.54c0.844,0.219,1.69,0.324,2.523,0.324c4.444,0,8.501-2.985,9.671-7.486 C462.068,330.958,458.861,325.497,453.516,324.109z"];
 function book(x,y,s){
-  const g=el('g',{}); g.setAttribute('filter','url(#chalkSoft)');
+  const g=el('g',{}); g.setAttribute('filter','url(#chalkGrain)');
   const c='var(--rose)';
   // 사용자 지정 아이콘(svgrepo open-book, CC0) — 502x502 뷰박스, 내용 중심(251,246)
   const k=(s*1.6)/502;
@@ -716,7 +730,7 @@ const PHONE_D=["M345.487,487.566c2.2,0.1,4.3,0.2,6.5,0.2c23.5,0,43.1-8.5,58.5-25
 // 편지봉투
 function letter(x,y,s,color){
   color=color||'var(--gold)';
-  const g=el('g',{}); g.setAttribute('filter','url(#chalkSoft)');
+  const g=el('g',{}); g.setAttribute('filter','url(#chalkGrain)');
   g.appendChild(el('path',{
     d:`M ${x-s*.8} ${y-s*.55} L ${x+s*.8} ${y-s*.55} L ${x+s*.8} ${y+s*.55} L ${x-s*.8} ${y+s*.55} Z`,
     stroke:color,'stroke-width':5.0,fill:'none','stroke-linejoin':'round'}));
@@ -764,7 +778,7 @@ function libNode(id,x,y,size,opt){
   var vb=o.viewBox.trim().split(/\s+/).map(Number);
   var sc=size/vb[3];
   var cx=vb[0]+vb[2]/2, cy=(opt.anchor==='center')?(vb[1]+vb[3]/2):(vb[1]+vb[3]);
-  var outer=el('g',{});   // [라이브러리 오브젝트 chalk 필터 제거] libNode 오브젝트는 chalkSoft 미부착(깔끔한 벡터). 손그림 선·나무·불꽃 등은 각자 chalkSoft 유지
+  var outer=el('g',{});   // [라이브러리 오브젝트 chalk 필터 제거] libNode 오브젝트는 chalkGrain 미부착(깔끔한 벡터). 손그림 선·나무·불꽃 등은 각자 chalkGrain 유지
   if(opt.topDown) outer.setAttribute('data-topdown','1');   // 위→아래 순차 선-그리기(규칙)
   if(opt.bottomUp) outer.setAttribute('data-bottomup','1');   // 아래→위 순차(나무 줄기 등: 밑동→가지끝)
   if(opt.randDraw) outer.setAttribute('data-randdraw','1');   // 랜덤 순서로 그리기(꽃 등) — y정렬 대신 위치해시로 섞음
@@ -968,7 +982,8 @@ add(libNode('lb239', 4203, 591, 96, {topDown:true, keepfill:true, fatten:1.0, bo
 
 // [씬] 별거 아닌 하루도 함께라서 참 좋았습니다 (3씬-3) — 자전거 커플(라이더 2명). 선 위(x4524,y585). grp='dream'로 두어 insertGap 시프트 제외.
 add(libNode('lb236', 4654, 578, 300, {topDown:true, sw:3.4, rot:-5.2}), 4654, 'dream', 0.3); window.__bikeIt=items[items.length-1];   // 자전거 커플(lb236 단일선 변환·색유지). sw3.4(더 두껍게). rot:-5.2(선 기울기와 평행)+y578: 앞·뒷바퀴 모두 선에 얹힘
-add(libNode('lb277', 4720, 696, 69, {topDown:true, keepfill:true, rot:-5.2}), 4720, 'dream', 0.55); window.__dogIt=items[items.length-1];   // 강아지 교체: lb267 → lb277 달리는 강아지(keepfill·잉크외곽 선-드로잉). 사이즈 69. 왼쪽 방향. rot 선 평행. (선애니메이션으로 그려짐, 바운스 없음)
+add(libNode('lb277', 4720, 696, 69, {topDown:true, keepfill:true, rot:-5.2}), 4720, 'dream', 0.55); window.__dogIt=items[items.length-1];   // 강아지 교체: lb277 달리는 강아지(keepfill·잉크외곽 선-드로잉). 사이즈 69. 왼쪽 방향. rot 선 평행
+(function(){ var _dl=document.getElementById('decoLite'); if(_dl && window.__dogIt) _dl.appendChild(window.__dogIt.node); })();   // 강아지만 약한 chalk 필터(chalkGrainLite)로 — 큰 흰 채움 얼룩(얼룩이) 방지
 // 자전거 씬 배경 장식(보여준 이미지 배치대로): 음표(위)·꽃(좌우 지면). startAfterBike=자전거 다 그려진 뒤 4개 순차 등장(따로 놀지 않게)
 add(libNode('lb86', 4494, 300, 52, {fill:true, anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}), 4494, 'dream', 0.4); items[items.length-1].startAfterBike=0;   // 왼쪽 위 연음표 (가로 50%=26 왼쪽 이동: 4520->4494)
 add(libNode('lb85', 4585, 238, 46, {fill:true, anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}), 4585, 'dream', 0.45); items[items.length-1].startAfterBike=1;  // 왼쪽 위 8분음표
@@ -1046,16 +1061,16 @@ add(libNode('lb223', 7861, 884, 179, {topDown:true, keepfill:true}), 7861, 'seas
 
 // [헤어짐3] "서로의 위로가 되어주고" (자막 런타임 x6582) — 우산커플 + 비. 코드 x = 런타임 x − 1360.
 // [헤어짐3 재구성] "서로의 위로" — 남자(손뻗음)가 웅크린 여자에게 우산 건넴. codeX=inv(화면x,'comfort')=화면x-1618
-add(libNode('lb134', 5016, 700, 220, {topDown:true, sw:2.4, keepfill:true}), 5016, 'comfort', 0.3); var _hoBoyDown=items[items.length-1];   // 남자 팔내림(기본, 던지기 전). 몸 정렬 위해 x-16
-add(libNode('lb133', 5032, 700, 220, {topDown:true, sw:2.4, keepfill:true}), 5032, 'comfort', 0.3); var _hoBoy=items[items.length-1]; _hoBoy.hoCtl=1;   // 남자 손뻗음(던지는 순간). hoCtl=애니가 opacity 제어
-add(libNode('lb129', 5236, 220, 188, {anchor:'center', topDown:true, sw:2.4, keepfill:true, rot:29}), 5236, 'comfort', 1.6); var _hoUmbO=items[items.length-1]; _hoUmbO.hoCtl=1;   // 펼친 우산 — 착지 위치(건네기 애니가 도착시 펼침). 머리 위 살짝 기울임. 씬 +30 하강
+add(libNode('lb134', 5016, 700, 220, {topDown:true, sw:3.4}), 5016, 'comfort', 0.3); var _hoBoyDown=items[items.length-1];   // 남자 팔내림. 단일선인데 keepfill로 두꺼웠음 → keepfill 제거(sw2.4 적용)
+add(libNode('lb133', 5032, 700, 220, {topDown:true, sw:3.4}), 5032, 'comfort', 0.3); var _hoBoy=items[items.length-1]; _hoBoy.hoCtl=1;   // 남자 손뻗음. keepfill 제거(sw2.4)
+add(libNode('lb129', 5236, 220, 188, {anchor:'center', topDown:true, sw:2.4, rot:29}), 5236, 'comfort', 1.6); var _hoUmbO=items[items.length-1]; _hoUmbO.hoCtl=1;   // 펼친 우산. keepfill 제거(sw2.4)
 window.HANDOVER={umbOpenIt:_hoUmbO, boyDown:_hoBoyDown, boyReach:_hoBoy, X:6854, startX:6720, startY:530, endX:6854, endY:268, T0:null};   // [건네기] 닫힌우산이 남자손(start)→여자위(end) 포물선→열림. boyDown=팔내림/boyReach=팔뻗음 스왑
-add(libNode('lb132', 5282, 460, 48, {anchor:'center', topDown:true, sw:2.4, keepfill:true}), 5282, 'comfort', 0.45); var _hoPud=items[items.length-1];   // 물웅덩이(여자 발밑). 씬 +30 하강
-add(libNode('lb131', 5282, 435, 175, {topDown:true, sw:2.4, keepfill:true, occlude:true}), 5282, 'comfort', 0.5); var _hoGirl=items[items.length-1];   // 웅크린 여자. 씬 +30 하강. occlude=부위별 solid 백킹(뒤 요소 안 비침)
+add(libNode('lb132', 5282, 460, 48, {anchor:'center', topDown:true, sw:2.4}), 5282, 'comfort', 0.45); var _hoPud=items[items.length-1];   // 물웅덩이. keepfill 제거(sw2.4)
+add(libNode('lb131', 5282, 435, 175, {topDown:true, sw:3.4, occlude:true}), 5282, 'comfort', 0.5); var _hoGirl=items[items.length-1];   // 웅크린 여자. keepfill 제거(sw2.4). occlude 유지
 add(libNode('lb262', 5522, 238, 92, {anchor:'center', topDown:true, sw:2.4, keepfill:true}), 5522, 'comfort', 0.95); var _hoPalette=items[items.length-1];   // 팔레트 — 여자아이 오른쪽 위(오른쪽+위 100%씩 이동)
 // [실 수렴 동반하강] 우산·물웅덩이·여자·팔레트 = 위선(x6900) 추종 → 실 수렴으로 위 메인선 내려오면 함께 하강
 _hoUmbO.follow='top'; _hoUmbO.followX=6900; _hoPud.follow='top'; _hoPud.followX=6900; _hoGirl.follow='top'; _hoGirl.followX=6900; _hoPalette.follow='top'; _hoPalette.followX=6900;
-add(libNode('lb106', 3760, 540, 253, {topDown:true, sw:4.0}), 3760, 'comfort', 0.3); items[items.length-1].node.setAttribute('data-selfpivot','1'); var _shCoupleIt=items[items.length-1];   // [감전개그] 카페 커플 — 갈라짐 지점(최종x5378), 발=선540. +15%: 210→242, +10%: 242→266, -5%: 266→253
+add(libNode('lb106', 3760, 540, 253, {topDown:true, sw:3.4}), 3760, 'comfort', 0.3); items[items.length-1].node.setAttribute('data-selfpivot','1'); var _shCoupleIt=items[items.length-1];   // [감전개그] 카페 커플 — 갈라짐 지점(최종x5378). sw 4.0→3.4(다른 캐릭터와 통일). 발=선540. -5%: 266→253
 add(libNode('lb128', 3760, 540, 253, {topDown:true, sw:2.0, fill:true, color:'var(--chalk)'}), 3760, 'comfort', 0.3); var _shSkelIt=items[items.length-1]; _shSkelIt.shockSkel=1;   // [감전개그] 해골 커플(lb128) — 흰색(chalk), 커플 위 겹침, 감전때 번쩍. +15%: 210→242, +10%: 242→266, -5%: 266→253(커플과 동일)
 window.SHOCK={coupleIt:_shCoupleIt, skelIt:_shSkelIt, X:5378, T0:null};
 // 비(물방울) — 우산 위·양옆으로 흩뿌려 내림
@@ -1066,10 +1081,10 @@ window.SHOCK={coupleIt:_shCoupleIt, skelIt:_shSkelIt, X:5378, T0:null};
 });
 
 // [헤어짐4] "보이지 않은 인연의 끈을 놓지 않은 채" (자막 런타임 x7313) — 여자(위선)가 엎드려 두 손으로 선물을 아래로 건네고 남자(아래선)가 받음. 실(끈) 애니는 유지.
-add(libNode('lb135', 5738, 378, 144, {topDown:true, sw:1.8, keepfill:true}), 5738, 'thread', 0.3); var _gtGW=items[items.length-1]; _gtGW.follow='top'; _gtGW.followX=7614;   // 여자 대기. 하단(몸통)이 분홍선에 닿게 y 388->403
-add(libNode('lb136', 5738, 378, 144, {topDown:true, sw:1.8, keepfill:true}), 5738, 'thread', 0.3); var _gtGG=items[items.length-1]; _gtGG.follow='top'; _gtGG.followX=7614;   // 여자 주기(두 손 아래로). y 388->403
-add(libNode('lb137', 5970, 722, 215, {topDown:true, sw:1.8, keepfill:true}), 5970, 'thread', 0.3); var _gtBW=items[items.length-1]; _gtBW.follow='bottom'; _gtBW.followX=7846;   // 남자 대기(팔내림, 아래선-추종)
-add(libNode('lb138', 5970, 722, 215, {topDown:true, sw:1.8, keepfill:true}), 5970, 'thread', 0.3); var _gtBC=items[items.length-1]; _gtBC.follow='bottom'; _gtBC.followX=7846;   // 남자 받기(두 팔 위로)
+add(libNode('lb135', 5738, 378, 144, {topDown:true, sw:3.4}), 5738, 'thread', 0.3); var _gtGW=items[items.length-1]; _gtGW.follow='top'; _gtGW.followX=7614;   // 여자 대기. 하단(몸통)이 분홍선에 닿게 y 388->403
+add(libNode('lb136', 5738, 378, 144, {topDown:true, sw:3.4}), 5738, 'thread', 0.3); var _gtGG=items[items.length-1]; _gtGG.follow='top'; _gtGG.followX=7614;   // 여자 주기(두 손 아래로). y 388->403
+add(libNode('lb137', 5970, 722, 215, {topDown:true, sw:3.4}), 5970, 'thread', 0.3); var _gtBW=items[items.length-1]; _gtBW.follow='bottom'; _gtBW.followX=7846;   // 남자 대기(팔내림, 아래선-추종)
+add(libNode('lb138', 5970, 722, 215, {topDown:true, sw:3.4}), 5970, 'thread', 0.3); var _gtBC=items[items.length-1]; _gtBC.follow='bottom'; _gtBC.followX=7846;   // 남자 받기(두 팔 위로)
 window.GIFTTOSS={girlWait:_gtGW, girlGive:_gtGG, boyWait:_gtBW, boyCatch:_gtBC, girlX:7614, boyX:7846, X:7614, T0:null, sdx:113, sdyDown:-27, edx:-64, eyUp:180};   // [선물 건네기] 여자 손→남자 뻗은 손(실측 viewBox 4,164=화면572,387) 낙하. edx=-46·eyUp=150: 얼굴/머리 아니라 왼쪽 위로 뻗은 손에 안착
 
 // 두번째 실 위치(P2X=7598, 두 선 사이)에 coconut tree on an island 그림. 펜은 이미 지나갔으므로(52.1s) lag로 실 소멸시점(~56.9s)에 등장.
@@ -1084,7 +1099,7 @@ window.GIFTTOSS={girlWait:_gtGW, girlGive:_gtGG, boyWait:_gtBW, boyCatch:_gtBC, 
 // 여자(위선·핑크)
 add(libNode('lb252', 4000, 494, 95,  {topDown:true, keepfill:true, fatten:1.2, bottomUp:true}),  4000, 'apartlife', 0.10);  // 분홍 꽃(위선 좌)
 add(libNode('lb253', 4095, 448, 30,  {topDown:true, keepfill:true, fatten:1.2, bottomUp:true}),  4095, 'apartlife', 0.14);  // 풀(위선)
-add(libNode('lb242', 4235, 414, 221, {topDown:true, keepfill:true, fatten:1.2}),                 4235, 'apartlife', 0.20);  // 여행 여아(발=위선)
+add(libNode('lb242', 4235, 414, 221, {topDown:true, sw:3.4}),                 4235, 'apartlife', 0.20);  // 여행 여아(발=위선, 단일선 변환·sw3.4)
 add(libNode('lb243', 4316, 402, 72,  {topDown:true, keepfill:true, fatten:1.2}),                 4316, 'apartlife', 0.30);  // 분홍 캐리어(여아 뒤)
 add(libNode('lb245', 4520, 411, 150, {topDown:true, sw:2.6}),                 4520, 'apartlife', 0.34);  // 공항 표지판(기둥=위선)
 // 하늘(구름·비행기)
@@ -1095,7 +1110,7 @@ add(libNode('lb248', 4890, 231, 52,  {anchor:'center', topDown:true, sw:2.6}), 4
 add(libNode('lb250', 4300, 541, 42,  {anchor:'center', topDown:true, keepfill:true, fatten:1.2}), 4300, 'apartlife', 0.16);  // 별A(사이)
 add(libNode('lb251', 4690, 490, 42,  {anchor:'center', topDown:true, keepfill:true, fatten:1.2}), 4690, 'apartlife', 0.44);  // 별B(사이)
 // 남자(아래선·블루)
-add(libNode('lb244', 4470, 694, 215, {topDown:true, keepfill:true, fatten:1.2}),                 4470, 'apartlife', 0.25);  // 여행 남아(발=아래선)
+add(libNode('lb244', 4470, 694, 215, {topDown:true, sw:3.4}),                 4470, 'apartlife', 0.25);  // 여행 남아(발=아래선, 단일선 변환·sw3.4)
 add(libNode('lb253', 4560, 669, 30,  {topDown:true, keepfill:true, fatten:1.2, bottomUp:true}),  4560, 'apartlife', 0.48);  // 풀(아래선)
 add(libNode('lb45', 4780, 590, 105, {anchor:'center', topDown:true, sw:4.2, color:'var(--azure)'}), 4780, 'apartlife', 0.42);  // 노트북(복원) — 남아 우측 빈 공간
 
@@ -1263,7 +1278,10 @@ function prep(){
     const kids=[...it.node.querySelectorAll('path,circle,line,ellipse'+(_seq?',polygon,polyline':''))];   // seqFill 오브젝트는 polygon(침목 줄무늬 등 채움 도형)도 애니 대상에 포함(기본 수집엔 없어 즉시 통째로 보이던 문제)
     const list = kids.length ? kids : [it.node];
     it.shapes = list.map(sh=>{
-      if(sh.getAttribute && sh.getAttribute('data-keepfill')){ return {el:sh, len:1, filled:false, draws:false}; }   // 정적 채움(불투명 실루엣·눈): 애니메이션 대상 제외 = 항상 보임
+      if(sh.getAttribute && sh.getAttribute('data-keepfill')){
+        if(sh.getAttribute('data-eye')){ sh.setAttribute('fill-opacity','0'); return {el:sh, len:1, filled:true, draws:false, eye:true}; }   // 눈: 얼굴 다 그려진 뒤(막바지)에 나타남 — data-keepfill 로 크기 유지하되 등장 타이밍만 지연
+        return {el:sh, len:1, filled:false, draws:false};   // 정적 채움(불투명 실루엣): 애니메이션 대상 제외 = 항상 보임
+      }
       let L=0;
       try{ L=sh.getTotalLength(); }catch(e){ L=0; }
       if(L>0){ sh.style.strokeDasharray=L; sh.style.strokeDashoffset=L; }
@@ -2333,10 +2351,14 @@ function animateForkPull(t){
     F.pkLive=el('path',{fill:'none',stroke:'url(#roseFade)','stroke-width':'9','stroke-opacity':'0.95','stroke-linecap':'round','stroke-linejoin':'round'});
     F.blLive=el('path',{fill:'none',stroke:'url(#azureFade)','stroke-width':'9','stroke-opacity':'0.95','stroke-linecap':'round','stroke-linejoin':'round'});
     flG.appendChild(F.pkLive); flG.appendChild(F.blLive);
-    // [남자 재회] 남자 노드를 fork선(flG) 위 레이어로 올림 → occlude 실루엣이 머리에 겹치는 윗 fork선을 가림
-    var _boyOcc=(typeof items!=='undefined')&&items.find(function(it){return it.subkey==='reunite'&&it.node;}); if(_boyOcc) document.getElementById('cam').appendChild(_boyOcc.node);
-    // [comfort 씬 fork선 위로] 우산 handover·감전 등 comfort 오브젝트는 fork 라이브선(flG) 위 레이어로 올림 → occlude 백킹이 선을 가림(선이 몸 위로 안 비침).
-    if(typeof items!=='undefined'){ var _cam2=document.getElementById('cam'); items.forEach(function(it){ if(it.grp==='comfort'&&it.node) _cam2.appendChild(it.node); }); }
+    // [fork선 위로 올리되 chalk 유지] cam 직속으로 올리면 deco의 chalkGrain 필터가 빠져 분필효과 누락됨 → chalkGrain 필터 그룹(decoFork)에 담아 올림(z-order=cam 최상단, 분필 유지).
+    var _cam2=document.getElementById('cam');
+    var _decoFork=document.getElementById('decoFork');
+    if(!_decoFork){ _decoFork=el('g',{filter:'url(#chalkGrain)'}); _decoFork.setAttribute('id','decoFork'); _cam2.appendChild(_decoFork); }
+    // [남자 재회] 남자 노드를 fork선(flG) 위 레이어로 → occlude 실루엣이 머리에 겹치는 윗 fork선을 가림
+    var _boyOcc=(typeof items!=='undefined')&&items.find(function(it){return it.subkey==='reunite'&&it.node;}); if(_boyOcc) _decoFork.appendChild(_boyOcc.node);
+    // [comfort 씬 fork선 위로] 우산 handover·감전 등 comfort 오브젝트를 fork 라이브선(flG) 위 레이어로
+    if(typeof items!=='undefined'){ items.forEach(function(it){ if(it.grp==='comfort'&&it.node) _decoFork.appendChild(it.node); }); }
   }
   const ss=u=>{u=Math.max(0,Math.min(1,u));return u*u*(3-2*u);};
   const EM=0.4;   // 실이 여자선(위)→남자선(아래) 뻗어 붙는 시간. attach = T+EM.
@@ -2555,7 +2577,7 @@ function animateHandover(t){
   var H=window.HANDOVER; if(!H||!H.umbOpenIt) return;
   var oN=H.umbOpenIt.node;
   if(!_hoInit){ _hoInit=true;
-    _hoClosed=libNode('lb130', 0, 0, 165, {anchor:'center', topDown:true, keepfill:true}); _hoClosed.style.opacity='0';
+    _hoClosed=libNode('lb130', 0, 0, 165, {anchor:'center', topDown:true, sw:2.4}); _hoClosed.style.opacity='0';   // keepfill 제거(sw2.4)
     var deco=document.getElementById('deco'); if(deco) deco.appendChild(_hoClosed);
     H.T0 = storyTimeAtX(H.X) + 1.4;   // 남자·여자 그려진 뒤 건네기 시작
   }
@@ -2587,7 +2609,9 @@ function animateGiftToss(t){
   if(!_gtInit){ _gtInit=true;
     _gtGiftNode=libNode('lb139',0,0,60,{anchor:'center',topDown:true,keepfill:true}); _gtGiftNode.style.opacity='0';
     var deco=document.getElementById('deco'); if(deco) deco.appendChild(_gtGiftNode);
-    G.T0=storyTimeAtX(G.X)+2.6;   // 씬 자막 쓰인 뒤 건네기 시작(튜닝값)
+    var _fin=function(o){ return (o&&o.t!=null)?(o.t+(o.dur||0)):0; };   // 오브젝트 그리기 완료 시각
+    var _drawn=Math.max(_fin(G.boyWait),_fin(G.girlWait));   // 남아·여아 둘 다 다 그려진 시각
+    G.T0=(_drawn>0?_drawn:(storyTimeAtX(G.X)+2.6))+0.4;   // 남아(+여아)가 다 그려진 뒤 0.4s 후 건네기 시작
   }
   var dt=t-G.T0, FLIGHT=1.2;
   var ss=function(u){u=Math.max(0,Math.min(1,u));return u*u*(3-2*u);};
@@ -2790,7 +2814,7 @@ function animatePetalPile(t){
   var _cf=window.__cherryFin?window.__cherryFin():0, START=(_cf>1?_cf:(82.0+(window.SEASON_DT||0))), LANDSPAN=6.5, END=999;   // 벚나무 완성 시각 앵커(SPEED 자동 추종). 6.5초간 하나씩 착지(누적), 이후 유지. 폴백=옛 절대시각
   if(t<START-0.5){ if(_pileG) _pileG.style.opacity='0'; return; }
   if(!_pileG){
-    _pileG=el('g',{}); _pileG.setAttribute('filter','url(#chalkSoft)'); cam.appendChild(_pileG);
+    _pileG=el('g',{}); _pileG.setAttribute('filter','url(#chalkGrain)'); cam.appendChild(_pileG);
     var PET='M0,-3.4 C2.4,-2.2 2.4,2.6 0,4.3 C-2.4,2.6 -2.4,-2.2 0,-3.4 Z';
     var COLS=['var(--rose)','#f7a9c4','#f4bcd0','#efc0d2'];
     var R=function(s){ var x=Math.sin(s*91.7+13.3)*43758.5453; return x-Math.floor(x); };
@@ -2822,7 +2846,7 @@ function animateLeafPile(t){
   var _af=window.__autumnFin?window.__autumnFin():0, START=(_af>1?_af:(90.5+(window.SEASON_DT||0))), LANDSPAN=7.5;   // 가을잎 완성 시각 앵커(SPEED 자동 추종). 폴백=옛 절대시각
   if(t<START-0.5){ if(_lpileG) _lpileG.style.opacity='0'; return; }
   if(!_lpileG){
-    _lpileG=el('g',{}); _lpileG.setAttribute('filter','url(#chalkSoft)'); cam.appendChild(_lpileG);
+    _lpileG=el('g',{}); _lpileG.setAttribute('filter','url(#chalkGrain)'); cam.appendChild(_lpileG);
     var MAPLES=['M 1.4 -7.6 L 2.2 -7.0 L 2.5 -4.1 L 1.9 -2.0 L 3.8 -2.9 L 3.9 -2.5 L 4.9 -3.3 L 7.0 -3.6 L 6.0 -0.0 L 3.2 2.1 L 6.1 3.5 L 1.9 5.1 L 0.1 4.8 L -1.0 3.5 L -2.3 5.9 L -3.6 7.3 L -4.6 7.4 L -3.1 6.0 L -1.5 3.1 L -4.5 3.3 L -6.7 1.4 L -6.7 0.4 L -5.3 1.1 L -4.4 0.8 L -5.5 -0.7 L -5.5 -4.2 L -3.9 -4.0 L -3.1 -2.7 L -3.0 -3.0 L -2.4 -2.4 L -1.8 -4.8 L -1.5 -5.0 L -1.5 -4.4 L -1.0 -5.8 L -0.9 -5.1 L -0.3 -6.3 L 0.2 -6.0 L 1.0 -7.2 L 1.0 -6.5 L 1.4 -7.6 Z','M 1.2 -7.6 L 2.2 -4.0 L 1.6 -1.8 L 4.4 -3.3 L 6.8 -3.8 L 5.7 -0.3 L 3.1 1.9 L 5.9 3.2 L 1.8 4.8 L -0.0 4.5 L -0.9 3.4 L -2.2 5.8 L -4.1 7.6 L -4.4 7.0 L -3.0 6.1 L -1.6 3.3 L -4.5 3.4 L -6.8 1.0 L -6.4 0.6 L -5.1 1.2 L -4.3 0.8 L -5.4 -1.1 L -5.4 -4.2 L -3.8 -4.0 L -3.2 -2.7 L -2.9 -3.0 L -2.4 -2.5 L -1.8 -4.9 L 1.2 -7.6 Z','M 1.7 -7.6 L 2.5 -6.0 L 2.1 -4.1 L 2.6 -4.2 L 1.8 -1.7 L 4.5 -3.2 L 6.9 -3.7 L 5.5 -0.0 L 2.9 1.9 L 5.3 3.7 L 0.7 4.8 L 0.9 4.5 L -0.4 4.5 L -1.1 3.6 L -4.1 7.7 L -4.6 7.3 L -2.5 5.1 L -1.8 3.3 L -4.1 3.2 L -4.2 2.7 L -4.6 3.0 L -6.7 0.6 L -4.3 0.7 L -5.3 -1.5 L -4.8 -4.4 L -3.5 -4.0 L -2.9 -2.7 L -2.2 -2.5 L -1.4 -5.1 L -1.2 -4.6 L -0.6 -6.0 L 0.2 -6.5 L 0.2 -5.9 L 1.2 -7.3 L 1.0 -6.4 L 1.7 -7.6 Z','M 1.5 -7.6 L 2.1 -6.9 L 1.8 -6.3 L 2.4 -4.1 L 1.7 -2.2 L 6.7 -4.0 L 5.5 -0.5 L 3.2 1.6 L 6.0 3.0 L 2.0 4.7 L 0.3 4.5 L -0.4 3.5 L -3.5 7.7 L -3.9 7.3 L -2.2 5.2 L -1.5 3.1 L -4.3 3.3 L -5.2 2.1 L -6.0 2.0 L -6.6 0.8 L -4.1 0.8 L -5.1 -0.7 L -4.8 -4.2 L -4.4 -4.0 L -4.3 -4.5 L -3.9 -3.8 L -3.3 -3.9 L -2.3 -2.4 L -1.5 -5.1 L -1.2 -4.9 L -0.8 -5.9 L -0.9 -5.2 L -0.3 -6.3 L -0.2 -5.7 L 1.0 -7.0 L 0.9 -6.5 L 1.5 -7.6 Z'];
     var COLS=['#eca91d','#e57d24','#c73a1f','#e07022','#f0b52e'];
     var R=function(s){ var x=Math.sin(s*57.3+91.7)*43758.5453; return x-Math.floor(x); };
@@ -2856,7 +2880,7 @@ function animateWinterSnow(t){
   var FX=xAtTime(t);   // 펜(라인 front) 렌더X — 눈은 라인이 그려진 곳까지만 나타난다
   if(FX < X0-10){ if(_snowG) _snowG.style.opacity='0'; return; }   // 라인이 아직 눈 구간에 도달 안함
   if(!_snowG){
-    _snowG=el('g',{}); _snowG.setAttribute('filter','url(#chalkSoft)'); cam.appendChild(_snowG);
+    _snowG=el('g',{}); _snowG.setAttribute('filter','url(#chalkGrain)'); cam.appendChild(_snowG);
     _snowMound=el('path',{fill:'#cdddec','fill-opacity':'0.92',stroke:'#e7f1fb','stroke-width':'2','stroke-linejoin':'round','stroke-linecap':'round'}); _snowG.appendChild(_snowMound);   // 완전 흰색 아님: 부드러운 청백 + 밝은 윤곽
     _snowMoundTop=el('path',{fill:'#cdddec','fill-opacity':'0.92',stroke:'#e7f1fb','stroke-width':'2','stroke-linejoin':'round','stroke-linecap':'round'}); _snowG.appendChild(_snowMoundTop);   // 윗선 겨울나무2 아래 국소 눈 두둑
     var R=function(s){ var x=Math.sin(s*49.3+7.1)*43758.5453; return x-Math.floor(x); };
@@ -2910,7 +2934,7 @@ function animateFireworks(t){
   var SX=_fwSX, START=_fwT0, WINDOW=8.2;   // 선물 불꽃(피날레, 늦게 터짐)까지 여유
   if(t < START-0.2 || t > START+WINDOW){ if(_fwG) _fwG.style.opacity='0'; return; }
   if(!_fwG){
-    _fwG=el('g',{}); _fwG.setAttribute('filter','url(#chalkSoft)'); cam.appendChild(_fwG);
+    _fwG=el('g',{}); _fwG.setAttribute('filter','url(#chalkGrain)'); cam.appendChild(_fwG);
     var R=function(s){ var x=Math.sin(s*33.7+5.3)*43758.5453; return x-Math.floor(x); };
     var COLS=['var(--gold)','var(--rose)','var(--azure)','var(--leaf)','var(--ember)'];
     var BURSTS=[[-205,150],[25,100],[205,205],[-80,240],[130,80],[75,300],[-150,55],[290,150]];   // dx,cy(하늘) — SX 기준 (2개 추가)
@@ -3190,7 +3214,7 @@ function frame(ts){
       sr=Math.max(0,Math.min(1,sr));
       acc+=seg;
       if(sh.draws){ sh.el.style.strokeDashoffset=(sh.len*(1-sr)).toFixed(2); sh.el.style.visibility=sr>0.02?'visible':'hidden'; }
-      if(sh.filled){ const fo=it.outlineFirst?Math.pow(Math.max(0,(sr-0.55)/0.45),2):(it.fillLead?Math.min(1,Math.max(0,sr*4.0)):sr*sr); sh.el.setAttribute('fill-opacity',fo.toFixed(3)); }   // fillLead: 채움이 스트로크와 함께 차올라 초반 이중선 숨김
+      if(sh.filled){ const fo=sh.eye?Math.max(0,Math.min(1,(e-0.82)/0.18)):(it.outlineFirst?Math.pow(Math.max(0,(sr-0.55)/0.45),2):(it.fillLead?Math.min(1,Math.max(0,sr*4.0)):sr*sr)); sh.el.setAttribute('fill-opacity',fo.toFixed(3)); }   // 눈(eye)=몸통 다 그려진 뒤 막바지(e>0.82)에 등장. fillLead: 채움이 스트로크와 함께 차올라 초반 이중선 숨김
     });
     }
   });
@@ -3428,7 +3452,7 @@ try{ _fwdSelfTest(); }catch(e){ console.error('[fwd self-test] 예외', e); }   
   var seq = [['lb258','top'],['lb256','bottom'],['lb257','top'],['lb259','bottom'],['lb260','top'],['lb255','bottom'],['lb261','top']];
   var NS='http://www.w3.org/2000/svg';
   var cam=document.getElementById('cam'); if(!cam) return;
-  var root=el('g',{'data-jeju':'1'}); cam.appendChild(root);
+  var root=el('g',{'data-jeju':'1', filter:'url(#chalkGrain)'}); cam.appendChild(root);   // 분필효과: 다른 오브젝트와 동일 chalkGrain(강한 그레인). 원래 필터 누락됐었음
   var X0=8062, X1=8662, DROP=30, ICON=75.6;   // 제주(선물씬 뒤) 아이콘 30% 작게(108→75.6). 오브젝트 전체 오른쪽 이동: 1.5개 폭(162px)
   var xs=[]; for(var i=0;i<seq.length;i++) xs.push(X0+(X1-X0)*i/(seq.length-1));
   var nodes=[];
@@ -3489,7 +3513,7 @@ try{ _fwdSelfTest(); }catch(e){ console.error('[fwd self-test] 예외', e); }   
   var cam=document.getElementById('cam'); if(!cam) return;
   var O={"phone":{"viewBox":"0 0 374 336","paths":[["#79d15e",14.1,"M 114.0 19.0 L 93.5 25.7 L 68.1 36.5 L 43.9 50.3 L 27.4 64.2 L 17.9 76.1 L 13.1 84.7 L 10.8 90.8 L 9.2 97.8 L 8.2 108.5 L 8.7 121.6 L 11.0 134.0"],["#79d15e",14.1,"M 108.0 97.0 L 109.4 82.2 L 116.0 72.2 L 127.5 66.8 L 140.7 63.9 L 158.5 62.2 L 187.8 61.9 L 224.4 64.6 L 253.0 70.9 L 265.0 81.8 L 266.0 97.0"],["#79d15e",14.1,"M 108.0 97.0 L 96.1 100.0 L 86.2 103.2 L 76.9 106.9 L 66.8 111.2 L 56.6 115.6 L 46.8 119.9 L 36.6 124.4 L 26.2 128.9 L 18.2 132.1 L 13.0 134.0"],["#79d15e",14.1,"M 108.0 97.0 L 110.1 102.6 L 110.8 109.5 L 108.1 117.0 L 100.1 125.2 L 88.1 134.4 L 75.0 143.1 L 62.6 150.0 L 51.5 155.1 L 40.4 158.0 L 29.1 157.4 L 20.0 153.1 L 14.8 145.4 L 12.0 135.0"],["#79d15e",14.1,"M 361.0 136.0 L 363.5 129.7 L 364.7 117.4 L 362.9 98.6 L 357.4 79.1 L 348.2 63.4 L 337.1 51.4 L 326.9 43.1 L 319.2 38.0 L 312.6 34.5 L 304.2 30.7 L 290.7 25.7 L 273.5 20.7 L 257.6 17.1 L 239.1 14.6 L 209.8 13.0 L 176.5 12.8 L 154.4 13.8 L 142.9 15.0 L 133.4 16.3 L 124.3 17.7 L 116.0 19.0"],["#79d15e",14.1,"M 360.0 136.0 L 351.0 132.4 L 342.6 128.5 L 334.9 124.6 L 327.9 120.9 L 321.6 117.6 L 315.4 114.8 L 308.1 111.8 L 297.7 107.7 L 285.6 103.0 L 275.0 99.4 L 266.0 97.0"],["#79d15e",14.1,"M 266.0 97.0 L 263.6 103.2 L 263.2 110.2 L 266.3 117.6 L 272.6 124.6 L 280.1 130.2 L 287.6 134.4 L 294.8 138.4 L 301.1 142.0 L 306.9 145.0 L 312.4 147.6 L 317.4 150.2 L 322.9 153.4 L 330.4 156.6 L 339.6 157.6 L 348.7 154.6 L 355.9 147.2 L 361.0 137.0"],["#79d15e",14.1,"M 314.0 311.0 L 326.8 307.6 L 336.2 303.8 L 341.7 297.7 L 344.6 286.2 L 345.6 271.4 L 344.9 258.5 L 341.6 246.1 L 334.1 231.2 L 323.0 217.2 L 310.7 207.2 L 299.6 199.2 L 290.2 189.8 L 281.4 178.6 L 272.6 167.7 L 264.8 158.6 L 258.1 151.3 L 252.4 145.1 L 246.8 139.2 L 240.8 131.8 L 235.6 121.1 L 229.2 109.4 L 214.4 102.1 L 186.9 101.9 L 156.5 110.5 L 133.8 127.3 L 117.9 145.8 L 103.9 161.0 L 90.8 174.3 L 79.1 186.9 L 68.6 197.4 L 57.8 206.0 L 46.6 214.5 L 36.9 223.9 L 30.1 235.1 L 25.7 248.6 L 23.1 261.7 L 21.8 272.2 L 21.8 280.9 L 23.2 288.8 L 26.8 296.1 L 33.8 302.1 L 42.7 305.8 L 50.2 307.9 L 54.9 311.0 L 59.8 315.9 L 67.8 320.2 L 77.8 321.7 L 86.1 319.9 L 91.6 316.0 L 96.2 311.4 L 104.9 307.9 L 127.9 306.4 L 174.3 306.7 L 229.2 308.4 L 263.6 312.1 L 274.4 317.1 L 279.4 321.4 L 286.9 323.8 L 295.6 323.9 L 303.4 321.7 L 309.1 317.4 L 313.0 312.0"],["#f4c430",10.8,"M 218.0 172.0 L 222.4 174.6 L 226.9 178.8 L 230.3 183.1 L 232.2 187.2 L 233.7 191.9 L 234.7 196.1 L 235.0 199.0"],["#f4c430",10.8,"M 228.0 225.0 L 231.1 229.6 L 238.1 235.6 L 249.0 243.0"],["#f4c430",10.8,"M 250.0 243.0 L 253.9 237.8 L 256.6 230.8 L 258.2 218.9 L 258.3 203.0 L 256.2 188.2 L 251.4 176.4 L 243.5 165.4 L 231.8 154.5 L 215.9 145.5 L 196.2 140.3 L 175.6 140.0 L 157.8 144.4 L 143.5 152.5 L 132.2 163.0 L 123.8 175.8 L 117.8 190.4 L 114.7 205.5 L 115.1 220.4 L 119.1 235.5 L 126.5 249.8 L 136.8 261.8 L 149.4 271.0 L 164.6 277.2 L 181.5 280.1 L 198.8 279.2 L 215.4 274.2 L 229.9 265.9 L 240.0 257.3 L 245.2 250.9 L 247.7 246.8 L 249.0 244.0"],["#f4c430",10.8,"M 198.0 184.0 L 190.4 183.1 L 181.3 184.3 L 172.4 188.2 L 165.9 194.1 L 162.4 201.8 L 162.0 211.0 L 165.1 220.8 L 171.6 228.8 L 180.4 233.2 L 190.5 233.9 L 199.7 231.1 L 206.3 224.9 L 209.9 215.1 L 210.1 203.7 L 205.8 193.2 L 198.0 184.0"]]},"laptop_mail":{"viewBox":"0 0 488 282","paths":[["#f4c430",16.5,"M 24.0 71.0 L 56.0 105.0"],["#f4c430",16.5,"M 439.0 150.0 L 480.0 127.0"],["#f4c430",16.5,"M 44.0 151.0 L 41.3 148.2 L 35.9 144.6 L 28.1 139.9 L 20.7 135.4 L 14.3 131.6 L 8.0 128.0"],["#f4c430",16.5,"M 431.0 101.0 L 464.0 68.0"],["#4db4e6",15.2,"M 149.0 73.0 L 143.8 84.6 L 141.6 112.3 L 142.9 150.0 L 149.2 175.5 L 173.2 183.4 L 227.9 184.4 L 294.5 183.9 L 335.9 175.7 L 347.2 149.2 L 347.4 111.4 L 344.8 84.8 L 340.0 75.0"],["#4db4e6",15.2,"M 339.0 74.0 L 322.0 67.2 L 273.9 63.7 L 206.9 63.9 L 162.6 66.9 L 150.0 72.0"],["#4db4e6",15.2,"M 150.0 73.0 L 173.6 92.1 L 197.2 110.6 L 219.9 127.2 L 237.5 137.7 L 253.4 136.4 L 284.6 115.6 L 338.0 75.0"],["#eef0f0",14.0,"M 90.0 224.0 L 76.4 232.2 L 64.4 240.4 L 56.1 246.9 L 51.6 252.4 L 49.9 258.5 L 53.1 264.4 L 85.2 268.5 L 185.9 269.9 L 325.7 268.4 L 414.9 262.2 L 431.0 250.2 L 417.9 236.1 L 402.0 224.0"],["#eef0f0",14.0,"M 91.0 224.0 L 402.0 224.0"],["#eef0f0",14.0,"M 402.0 224.0 L 402.2 111.1 L 401.1 43.2 L 391.6 18.6 L 350.1 12.4 L 261.5 11.0 L 162.9 11.6 L 106.5 14.2 L 91.8 31.6 L 90.2 98.1 L 90.0 223.0"]]},"postcard":{"viewBox":"0 0 480 318","paths":[["#f4c430",15.2,"M 456.0 115.0 L 428.0 142.0"],["#f4c430",15.2,"M 13.0 175.0 L 40.0 191.0"],["#f4c430",15.2,"M 441.0 181.0 L 454.6 173.7 L 465.4 167.9 L 470.9 164.3 L 472.0 162.0"],["#f4c430",15.2,"M 4.0 230.0 L 13.6 230.4 L 23.8 231.8 L 32.7 233.8 L 39.4 236.1 L 45.0 239.0"],["#f4c430",15.2,"M 378.0 39.0 L 371.2 23.4 L 363.7 15.1 L 354.7 13.9 L 343.9 15.9 L 332.8 18.8 L 323.7 21.0 L 316.7 22.6 L 307.6 24.7 L 293.5 27.9 L 276.6 31.9 L 259.7 35.9 L 242.2 40.0 L 225.1 44.1 L 208.6 48.1 L 189.2 53.0 L 167.0 58.5 L 146.3 63.6 L 129.4 67.7 L 116.2 70.9 L 104.7 73.6 L 93.2 76.4 L 83.3 78.9 L 75.6 81.0 L 68.4 83.2 L 61.8 86.6 L 57.9 92.6 L 57.6 103.0 L 60.2 118.2 L 65.0 139.6 L 70.9 165.0 L 76.1 186.4 L 79.6 200.9 L 82.4 213.2 L 85.4 226.7 L 89.0 241.5 L 92.6 255.9 L 95.8 268.8 L 99.1 281.3 L 103.6 293.6 L 110.4 301.4 L 122.8 302.6 L 142.9 299.1 L 166.5 293.8 L 185.7 289.3 L 199.1 286.1 L 213.8 282.5 L 232.1 278.1 L 247.3 274.5 L 257.0 272.1 L 266.0 269.9 L 275.6 267.5 L 284.4 265.4 L 295.0 262.9 L 309.4 259.4 L 326.8 255.2 L 346.8 250.6 L 367.3 245.8 L 386.3 240.8 L 402.8 234.9 L 412.5 227.6 L 413.9 217.0 L 411.1 202.9 L 407.4 187.2 L 403.7 171.6 L 400.5 157.3 L 397.9 144.7 L 394.6 127.4 L 388.0 92.8 L 378.0 39.0"],["#4db4e6",12.6,"M 346.0 237.0 L 354.4 232.6 L 366.6 226.3 L 384.0 218.0"],["#4db4e6",12.6,"M 115.0 86.0 L 104.8 94.8 L 95.4 101.7 L 88.0 106.0"],["#4db4e6",12.6,"M 318.0 41.0 L 307.0 47.0"],["#4db4e6",12.6,"M 166.0 276.0 L 152.1 272.6 L 139.0 271.0"],["#4db4e6",12.6,"M 102.0 241.0 L 106.2 251.8 L 114.0 265.0"],["#4db4e6",12.6,"M 239.0 52.0 L 230.8 60.2 L 221.5 67.8 L 213.1 72.9 L 207.0 75.0"],["#f2596b",13.4,"M 143.0 84.0 L 152.1 82.3 L 161.1 80.1 L 169.8 76.9 L 178.0 73.0"],["#f2596b",13.4,"M 403.0 209.0 L 395.4 190.6 L 386.0 170.0"],["#f2596b",13.4,"M 238.0 251.0 L 230.7 253.8 L 220.6 257.4 L 205.1 262.9 L 185.0 270.0"],["#f2596b",13.4,"M 109.0 236.0 L 99.9 224.8 L 92.0 214.0"],["#f2596b",13.4,"M 270.0 45.0 L 289.2 44.1 L 301.7 42.5 L 308.0 41.0"],["#f2596b",13.4,"M 333.0 85.0 L 325.8 96.5 L 319.0 105.0"],["#f2596b",13.4,"M 78.0 156.0 L 86.6 169.6 L 91.6 178.0 L 94.0 182.0"],["#f2596b",13.4,"M 295.0 93.0 L 305.4 99.2 L 318.0 105.0"],["#f2596b",13.4,"M 296.0 241.0 L 311.4 236.2 L 325.0 231.0"],["#f2596b",13.4,"M 320.0 122.0 L 319.0 106.0"],["#eef0f0",10.8,"M 136.0 233.0 L 148.1 229.4 L 162.2 225.6 L 188.1 218.8 L 230.0 208.0"],["#eef0f0",10.8,"M 226.0 131.0 L 213.4 135.1 L 198.4 139.4 L 175.1 145.8 L 144.8 153.9 L 115.0 162.0"],["#eef0f0",10.8,"M 222.0 175.0 L 128.0 200.0"],["#eef0f0",10.8,"M 302.0 59.0 L 290.3 59.9 L 281.2 61.4 L 274.4 62.4 L 268.8 63.6 L 265.2 67.2 L 264.9 73.2 L 266.8 80.7 L 269.2 88.7 L 271.3 96.5 L 272.1 103.4 L 272.4 109.5 L 274.0 115.9 L 277.2 124.2 L 280.6 133.8 L 282.9 143.0 L 283.8 151.1 L 284.6 157.2 L 287.2 160.2 L 292.0 159.5 L 298.3 156.7 L 305.3 154.7 L 312.7 154.1 L 320.3 152.9 L 328.0 150.3 L 337.1 148.1 L 348.4 146.8 L 358.7 144.6 L 363.5 139.8 L 362.6 131.5 L 359.5 120.8 L 357.0 110.2 L 355.2 102.0 L 354.6 95.5 L 355.1 89.2 L 355.2 83.6 L 354.0 79.0 L 352.0 73.5 L 350.4 64.4 L 348.9 53.6 L 345.6 46.9 L 337.9 47.0 L 325.9 50.6 L 313.1 54.7 L 302.0 59.0"]]},"smartphone":{"viewBox":"0 0 313 403","paths":[["#79d15e",12.2,"M 53.0 198.0 L 62.9 191.1 L 77.2 183.0 L 103.4 176.6 L 137.1 173.4 L 161.7 171.6 L 173.4 169.3 L 181.0 165.2 L 188.6 158.4 L 195.1 148.1 L 199.1 134.7 L 199.9 120.7 L 197.8 108.9 L 192.6 99.6 L 184.5 91.9 L 169.1 86.7 L 137.0 84.9 L 93.3 87.1 L 59.3 93.3 L 42.4 103.1 L 34.7 114.5 L 31.3 125.8 L 31.6 137.1 L 35.2 148.2 L 41.8 159.1 L 47.9 169.8 L 50.7 179.9 L 50.8 188.1 L 50.9 193.8 L 52.0 198.0"],["#4db4e6",15.6,"M 307.0 188.0 L 299.7 192.5 L 290.5 197.1 L 276.9 203.1 L 259.0 211.0"],["#4db4e6",15.6,"M 79.0 46.0 L 121.5 46.9 L 149.0 47.0"],["#4db4e6",15.6,"M 284.0 132.0 L 252.0 163.0"],["#4db4e6",15.6,"M 11.0 332.0 L 225.0 332.0"],["#4db4e6",15.6,"M 10.0 333.0 L 10.5 345.4 L 13.6 358.1 L 20.4 370.1 L 31.2 379.6 L 44.8 385.7 L 59.1 388.9 L 78.2 390.6 L 109.7 391.1 L 145.9 390.6 L 171.7 389.5 L 187.1 387.7 L 199.8 384.1 L 210.4 378.4 L 217.5 372.0 L 221.7 364.2 L 224.2 351.5 L 226.0 333.0"],["#4db4e6",15.6,"M 10.0 331.0 L 9.4 261.2 L 8.8 181.9 L 8.8 104.9 L 9.6 58.2 L 12.1 41.4 L 18.2 32.2 L 29.8 22.5 L 51.9 15.6 L 92.9 12.4 L 143.4 12.0 L 179.8 13.8 L 197.5 17.6 L 208.1 23.7 L 216.4 31.9 L 221.8 43.2 L 224.6 57.4 L 225.7 86.4 L 226.1 172.3 L 226.0 331.0"],["#4db4e6",15.6,"M 137.0 364.0 L 133.4 357.1 L 124.2 353.2 L 111.5 353.8 L 102.8 358.4 L 101.4 364.6 L 105.2 369.4 L 112.6 372.1 L 121.8 372.7 L 129.8 371.3 L 134.6 368.2 L 137.0 364.0"],["#eef0f0",10.8,"M 101.0 294.0 L 86.8 291.7 L 75.1 286.9 L 66.4 279.4 L 60.9 270.4 L 58.8 259.4 L 59.9 246.4 L 64.3 234.2 L 71.7 225.4 L 80.1 219.9 L 91.4 217.0 L 114.1 215.6 L 146.9 216.4 L 173.4 221.1 L 186.7 230.7 L 191.9 244.9 L 191.0 261.9 L 184.7 278.2 L 177.1 292.2 L 171.8 302.9 L 167.4 307.7 L 158.2 305.1 L 136.4 299.1 L 101.0 294.0"]]}};
   var seq=[["phone","top"],["laptop_mail","bottom"],["postcard","top"],["smartphone","bottom"]];
-  var root=el('g',{'data-comm':'1'}); cam.appendChild(root);
+  var root=el('g',{'data-comm':'1', filter:'url(#chalkGrain)'}); cam.appendChild(root);   // 분필효과: 다른 오브젝트와 동일 chalkGrain(강한 그레인). 원래 필터 누락됐었음
   var X0=7130, X1=7460, DROP=34, ICON=75.6;   // 통신(우산씬 뒤) 아이콘 30% 작게(108→75.6)
   var SCL={phone:0.75, smartphone:0.75};
   var xs=[]; for(var i=0;i<seq.length;i++) xs.push(X0+(X1-X0)*i/(seq.length-1));
