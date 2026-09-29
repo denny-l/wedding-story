@@ -287,7 +287,7 @@
   <audio id="bgmAudio" preload="auto" src="./bgm3.mp3?v=3898addc"></audio>
 </div>
 
-<script src="objects.js?v=98ba412c"></script>
+<script src="objects.js?v=f96219dd"></script>
 <script>
 const {COUPLE_V,HOUSE_V,OAK_V,BUSHY_V,LEAFY_V,COUPLE2_V,BIKE_V,ROUNDTREE_V,MOON_V}=window.WEDDING_SHAPES;  // 공용 objects.js 의 shape 데이터 참조
 
@@ -1056,8 +1056,8 @@ _plant('lb180',7790,840,88,'bottom',9666,1.10);   // 해바라기
 // [계절 선 위 커플] 여아=윗선(pink)·남아=아래선(blue)에 앉음. follow로 선 파동 추종, 다리는 선 아래로 늘어뜨림.
 // [걸터앉은 아이들] 원본은 선(턱)에 엉덩이를 걸치고 다리를 선 아래로 늘어뜨린 자세. 선이 '엉덩이'를 지나도록 배치 → 바닥-앵커 y = 선y + size×(다리비율). 다리비율: 여아 0.25·남아 0.229(원본 걸터앉는선 y877 기준).
 // 여아=봄나무(벚꽃,윗선)~가을나무(윗선) 사이 윗선(followX 9285, 선y≈480). 남아=여름나무~겨울나무 사이 아랫선(followX 9800, 선y≈843).
-add(libNode('lb224', 7315, 517, 179, {topDown:true, keepfill:true}), 7315, 'season', 1.7);  var _sitGirl=items[items.length-1]; _sitGirl.follow='top';    _sitGirl.followX=9191; _sitGirl.nobounce=true;   // 여아=윗선 빈구간. +10%↑(163→179). 선 위로 올려 걸터앉기 강화
-add(libNode('lb223', 7861, 884, 179, {topDown:true, keepfill:true}), 7861, 'season', 1.75); var _sitBoy=items[items.length-1];   _sitBoy.follow='bottom';  _sitBoy.followX=9737;  _sitBoy.nobounce=true;   // 남아=아랫선 빈구간. +10%↑(163→179). 엉덩이=843 유지
+add(libNode('lb224', 7315, 517, 179, {topDown:true, sw:3.4}), 7315, 'season', 1.7);  var _sitGirl=items[items.length-1]; _sitGirl.follow='top';    _sitGirl.followX=9191; _sitGirl.nobounce=true;   // 여아=윗선 빈구간. 단일선 변환(keepfill 제거). +10%↑(163→179). 선 위로 올려 걸터앉기 강화
+add(libNode('lb223', 7861, 884, 179, {topDown:true, sw:3.4}), 7861, 'season', 1.75); var _sitBoy=items[items.length-1];   _sitBoy.follow='bottom';  _sitBoy.followX=9737;  _sitBoy.nobounce=true;   // 남아=아랫선 빈구간. 단일선 변환(keepfill 제거). +10%↑(163→179). 엉덩이=843 유지
 
 // [헤어짐3] "서로의 위로가 되어주고" (자막 런타임 x6582) — 우산커플 + 비. 코드 x = 런타임 x − 1360.
 // [헤어짐3 재구성] "서로의 위로" — 남자(손뻗음)가 웅크린 여자에게 우산 건넴. codeX=inv(화면x,'comfort')=화면x-1618
@@ -1081,8 +1081,8 @@ window.SHOCK={coupleIt:_shCoupleIt, skelIt:_shSkelIt, X:5378, T0:null};
 });
 
 // [헤어짐4] "보이지 않은 인연의 끈을 놓지 않은 채" (자막 런타임 x7313) — 여자(위선)가 엎드려 두 손으로 선물을 아래로 건네고 남자(아래선)가 받음. 실(끈) 애니는 유지.
-add(libNode('lb135', 5738, 378, 144, {topDown:true, sw:3.4}), 5738, 'thread', 0.3); var _gtGW=items[items.length-1]; _gtGW.follow='top'; _gtGW.followX=7614;   // 여자 대기. 하단(몸통)이 분홍선에 닿게 y 388->403
-add(libNode('lb136', 5738, 378, 144, {topDown:true, sw:3.4}), 5738, 'thread', 0.3); var _gtGG=items[items.length-1]; _gtGG.follow='top'; _gtGG.followX=7614;   // 여자 주기(두 손 아래로). y 388->403
+add(libNode('lb135', 5738, 378, 144, {topDown:true, sw:3.4}), 5738, 'thread', 2.5); var _gtGW=items[items.length-1]; _gtGW.follow='top'; _gtGW.followX=7614;   // 여자 대기. 하단(몸통)이 분홍선에 닿게 y 388->403
+add(libNode('lb136', 5738, 378, 144, {topDown:true, sw:3.4}), 5738, 'thread', 2.5); var _gtGG=items[items.length-1]; _gtGG.follow='top'; _gtGG.followX=7614;   // 여자 주기(두 손 아래로). y 388->403
 add(libNode('lb137', 5970, 722, 215, {topDown:true, sw:3.4}), 5970, 'thread', 0.3); var _gtBW=items[items.length-1]; _gtBW.follow='bottom'; _gtBW.followX=7846;   // 남자 대기(팔내림, 아래선-추종)
 add(libNode('lb138', 5970, 722, 215, {topDown:true, sw:3.4}), 5970, 'thread', 0.3); var _gtBC=items[items.length-1]; _gtBC.follow='bottom'; _gtBC.followX=7846;   // 남자 받기(두 팔 위로)
 window.GIFTTOSS={girlWait:_gtGW, girlGive:_gtGG, boyWait:_gtBW, boyCatch:_gtBC, girlX:7614, boyX:7846, X:7614, T0:null, sdx:113, sdyDown:-27, edx:-64, eyUp:180};   // [선물 건네기] 여자 손→남자 뻗은 손(실측 viewBox 4,164=화면572,387) 낙하. edx=-46·eyUp=150: 얼굴/머리 아니라 왼쪽 위로 뻗은 손에 안착
@@ -1129,11 +1129,11 @@ window.THROW={ before:window.__throwGirl, throwPose:window.__throwGirlT, boyBefo
 // [재회 배경 건물] 재회 커플 뒤 좌/우 건물(lb274 왼쪽 이자카야 · lb275 오른쪽 아파트). 커플보다 먼저 그려 배경(z-order 뒤).
 add(libNode('lb274', 4830, 548, 540, {topDown:true}), 4830, 'reunite', 0.15); window.__bldgL=items[items.length-1]; window.__bldgL.startAfterReunion=0.2;   // 재회 배경 왼쪽 건물 (1.2→0.2, 1초 더 빨리)
 add(libNode('lb275', 5342, 548, 540, {topDown:true, keepfill:true}), 5342, 'reunite', 0.15); window.__bldgR=items[items.length-1]; window.__bldgR.startAfterReunion=0.2;   // 재회 배경 오른쪽 건물 (1.2→0.2, 1초 더 빨리)
-add(libNode('lb192', 4876, 580, 230, {topDown:true, keepfill:true, occlude:true}), 4876, 'reunite', 0.3); items[items.length-1].subkey='reunite'; window.__reuniteBoy=items[items.length-1]; window.__reuniteBoy.startAtReunionSub=true; window.__reuniteBoy.reunionSubLead=0.40;   // 손 흔드는 남아3. occlude=메인선 가림. startAtReunionSub=등장을 "그러던 어느 날" 자막 시점에 시작. reunionSubLead=0.40 → 남아 선-드로잉(dur1.2) 끝이 자동차 도착(car.t+1.2)에 딱 맞음
+add(libNode('lb192', 4876, 580, 253, {topDown:true, sw:3.4}), 4876, 'reunite', 0.3); items[items.length-1].subkey='reunite'; window.__reuniteBoy=items[items.length-1]; window.__reuniteBoy.startAtReunionSub=true; window.__reuniteBoy.reunionSubLead=0.40;   // 손 흔드는 남아3. occlude=메인선 가림. startAtReunionSub=등장을 "그러던 어느 날" 자막 시점에 시작. reunionSubLead=0.40 → 남아 선-드로잉(dur1.2) 끝이 자동차 도착(car.t+1.2)에 딱 맞음
 add(libNode('lb193', 5094, 454, 279, {topDown:true, keepfill:true}), 5094, 'reunite', 1.5); window.__carIt=items[items.length-1];   // 차 탄 여아3(벡터·매끈) — 하트 위치. 슬라이드-인(왼쪽위→현재) 애니 대상. lag 1.5(자동차 애니 1.5초 늦게 시작)
 
 // [씬] 조금 달라진 모습으로, 여전히 익숙한 사람으로 — 벤치 커플(선 위, 렌더 x≈9682, 선 y540, 등장 71.4s)
-add(libNode('lb194', 5620, 540, 231, {topDown:true, keepfill:true, occlude:true}), 5620, 'stronger', 0.0);   // 벤치 커플3(벡터·매끈). occlude=B
+add(libNode('lb194', 5620, 540, 231, {topDown:true, sw:3.4, occlude:true}), 5620, 'stronger', 0.0);   // 벤치 커플3. 단일선 변환(keepfill 제거). occlude=B
 // 벤치 커플 위쪽에 음표 4개(떠다니는 멜로디)
 add(libNode('lb85', 5555, 270, 50, {fill:true, anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}), 5555, 'stronger', 1.3);   // 8분음표(가장 왼쪽) — 조금 위로(y 300->270)
 add(libNode('lb86', 5605, 240, 58, {fill:true, anchor:'center', topDown:true, sw:3.0, color:'var(--gold)'}), 5605, 'stronger', 1.5);   // 연음표
@@ -1145,12 +1145,12 @@ add(pansy(5510,458,54,'var(--lilac)'), 5510, 'stronger');   // 재회 선 위 �
 add(cherry(5720,460,54,'var(--rose)'), 5720, 'stronger');   // 재회 선 위 벚꽃 — 벤치 오른쪽(살짝 더 왼쪽)
 
 // [씬] 우리는 다시 서로의 하루를 나누기 시작했습니다 — 테이블커플(자막 재회+9.2s≈71s, rt10428). 겹치던 산책커플(couple2T) 삭제.
-add(libNode('lb191', 6013, 572, 228, {topDown:true, keepfill:true, occlude:true}), 6013, 'together'); items[items.length-1].subkey='walk';   // 테이블커플3(꽃병+커피). occlude=B
+add(libNode('lb191', 6013, 572, 228, {topDown:true, sw:3.4, occlude:true}), 6013, 'together'); items[items.length-1].subkey='walk';   // 테이블커플3(꽃병+커피). 단일선 변환(keepfill 제거). occlude=B
 add(heart(6034,272,42,'var(--ember)',4,'var(--ember)'), 6034, 'together');  // 테이블커플 위 하트 — 추가로 50%(21) 아래로
 
 // [씬] 별것아닌 하루도, 너무 특별했습니다 — 자전거(전용 시간 할당)
 // [씬] 좋은 날에는 함께 웃고 — TV 보는 커플(자전거 대체, 선 위)
-add(libNode('lb195', 6621, 574, 304, {topDown:true, keepfill:true, occlude:true}), 6621, 'together', 0.3); items[items.length-1].subkey='daily';   // TV 보는 커플2(벡터·매끈). occlude=B(메인선 가림)
+add(libNode('lb195', 6621, 574, 304, {topDown:true, sw:3.4, occlude:true}), 6621, 'together', 0.3); items[items.length-1].subkey='daily';   // TV 보는 커플2. 단일선 변환(팝콘·음료수는 원본채움). occlude=B(메인선 가림)
 
 // [씬] 특별하지 않는 날들이 조금씩 특별해졌습니다 — 골목 기찻길 씬(요리 씬 교체, 2026-09-20). 원본 이미지(1254²) 구도 그대로: 상가(lb266) 뒤 · 기찻길(lb265) 아래 · 커플(lb264) 무지개 위.
 // 스케일 k=678/585.5(상가 폭 678 = 560×1.21, 지평선 y565 고정 확대). 메인선(kitchenFlat y565, 반폭 365)은 원래 높이. 씬 전체를 _alleyDY(-130) 올려 커플 발이 선 위에 오게 함 → 두 사람이 선 위를 걷는 구성.
@@ -1163,7 +1163,7 @@ add(libNode('lb264', 6292, 698.1+_alleyDY, 237.8, {topDown:true, keepfill:true, 
 for(var _kfi=items.length-3;_kfi<items.length;_kfi++){ items[_kfi].fwdSkip=1; }   // 골목 3요소: 수동 dx 오프셋 → fwd self-test 제외(렌더는 codeX+dx로 정확)
 
 // [씬] 마음이 무거운 날에는 서로의 곁을 지켰습니다 — 계단 커플(계단 바닥=선 y540, rt≈12573)
-add(libNode('lb196', 6962, 570, 240, {topDown:true, keepfill:true, occlude:true}), 6962, 'days', 0.0); window.__stairChar=items[items.length-1]; var _stairSurr0=items.length;   // 계단 커플=등돌린 커플2. 캐릭터 먼저 그림. _stairSurr0=이후 주변 오브젝트 시작 인덱스
+add(libNode('lb196', 6962, 570, 240, {topDown:true, sw:3.4, occlude:true}), 6962, 'days', 0.0); window.__stairChar=items[items.length-1]; var _stairSurr0=items.length;   // 계단 커플=등돌린 커플2. 단일선 변환(keepfill 제거). 캐릭터 먼저 그림. _stairSurr0=이후 주변 오브젝트 시작 인덱스
 add(libNode('lb89', 6850, 512, 320, {fill:true, topDown:true, sw:2.2}), 6850, 'days', 0.0);   // 가로등: 커플 왼쪽(렌더≈12516), 밑둥=호 램프선 y≈508
 // [계단씬] 가로등 전구 양옆 트윙클 — 원본 이미지 6직선 그대로(lampTwinkle). nobounce=바운스없이 위→아래 드로우온
 add(lampTwinkle(6850, 254, 1, 'var(--gold)'), 6850, 'days', 1.4); items[items.length-1].nobounce=true;   // lag 1.4 = 램프(dur1.2) 다 그려진 뒤 시작
@@ -1195,7 +1195,7 @@ for(var _ssi=_stairSurr0;_ssi<items.length;_ssi++){ items[_ssi].afterStairChar=t
 // [씬] 별일 없는 날에는 그저 나란히 걸으며 (자막 off 33.09) — 걷는 커플 + 위 전구줄 + 양옆 꽃. 계단↔피크닉 사이, 선 위.
 // 전구 가랜드(lb95) — 2줄 크로스 스웨그+전구+점+반짝임, 커플 머리 위. keepfill로 baked 색 유지.
 add(libNode('lb95', 7280, 205, 136, {anchor:'center', topDown:true, keepfill:true}), 7280, 'days', 0.15);   // 전구 가랜드 1개. size 124->136(+10%)
-add(libNode('lb197', 7280, 540, 240, {topDown:true, keepfill:true}), 7280, 'days', 0.4);   // 손잡고 걷는 커플(별일 없는 씬, 뒤 건물 없음 → occlude 불필요)
+add(libNode('lb197', 7280, 540, 240, {topDown:true, sw:3.4}), 7280, 'days', 0.4);   // 손잡고 걷는 커플. 단일선 변환(keepfill 제거). 뒤 건물 없음 → occlude 불필요
 // 양옆 꽃 — flower()(초록 줄기·잎 + 분홍 꽃잎 + 골드 심). 이미지대로 전구 좌우폭(화면 7032~7526) 안쪽 양 끝에 배치.
 // codeX=7280(커플과 동일 씬 시점에 그려짐; 전구 lb95도 codeX 7280에 폭 7032~7526 차지). 좌2+우3. 줄기끝 y+1.5s=지면 y540.
 // 꽃 종류 섞음(flower·pansy·cherry). 색도 살짝 변주(rose/ember).
@@ -1225,12 +1225,12 @@ add(seaLayer('glow',1.0),  7525, 'home', 0.55);
 add(seaLayer('sun',1.1),   7525, 'home', 0.9);
 add(seaLayer('cloud',1.4), 7525, 'home', 1.4);
 add(seaLayer('bird',0.8),  7525, 'home', 2.1);
-add(libNode('lb198', 7560, 783, 206, {topDown:true, keepfill:true}), 7525, 'home', 1.1);   // 앉은 커플+돗자리2(벡터·매끈). 중심을 해 중심(7560)에 정렬. 머리는 수평선 '아래'
+add(libNode('lb198', 7560, 783, 206, {topDown:true, sw:3.4}), 7525, 'home', 1.1);   // 앉은 커플+돗자리2. 단일선 변환(keepfill 제거). 중심을 해 중심(7560)에 정렬. 머리는 수평선 '아래'
 add(libNode('lb30', 7667, 758, 44, {topDown:true, bottomUp:true, sw:3.6, color:'var(--rose)'}),      7632, 'home', 1.6);  // 작은 꽃 — 커플 이동만큼 +35 (7632->7667)
 add(libNode('lb100', 7713, 758, 92, {fill:true, topDown:true, sw:2.4}), 7678, 'home', 1.3);  // 피크닉 바구니 — 커플 이동만큼 +35 (7678->7713)
 
 // [씬] 곁이란, 서로의 하루를 나누고 — 창가 커플(방 구도: 창+커플+밴치 중앙, 좌우 화분, 우상단 전등). 원래 집(houseT)은 제거하고 교체.
-add(libNode('lb199', 7815, 540, 300, {topDown:true, keepfill:true}), 7815, 'home', 0.3); items[items.length-1].subkey='home';   // 창가 커플2(별 보는 창가·벡터·매끈)
+add(libNode('lb199', 7815, 540, 300, {topDown:true, sw:3.4}), 7815, 'home', 0.3); items[items.length-1].subkey='home';   // 창가 커플2(별 보는 창가). 단일선 변환(keepfill 제거)
 add(libNode('lb102', 7648, 509, 110, {topDown:true, bottomUp:true, sw:2.4}), 7815, 'home', 0.5);   // 왼쪽 화분(선반 top y509 위)
 add(libNode('lb69',  7815, 509.4, 48, {topDown:true, sw:2.4, color:'var(--chalk)'}), 7815, 'home', 0.6);   // 커피(커플 정중앙 7849->7815). currentColor라 color 지정 필수(안 하면 검정)
 add(libNode('lb103', 8068, 566, 125, {topDown:true, bottomUp:true, sw:2.4}), 7815, 'home', 0.7);   // 화분 — [메인선 가림 끔: 사용자 지시](바닥, 크게, 오른쪽 50% 이동)
@@ -1243,7 +1243,7 @@ add(oakT(8075,540,222),               8075, 'home', 1.32);
 
 // [씬] 혼자 걷던 길을 나란히 걷는 것 — 카페 건물(선 위, off 52.09 ≈ codeX 8300)
 add(libNode('lb107', 8300, 549, 345, {topDown:true, sw:2.4}), 8300, 'home', 0.6); items[items.length-1].subkey='cafe';   // 카페 건물(추가 10%축소 383->345) — 선이 건물 뒤로 계속 보임
-add(libNode('lb200', 8242, 619, 245, {topDown:true, keepfill:true}), 8300, 'home', 0.9); items[items.length-1].node.setAttribute('data-selfpivot','1');   // 카페 커플2(잔재 제거·정리본). occlude 함수 대신 svg에 baked 실루엣 채움(var(--board))으로 뒤 가림 — 카페(lb107 lag0.6)·선 그린 뒤 커플(lag0.9,위 레이어). data-selfpivot=피벗 실제 중심. 위로 20%(45px) 664->619
+add(libNode('lb200', 8242, 619, 245, {topDown:true, sw:3.4}), 8300, 'home', 0.9); items[items.length-1].node.setAttribute('data-selfpivot','1');   // 카페 커플2. 단일선 변환(keepfill 제거, board 실루엣은 data-keepfill로 유지). svg baked 실루엣(var(--board))으로 뒤 가림 — 카페(lb107 lag0.6)·선 그린 뒤 커플(lag0.9,위 레이어). data-selfpivot=피벗 실제 중심. 위로 20%(45px) 664->619
 add(libNode('lb103', 8491, 549, 153, {topDown:true, bottomUp:true, sw:2.4}), 8415, 'home', 0.1);   // 화분 — 건물 오른쪽(문 옆), 폭 50%(76px) 오른쪽 이동(8415->8491, 건물 겹침 방지). codeXarg는 8415 유지(fwd 일관). 밑동=메인선
 
 // [씬] 우리는 서로에게 '곁'이라는 선물을 받았습니다 — 등돌린 커플(선 위, 렌더 x≈15648, 선 y540)
@@ -3546,7 +3546,7 @@ try{ _fwdSelfTest(); }catch(e){ console.error('[fwd self-test] 예외', e); }   
   window.__commUpdate=function(t){
     var T1=(typeof FORK_PULL!=='undefined')?FORK_PULL.T1:null;
     if(T1==null){ nodes.forEach(function(n){ if(n._st!==-1){ n._st=-1; n.grp.style.opacity='0'; n.sub.style.opacity='0'; n.drop.setAttribute('stroke-dashoffset',n.L); n.paths.forEach(function(pp){pp.el.style.strokeDashoffset=pp.len; pp.el.style.opacity="0";}); } }); return; }
-    var START=T1+3.7, STEP=0.6;
+    var START=T1+3.4, STEP=0.35;   // 실 완전 소멸(T1+3.25) 직후 등장, 빠르게(선물커플 88.6 전에 대부분 완료). 기존 3.7/0.6
     nodes.forEach(function(n,i){
       var rt=START+i*STEP, e=t-rt;
       if(e<=0){ if(n._st!==0){ n._st=0; n.grp.style.opacity='0'; n.sub.style.opacity='0'; n.drop.setAttribute('stroke-dashoffset',n.L); n._doff=n.L; n.paths.forEach(function(pp){pp.el.style.strokeDashoffset=pp.len; pp.el.style.opacity="0";}); } return; }
