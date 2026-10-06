@@ -100,16 +100,28 @@
             org:org, asn:asn, latitude:loc[0]?+loc[0]:null, longitude:loc[1]?+loc[1]:null,
             postal:d.postal, timezone:d.timezone};
   }
-  // 1차 IPinfo(무토큰, 유선 정확도 최상) → 2차 ipwho.is → 3차 ipapi.co → 실패면 IP 없이라도 기록
-  fetch('https://ipinfo.io/json').then(function(r){return r.json();}).then(function(d){
-    if(d&&d.ip&&!d.error){ post(fromIpinfo(d)); } else { throw 0; }
+  // ipgeolocation 응답 → 공통 geo 형태로 정규화 (도시 정확도 최상: 확정IP 실측 4/4 道, 3/4 시)
+  function fromIpgeo(d){
+    return {ip:d.ip, city:d.city||d.district, region:d.state_prov, country:d.country_name, country_code:d.country_code2,
+            org:d.isp, asn:'', latitude:d.latitude?+d.latitude:null, longitude:d.longitude?+d.longitude:null,
+            postal:d.zipcode, timezone:(d.time_zone&&d.time_zone.name)};
+  }
+  // 1차 ipgeolocation(키, 도시 정확도 최상) → 2차 IPinfo(해외 보완) → 3차 ipwho.is → 4차 ipapi.co → 실패면 IP 없이 기록
+  // 키는 클라이언트 노출 허용(사용자 승인). 무료 Developer 플랜만 사용 — 유료/서차지 미사용.
+  var IPGEO_KEY='42f742ea152a4936998fde082d9ac6c4';
+  fetch('https://api.ipgeolocation.io/ipgeo?apiKey='+IPGEO_KEY+'&fields=geo,time_zone,isp,connection_type').then(function(r){return r.json();}).then(function(d){
+    if(d&&d.ip&&!d.message){ post(fromIpgeo(d)); } else { throw 0; }
   }).catch(function(){
-    fetch('https://ipwho.is/').then(function(r){return r.json();}).then(function(d){
-      if(d&&d.success!==false&&d.ip){ post(d); } else { throw 0; }
+    fetch('https://ipinfo.io/json').then(function(r){return r.json();}).then(function(d){
+      if(d&&d.ip&&!d.error){ post(fromIpinfo(d)); } else { throw 0; }
     }).catch(function(){
-      fetch('https://ipapi.co/json/').then(function(r){return r.json();}).then(function(d){
-        post(d&&d.ip?d:{});
-      }).catch(function(){ post({}); });
+      fetch('https://ipwho.is/').then(function(r){return r.json();}).then(function(d){
+        if(d&&d.success!==false&&d.ip){ post(d); } else { throw 0; }
+      }).catch(function(){
+        fetch('https://ipapi.co/json/').then(function(r){return r.json();}).then(function(d){
+          post(d&&d.ip?d:{});
+        }).catch(function(){ post({}); });
+      });
     });
   });
 })();
