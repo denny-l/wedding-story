@@ -1253,7 +1253,7 @@ add(libNode('lb202', 8758, 543, 139, {topDown:true, keepfill:true}), 8758, 'home
 add(libNode('lb203', 8921, 589, 90,  {topDown:true, keepfill:true}), 8921, 'home', 0.1);   // 다리(우측, 같은 프레임)
 add(libNode('lb206', 8756, 674, 131, {topDown:true, keepfill:true}), 8756, 'home', 0.2);   // 강물(물결+반영, 수면선 아래)
 add(libNode('lb207', 8758, 736, 66,  {topDown:true, keepfill:true}), 8758, 'home', 0.3);   // 강변 바닥(둔치)
-add(libNode('lb201', 8758, 699, 331, {topDown:true, sw:2.6}), 8758, 'home', 0.5);   // 강변 커플(단일선 변환·색유지). 카페씬 방식=svg baked 실루엣 채움(var(--board))으로 뒤 가림, occlude 함수 미사용
+add(libNode('lb201', 8758, 699, 331, {topDown:true, sw:3.4}), 8758, 'home', 0.5);   // 강변 커플(단일선 변환·색유지). 카페씬 방식=svg baked 실루엣 채움(var(--board))으로 뒤 가림, occlude 함수 미사용
 add(libNode('lb204', 8756, 693, 43,  {topDown:true, bottomUp:true, keepfill:true}), 8756, 'home', 0.6);   // 강변 풀(둔치 좌우)
 for(var _rv=items.length-7;_rv<items.length;_rv++){ items[_rv].riverScene=true; }   // [강변 씬 태그] 하트 중앙(피날레)에서 페이드아웃 대상
 
@@ -2706,15 +2706,18 @@ function animatePetals(t){
     }
   }
   _petalG.style.opacity=(t>ENDFADE?Math.max(0,(ENDGONE-t)/(ENDGONE-ENDFADE)):1).toFixed(2);
+  var _cs=window.__camS||1, _cx=window.__camX||0;   // [컬링] 화면밖 판정용 카메라 상태
   for(var k=0;k<_petals.length;k++){ var q=_petals[k];
     var lc=(t-START)-q.ph*q.loop;                 // 스폰 지연(0~loop): 시작 땐 위(캐노피)에서만, 순차로 등장
-    if(lc<0){ q.el.style.opacity='0'; continue; }  // 아직 안 떨어진 꽃잎 = 안 보임(아래에 미리 있지 않음)
+    if(lc<0){ if(q._lo!=='0'){ q.el.style.opacity='0'; q._lo='0'; } continue; }  // 아직 안 떨어진 꽃잎 = 안 보임(아래에 미리 있지 않음)
     var lt=lc-Math.floor(lc/q.loop)*q.loop;        // 0~loop 반복(위→아래 낙하)
     var x=q.ox+q.drift*lt+q.amp*Math.sin(lt*q.fr+q.ph*6.2832);
     var y=q.oy+q.vy*lt, rot=q.rs*lt;
-    var op=0.85*Math.min(Math.min(1,lt/0.5), Math.min(1,(q.loop-lt)/1.0));
-    q.el.style.opacity=op.toFixed(2);
-    q.el.setAttribute('transform','translate('+x.toFixed(1)+' '+y.toFixed(1)+') rotate('+rot.toFixed(1)+') scale('+q.sc.toFixed(2)+')');
+    var _sx=x*_cs+_cx; if(_sx< -300 || _sx>2220) continue;   // [컬링] 화면밖(margin300)이면 DOM 쓰기 스킵 — 보이는 픽셀엔 영향 없음
+    var op=(0.85*Math.min(Math.min(1,lt/0.5), Math.min(1,(q.loop-lt)/1.0))).toFixed(2);
+    if(op!==q._lo){ q.el.style.opacity=op; q._lo=op; }      // [불변스킵] 직전과 같으면 재호출 안 함
+    var tf='translate('+x.toFixed(1)+' '+y.toFixed(1)+') rotate('+rot.toFixed(1)+') scale('+q.sc.toFixed(2)+')';
+    if(tf!==q._lt){ q.el.setAttribute('transform',tf); q._lt=tf; }
   }
 }
 
@@ -2743,16 +2746,19 @@ function animateAutumnLeaves(t){
     }
   }
   _leafG.style.opacity=(t>ENDFADE?Math.max(0,(ENDGONE-t)/(ENDGONE-ENDFADE)):1).toFixed(2);
+  var _cs=window.__camS||1, _cx=window.__camX||0;   // [컬링] 화면밖 판정용 카메라 상태
   for(var k=0;k<_fleaves.length;k++){ var q=_fleaves[k];
     var lc=(t-START)-q.ph*q.loop;
-    if(lc<0){ q.el.style.opacity='0'; continue; }
+    if(lc<0){ if(q._lo!=='0'){ q.el.style.opacity='0'; q._lo='0'; } continue; }
     var lt=lc-Math.floor(lc/q.loop)*q.loop;
     var x=q.ox+q.drift*lt+q.amp*Math.sin(lt*q.fr+q.ph*6.2832);
     var y=q.oy+q.vy*lt, rot=q.rs*lt;
-    var op=0.9*Math.min(Math.min(1,lt/0.5), Math.min(1,(q.loop-lt)/1.0));
-    q.el.style.opacity=op.toFixed(2);
+    var _ssx=x*_cs+_cx; if(_ssx< -300 || _ssx>2220) continue;   // [컬링] 화면밖(margin300) 스킵
+    var op=(0.9*Math.min(Math.min(1,lt/0.5), Math.min(1,(q.loop-lt)/1.0))).toFixed(2);
+    if(op!==q._lo){ q.el.style.opacity=op; q._lo=op; }
     var sx=(q.flip<0.5?1:-1)*q.sc;   // 좌우 뒤집힘 섞어 팔랑임
-    q.el.setAttribute('transform','translate('+x.toFixed(1)+' '+y.toFixed(1)+') rotate('+rot.toFixed(1)+') scale('+sx.toFixed(2)+' '+q.sc.toFixed(2)+')');
+    var tf='translate('+x.toFixed(1)+' '+y.toFixed(1)+') rotate('+rot.toFixed(1)+') scale('+sx.toFixed(2)+' '+q.sc.toFixed(2)+')';
+    if(tf!==q._lt){ q.el.setAttribute('transform',tf); q._lt=tf; }
   }
 }
 
@@ -2831,12 +2837,16 @@ function animatePetalPile(t){
     });
   }
   _pileG.style.opacity='1';
+  var _cs=window.__camS||1, _cx=window.__camX||0;   // [컬링] 화면밖 판정용 카메라 상태
   for(var k=0;k<_pilePetals.length;k++){ var q=_pilePetals[k];
     var pr=(t-q.land)/0.55;   // 0.55초 착지
-    if(pr<0){ q.el.style.opacity='0'; continue; }
+    if(pr<0){ if(q._lo!=='0'){ q.el.style.opacity='0'; q._lo='0'; } continue; }
+    var _sx=q.px*_cs+_cx; if(_sx< -300 || _sx>2220) continue;   // [컬링] 화면밖(margin300) 스킵 — 밑동 쌓임은 x 고정이라 화면 벗어나면 통째로 스킵
     var e=pr>1?1:pr, drop=(1-e)*(1-e)*40, rot=q.rot + (1-e)*q.rs;   // 위에서 낙하 + 살짝 회전하며 안착
-    q.el.style.opacity=(pr<0.5?pr*2:1).toFixed(2);
-    q.el.setAttribute('transform','translate('+q.px.toFixed(1)+' '+(q.py-drop).toFixed(1)+') rotate('+rot.toFixed(0)+') scale('+q.sc.toFixed(2)+' '+(q.sc*0.62).toFixed(2)+')');
+    var op=(pr<0.5?pr*2:1).toFixed(2);
+    if(op!==q._lo){ q.el.style.opacity=op; q._lo=op; }
+    var tf='translate('+q.px.toFixed(1)+' '+(q.py-drop).toFixed(1)+') rotate('+rot.toFixed(0)+') scale('+q.sc.toFixed(2)+' '+(q.sc*0.62).toFixed(2)+')';
+    if(tf!==q._lt){ q.el.setAttribute('transform',tf); q._lt=tf; }   // [불변스킵] 착지 완료(pr>=1) 후엔 transform 불변 → 재호출 0
   }
 }
 
@@ -2863,12 +2873,16 @@ function animateLeafPile(t){
     }
   }
   _lpileG.style.opacity='1';
+  var _cs=window.__camS||1, _cx=window.__camX||0;   // [컬링] 화면밖 판정용 카메라 상태
   for(var k=0;k<_lpile.length;k++){ var q=_lpile[k];
     var pr=(t-q.land)/0.6;
-    if(pr<0){ q.el.style.opacity='0'; continue; }
+    if(pr<0){ if(q._lo!=='0'){ q.el.style.opacity='0'; q._lo='0'; } continue; }
+    var _sx=q.px*_cs+_cx; if(_sx< -300 || _sx>2220) continue;   // [컬링] 화면밖(margin300) 스킵
     var e=pr>1?1:pr, drop=(1-e)*(1-e)*46, rot=q.rot+(1-e)*q.rs, sx=(q.flip<0.5?1:-1)*q.sc;
-    q.el.style.opacity=(pr<0.5?pr*2:1).toFixed(2);
-    q.el.setAttribute('transform','translate('+q.px.toFixed(1)+' '+(q.py-drop).toFixed(1)+') rotate('+rot.toFixed(0)+') scale('+sx.toFixed(2)+' '+(q.sc*0.7).toFixed(2)+')');
+    var op=(pr<0.5?pr*2:1).toFixed(2);
+    if(op!==q._lo){ q.el.style.opacity=op; q._lo=op; }
+    var tf='translate('+q.px.toFixed(1)+' '+(q.py-drop).toFixed(1)+') rotate('+rot.toFixed(0)+') scale('+sx.toFixed(2)+' '+(q.sc*0.7).toFixed(2)+')';
+    if(tf!==q._lt){ q.el.setAttribute('transform',tf); q._lt=tf; }
   }
 }
 
@@ -2917,13 +2931,18 @@ function animateWinterSnow(t){
   _snowMound.setAttribute('d', _buildMound('bottom', X0, X1, _snowSegs, 150));
   _snowMoundTop.setAttribute('d', _buildMound('top', TX0, TX1, _snowSegsTop, 55));
   _snowG.style.opacity='1';
+  var _cs=window.__camS||1, _cx=window.__camX||0;   // [컬링] 화면밖 판정용 카메라 상태
   for(var k=0;k<_snowFlakes.length;k++){ var q=_snowFlakes[k];
-    if(q.ox > FX){ q.el.style.opacity='0'; continue; }   // 펜이 아직 안지난 열엔 눈송이도 안보임
-    var lc=(t-START)-q.ph*q.loop; if(lc<0){ q.el.style.opacity='0'; continue; }
+    if(q.ox > FX){ if(q._lo!=='0'){ q.el.style.opacity='0'; q._lo='0'; } continue; }   // 펜이 아직 안지난 열엔 눈송이도 안보임
+    var lc=(t-START)-q.ph*q.loop; if(lc<0){ if(q._lo!=='0'){ q.el.style.opacity='0'; q._lo='0'; } continue; }
     var lt=lc-Math.floor(lc/q.loop)*q.loop;
     var fx=q.ox+q.drift*lt+q.amp*Math.sin(lt*q.fr+q.ph*6.2832), fy=q.oy+q.vy*lt;
-    var op=0.85*Math.min(Math.min(1,lt/0.6), Math.min(1,(q.loop-lt)/1.2));
-    q.el.style.opacity=op.toFixed(2); q.el.setAttribute('cx',fx.toFixed(1)); q.el.setAttribute('cy',fy.toFixed(1));
+    var _sx=fx*_cs+_cx; if(_sx< -300 || _sx>2220) continue;   // [컬링] 화면밖(margin300) 스킵 (2/3/4엔 FX>X1+2000 게이팅 없음 → 컬링이 대체)
+    var op=(0.85*Math.min(Math.min(1,lt/0.6), Math.min(1,(q.loop-lt)/1.2))).toFixed(2);
+    if(op!==q._lo){ q.el.style.opacity=op; q._lo=op; }
+    var _fx=fx.toFixed(1), _fy=fy.toFixed(1);
+    if(_fx!==q._lx){ q.el.setAttribute('cx',_fx); q._lx=_fx; }   // [불변스킵] cx/cy 각각 캐시
+    if(_fy!==q._ly){ q.el.setAttribute('cy',_fy); q._ly=_fy; }
   }
 }
 
@@ -2965,18 +2984,25 @@ function animateFireworks(t){
     }
   }
   _fwG.style.opacity='1';
+  var _cs=window.__camS||1, _cx=window.__camX||0;   // [컬링] 화면밖 판정용 카메라 상태
   for(var b2=0;b2<_fw.length;b2++){ var B=_fw[b2], lt=t-B.t0, vis=false, ph=0;
     for(var c=0;c<B.rep;c++){ var s=c*B.gap; if(lt>=s && lt<s+B.dur){ vis=true; ph=(lt-s)/B.dur; break; } }
+    var _bsx=B.cx*_cs+_cx, _bOff=(_bsx< -400 || _bsx>2320);   // [컬링] 버스트 중심이 화면밖(여유 400=버스트 반경 포함)이면 이 버스트 전체 스킵
     for(var i2=0;i2<B.sparks.length;i2++){ var sp=B.sparks[i2];
-      if(!vis){ sp.p.style.opacity='0'; sp.dot.style.opacity='0'; continue; }
+      if(!vis){ if(sp._lo!=='0'||sp._lpo!=='0'){ sp.p.style.opacity='0'; sp.dot.style.opacity='0'; sp._lo='0'; sp._lpo='0'; } continue; }
+      if(_bOff) continue;   // [컬링] 화면밖 버스트 — 보이는 중이라도 DOM 쓰기 스킵
       var e=1-Math.pow(1-ph,2.4);
       var fade=ph<0.14?(ph/0.14):(1-(ph-0.14)/0.86); fade=fade<0?0:(fade>1?1:fade);
       var x0,y0,x1,y1,grav;
       if(sp.gift){ x1=B.cx+sp.tx*e; y1=B.cy+sp.ty*e; x0=B.cx+sp.tx*e*0.92; y0=B.cy+sp.ty*e*0.92; grav=ph*ph*7; }   // 선물: 각 입자가 상자 윤곽점으로(꼬리 짧게=윤곽만 보이게)
       else { var r=e*sp.rmax, r0=Math.max(0,r-19); x0=B.cx+Math.cos(sp.a)*r0; y0=B.cy+Math.sin(sp.a)*r0; x1=B.cx+Math.cos(sp.a)*r; y1=B.cy+Math.sin(sp.a)*r; grav=ph*ph*16; }
-      sp.p.setAttribute('d','M '+x0.toFixed(1)+' '+y0.toFixed(1)+' L '+x1.toFixed(1)+' '+y1.toFixed(1));
-      sp.p.style.opacity=(fade*0.9).toFixed(2);
-      sp.dot.setAttribute('cx',x1.toFixed(1)); sp.dot.setAttribute('cy',(y1+grav).toFixed(1)); sp.dot.style.opacity=fade.toFixed(2);
+      var _d='M '+x0.toFixed(1)+' '+y0.toFixed(1)+' L '+x1.toFixed(1)+' '+y1.toFixed(1);
+      if(_d!==sp._ld){ sp.p.setAttribute('d',_d); sp._ld=_d; }
+      var _po=(fade*0.9).toFixed(2); if(_po!==sp._lpo){ sp.p.style.opacity=_po; sp._lpo=_po; }
+      var _dx=x1.toFixed(1), _dy=(y1+grav).toFixed(1), _do=fade.toFixed(2);
+      if(_dx!==sp._ldx){ sp.dot.setAttribute('cx',_dx); sp._ldx=_dx; }
+      if(_dy!==sp._ldy){ sp.dot.setAttribute('cy',_dy); sp._ldy=_dy; }
+      if(_do!==sp._lo){ sp.dot.style.opacity=_do; sp._lo=_do; }
     }
   }
 }
@@ -3041,6 +3067,8 @@ function frame(ts){
   cam.style.transform = (camS===1)
     ? `translate3d(${camX.toFixed(1)}px,${camY.toFixed(1)}px,0)`
     : `translate3d(${camX.toFixed(1)}px,${camY.toFixed(1)}px,0) scale(${camS.toFixed(4)})`;
+  // [파티클 컬링용] 카메라 상태 노출 — 파티클 함수가 화면밖 판정(screenX = worldX*camS + camX, 뷰포트 0..1920)에 사용. t로만 결정되는 값이라 seek 안전.
+  window.__camX=camX; window.__camY=camY; window.__camS=camS;
   // (모바일 메모리 컬링 제거) 아이폰은 동영상으로 배포하므로 SVG 컬링 불필요. 컬링이 seek 되감기 시
   //  display:none 을 영구히 남겨 오브젝트가 다시 안 나오는 버그가 있어 제거함.
   // [덜컹] 박동(큰 R 스파이크)을 지날 때 "세로만"(scaleY) 기준선(y=540)을 축으로 살짝 커졌다 돌아온다.
