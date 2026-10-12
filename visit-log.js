@@ -69,26 +69,7 @@
     return {device:device, os:os, browser:br};
   }
 
-  // GPS — 권한이 '이미 허용(granted)'된 경우에만 현재 위치 취득. prompt/denied면 프롬프트 없이 스킵.
-  function getGPS(){
-    return new Promise(function(resolve){
-      try{
-        if(!navigator.geolocation || !navigator.permissions || !navigator.permissions.query){ resolve({}); return; }
-        navigator.permissions.query({name:'geolocation'}).then(function(st){
-          if(st.state!=='granted'){ resolve({}); return; }   // 허용 안 됐으면 스킵(프롬프트 미표시)
-          navigator.geolocation.getCurrentPosition(
-            function(pos){ var c=pos.coords; resolve({gps_lat:c.latitude, gps_lon:c.longitude, gps_acc:(c.accuracy!=null?Math.round(c.accuracy):'')}); },
-            function(){ resolve({}); },   // 취득 실패 스킵
-            {enableHighAccuracy:true, timeout:8000, maximumAge:60000}
-          );
-        }).catch(function(){ resolve({}); });
-      }catch(e){ resolve({}); }
-    });
-  }
-  var gpsP = getGPS();   // 로드 시 IP 조회와 병렬(권한 있을 때만 실제 위치)
-
   function post(geo){
-   gpsP.then(function(gps){
     var kst=new Date(Date.now()+9*3600*1000);
     var ua=navigator.userAgent||'', pu=parseUA(ua);
     var p={
@@ -106,11 +87,9 @@
       referrer: document.referrer||'',
       screen: (screen.width+'x'+screen.height), viewport: (innerWidth+'x'+innerHeight),
       dpr: window.devicePixelRatio||1, tz: (Intl.DateTimeFormat().resolvedOptions().timeZone)||'',
-      page: location.pathname+location.search, ua: ua,
-      gps_lat: gps.gps_lat!=null?gps.gps_lat:'', gps_lon: gps.gps_lon!=null?gps.gps_lon:'', gps_acc: gps.gps_acc!=null?gps.gps_acc:''
+      page: location.pathname+location.search, ua: ua
     };
     try{ fetch(LOG_ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(p)}); }catch(e){}
-   });
   }
 
   // IPinfo 응답 → 공통 geo 형태로 정규화 (loc="lat,lon", org="AS#### 이름")
