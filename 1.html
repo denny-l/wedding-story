@@ -312,7 +312,7 @@ const chalkAudio3=document.getElementById('chalkAudio3');
 // [줄마다 다른 분필음] chalkAudio=1줄/chalkAudio2=2줄/chalkAudio3=3줄. 재생 순환 = 3→1→2
 const chalkPool=[chalkAudio,chalkAudio2,chalkAudio3];
 const chalkCycle=[2,0,1];   // 3줄,1줄,2줄 순
-const CHALK_VOL=0.5;   // 분필음 재생 볼륨(BGM 0.55 대비 밸런스)
+const CHALK_VOL=0.4;   // 분필음 재생 볼륨(BGM 0.55 대비 밸런스)
 let chalkCycleI=-1, chalkCur=null;
 const bgmAudio=document.getElementById('bgmAudio');
 const BGM_START=8.0;   // BGM 시작 시각 = 6초 지난 뒤(인트로 자막 진행 중). (이전 5.0/4.0/3.0/1.0, 11.6=별 등장)
