@@ -330,7 +330,7 @@ function unlockAudio(){
   // 배경 피아노 — 잠금만 해제하고 일단 멈춤. 실제 재생은 프레임 루프가 BGM_START(별 등장)부터 시작.
   bgmAudio.muted=false;
   bgmAudio.loop=false;                   // 반복 없음 — 음악은 한 번만 재생(사용자 요청)
-  bgmAudio.volume=0.7;                  // 분필소리보다 작게(배경)
+  bgmAudio.volume=0.8;                  // 분필소리보다 작게(배경)
   bgmAudio.currentTime=0;
   const pb=bgmAudio.play(); if(pb&&pb.then){ pb.then(()=>{ bgmAudio.pause(); bgmAudio.currentTime=0; }).catch(()=>{}); }
 }
